@@ -18,7 +18,8 @@
   "authors": [
     "tterrag1098",
     "Pyrofab",
-    "Motschen"
+    "Motschen",
+    "backryun"
   ],
   "description": "Modifies the background behind Minecraft GUIs to have a blur effect",
   "mixins": [
