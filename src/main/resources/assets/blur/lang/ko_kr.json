@@ -1,0 +1,11 @@
+{
+  "blur.midnightconfig.title": "Blur 설정",
+  "blur.midnightconfig.blurExclusions": "블러 제외",
+  "blur.midnightconfig.fadeTimeMillis": "페이드 시간 (밀리초 단위)",
+  "blur.midnightconfig.radius": "범위",
+  "blur.midnightconfig.gradientStart": "그라디언트 시작 색상",
+  "blur.midnightconfig.gradientEnd": "그라디언트 종료 색상",
+  "blur.midnightconfig.gradientStartAlpha": "그라디언트 시작 알파",
+  "blur.midnightconfig.gradientEndAlpha": "그라디언트 종료 알파",
+  "blur.midnightconfig.showScreenTitle": "화면 타이틀 보기"
+}
