@@ -11,7 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Identifier;
-
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
