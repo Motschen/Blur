@@ -35,6 +35,7 @@ public class Blur implements ClientModInitializer {
         defaultExclusions.add("ai.arcblroth.projectInception.client.InceptionInterfaceScreen");
         defaultExclusions.add("net.optifine.gui.GuiChatOF");
         defaultExclusions.add("io.github.darkkronicle.advancedchatcore.chat.AdvancedChatScreen");
+        defaultExclusions.add("net.coderbot.iris.gui.screen.ShaderPackScreen");
         BlurConfig.init("blur", BlurConfig.class);
 
         ShaderEffectRenderCallback.EVENT.register((deltaTick) -> {

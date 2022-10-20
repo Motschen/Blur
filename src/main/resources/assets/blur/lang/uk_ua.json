@@ -1,0 +1,12 @@
+{
+  "blur.midnightconfig.title": "Конфігурація Blur",
+  "blur.midnightconfig.blurExclusions": "Винятки розмиття",
+  "blur.midnightconfig.fadeTimeMillis": "Час появи розмиття (у мілісекундах)",
+  "blur.midnightconfig.ease": "Пом'якшення анімації",
+  "blur.midnightconfig.radius": "Радіус",
+  "blur.midnightconfig.gradientStart": "Початковий колір градієнта",
+  "blur.midnightconfig.gradientEnd": "Кінцевий колір градієнта",
+  "blur.midnightconfig.gradientStartAlpha": "Початкова прозорість градієнта",
+  "blur.midnightconfig.gradientEndAlpha": "Кінцева прозорість градієнтаa",
+  "blur.midnightconfig.showScreenTitle": "Показати назву екрана"
+}
