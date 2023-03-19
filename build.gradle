@@ -12,14 +12,6 @@ group = project.maven_group
 
 repositories {
 	maven {
-		name = 'Ladysnake Mods'
-		url = 'https://ladysnake.jfrog.io/artifactory/mods'
-		content {
-			includeGroup 'io.github.ladysnake'
-			includeGroupByRegex 'io\\.github\\.onyxstudios.*'
-		}
-	}
-	maven {
 		url = 'https://maven.terraformersmc.com/releases'
 		content {
 			includeGroup 'com.terraformersmc'
@@ -36,8 +28,8 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "io.github.ladysnake:satin:${satin_version}"
-	include "io.github.ladysnake:satin:${satin_version}"
+	modImplementation "maven.modrinth:satin-api:${satin_version}"
+	include "maven.modrinth:satin-api:${satin_version}"
 
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 	modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
