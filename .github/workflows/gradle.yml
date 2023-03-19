@@ -1,8 +1,8 @@
 on:
   push:
-    branches: [ "fabric-1.19.3" ]
+    branches: [ "fabric-1.19.4" ]
   pull_request:
-    branches: [ "fabric-1.19.3" ]
+    branches: [ "fabric-1.19.4" ]
 
 permissions:
   contents: read
