@@ -8,47 +8,34 @@ import ladysnake.satin.api.managed.ShaderEffectManager;
 import ladysnake.satin.api.managed.uniform.Uniform1f;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Identifier;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Blur implements ClientModInitializer {
 
     public static final String MODID = "blur";
-    public static List<String> defaultExclusions = new ArrayList<>();
+    public static long start;
+    public static long fadeOutProgress;
 
-    private long start;
-
-    private final ManagedShaderEffect blur = ShaderEffectManager.getInstance().manage(new Identifier(MODID, "shaders/post/fade_in_blur.json"),
+    private static final ManagedShaderEffect blur = ShaderEffectManager.getInstance().manage(new Identifier(MODID, "shaders/post/fade_in_blur.json"),
             shader -> shader.setUniformValue("Radius", (float) BlurConfig.radius));
-    private final Uniform1f blurProgress = blur.findUniform1f("Progress");
-
-    public static final Blur INSTANCE = new Blur();
+    private static final Uniform1f blurProgress = blur.findUniform1f("Progress");
 
     @Override
     public void onInitializeClient() {
-        defaultExclusions.add(ChatScreen.class.getName());
-        defaultExclusions.add("com.replaymod.lib.de.johni0702.minecraft.gui.container.AbstractGuiOverlay$UserInputGuiScreen");
-        defaultExclusions.add("ai.arcblroth.projectInception.client.InceptionInterfaceScreen");
-        defaultExclusions.add("net.optifine.gui.GuiChatOF");
-        defaultExclusions.add("io.github.darkkronicle.advancedchatcore.chat.AdvancedChatScreen");
-        defaultExclusions.add("net.coderbot.iris.gui.screen.ShaderPackScreen");
         BlurConfig.init("blur", BlurConfig.class);
 
         ShaderEffectRenderCallback.EVENT.register((deltaTick) -> {
             if (start > 0) {
-                blurProgress.set(getProgress());
+                blurProgress.set(getProgress(MinecraftClient.getInstance().currentScreen != null));
                 blur.render(deltaTick);
             }
         });
     }
 
-    private boolean doFade = false;
+    private static boolean doFade = false;
 
-    public void onScreenChange(Screen newGui) {
+    public static void onScreenChange(Screen newGui) {
         if (MinecraftClient.getInstance().world != null) {
             boolean excluded = newGui == null || BlurConfig.blurExclusions.stream().anyMatch(exclusion -> newGui.getClass().getName().contains(exclusion));
             if (!excluded) {
@@ -58,6 +45,10 @@ public class Blur implements ClientModInitializer {
                     start = System.currentTimeMillis();
                     doFade = false;
                 }
+                fadeOutProgress = BlurConfig.fadeOutTimeMillis;
+            } else if (newGui == null && fadeOutProgress > 0) {
+                blur.setUniformValue("Radius", (float) BlurConfig.radius);
+                start = System.currentTimeMillis();
             } else {
                 start = -1;
                 doFade = true;
@@ -65,19 +56,26 @@ public class Blur implements ClientModInitializer {
         }
     }
 
-    private float getProgress() {
-        float x = Math.min((System.currentTimeMillis() - start) / (float) BlurConfig.fadeTimeMillis, 1);
-        if (BlurConfig.ease) x *= (2 - x);  // easeOutCubic
-        return x;
+    private static float getProgress(boolean fadeIn) {
+        if (fadeIn) {
+            float x = Math.min((System.currentTimeMillis() - start) / (float) BlurConfig.fadeTimeMillis, 1);
+            if (BlurConfig.ease) x *= (2 - x);  // easeInCubic
+            return x;
+        }
+        else {
+            float x = Math.min((System.currentTimeMillis() - start) / (float) BlurConfig.fadeOutTimeMillis, 1);
+            if (BlurConfig.ease) x *= (2 - x);  // easeOutCubic
+            return -x + BlurConfig.fadeOutTimeMillis;
+        }
     }
 
-    public int getBackgroundColor(boolean second) {
+    public static int getBackgroundColor(boolean second, Screen screen) {
         int a = second ? BlurConfig.gradientEndAlpha : BlurConfig.gradientStartAlpha;
         var col = MidnightColorUtil.hex2Rgb(second ? BlurConfig.gradientEnd : BlurConfig.gradientStart);
         int r = (col.getRGB() >> 16) & 0xFF;
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
-        float prog = INSTANCE.getProgress();
+        float prog = getProgress(screen != null);
         a *= prog;
         r *= prog;
         g *= prog;

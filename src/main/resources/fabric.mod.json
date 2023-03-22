@@ -8,7 +8,7 @@
   "icon": "assets/blur/icon.png",
   "entrypoints": {
     "client": [
-      "com.tterrag.blur.Blur::INSTANCE"
+      "com.tterrag.blur.Blur"
     ]
   },
   "contact": {

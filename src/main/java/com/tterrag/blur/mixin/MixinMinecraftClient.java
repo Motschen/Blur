@@ -19,6 +19,6 @@ public class MixinMinecraftClient {
                      target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
                      opcode = Opcodes.PUTFIELD))
     private void onScreenOpen(Screen newScreen, CallbackInfo info) {
-        Blur.INSTANCE.onScreenChange(newScreen);
+        Blur.onScreenChange(newScreen);
     }
 }

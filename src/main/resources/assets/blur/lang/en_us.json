@@ -1,7 +1,10 @@
 {
   "blur.midnightconfig.title": "Blur Config",
+  "blur.midnightconfig.category.style": "Style",
+  "blur.midnightconfig.category.misc": "Miscellaneous",
   "blur.midnightconfig.blurExclusions": "Blur Exclusions",
   "blur.midnightconfig.fadeTimeMillis": "Fade Time (in milliseconds)",
+  "blur.midnightconfig.fadeOutTimeMillis": "Fade Out Time (in milliseconds)",
   "blur.midnightconfig.ease": "Ease Animation",
   "blur.midnightconfig.radius": "Radius",
   "blur.midnightconfig.gradientStart": "Gradient Start Color",
