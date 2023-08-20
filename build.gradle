@@ -15,8 +15,8 @@ repositories {
 		name = 'Ladysnake Mods'
 		url = 'https://maven.ladysnake.org/releases'
 		content {
-			includeGroup 'io.github.ladysnake'
-			includeGroupByRegex 'io\\.github\\.onyxstudios.*'
+			includeGroup 'org.ladysnake'
+			includeGroupByRegex 'dev\\.onyxstudios.*'
 		}
 	}
 	maven {
@@ -36,8 +36,8 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "io.github.ladysnake:satin:${satin_version}"
-	include "io.github.ladysnake:satin:${satin_version}"
+	modImplementation "org.ladysnake:satin:${satin_version}"
+	include "org.ladysnake:satin:${satin_version}"
 
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 	modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
