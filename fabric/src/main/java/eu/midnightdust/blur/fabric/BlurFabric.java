@@ -3,12 +3,16 @@ package eu.midnightdust.blur.fabric;
 import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.util.RainbowColor;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
-public class BlurFabric implements ClientModInitializer {
+public class BlurFabric implements ModInitializer, ClientModInitializer {
+    @Override
+    public void onInitialize() {
+        Blur.init();
+    }
     @Override
     public void onInitializeClient() {
-        Blur.init();
         ClientTickEvents.END_CLIENT_TICK.register(client -> RainbowColor.tick());
     }
 }
