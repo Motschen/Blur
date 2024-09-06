@@ -26,6 +26,9 @@
   "blur.midnightconfig.gradientEndAlpha": "Gradient End Alpha",
   "blur.midnightconfig.gradientRotation": "Gradient Rotation",
   "blur.midnightconfig.excludedScreens": "Excluded Screens",
-  "blur.midnightconfig.forceEnabledScreens": "Screens where blur should be force-enabled",
-  "blur.midnightconfig.forceDisabledScreens": "Screens where blur should be force-disabled"
+  "blur.midnightconfig.excludedScreens.tooltip": "Screens that Blur+ should not animate",
+  "blur.midnightconfig.forceEnabledScreens": "Force-enabled Screens",
+  "blur.midnightconfig.forceEnabledScreens.tooltip": "Screens where the vanilla blur effect should be force-enabled\nMight not work 100% of the time",
+  "blur.midnightconfig.forceDisabledScreens": "Force-disabled Screens",
+  "blur.midnightconfig.forceDisabledScreens.tooltip": "Screens where the vanilla blur effect should be force-disabled"
 }

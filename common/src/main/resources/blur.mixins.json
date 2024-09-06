@@ -9,7 +9,8 @@
     "MixinHandledScreen",
     "MixinMinecraftClient",
     "MixinGameRenderer",
-    "MixinInGameHud"
+    "MixinInGameHud",
+    "MixinGameOptions"
   ],
   "injectors": {
     "defaultRequire": 1

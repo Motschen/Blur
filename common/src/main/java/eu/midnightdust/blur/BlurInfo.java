@@ -1,5 +1,8 @@
 package eu.midnightdust.blur;
 
+import eu.midnightdust.blur.config.BlurConfig;
+import net.minecraft.client.gui.screen.Screen;
+
 public class BlurInfo {
     public static long start;
     public static float progress;
@@ -14,8 +17,9 @@ public class BlurInfo {
     public static boolean screenChanged = true;
     public static long lastScreenChange = System.currentTimeMillis();
 
-    public static void reset() {
+    public static void reset(Screen newScreen) {
         // Here, we reset all tests, to check if the new screen has blur and/or a background
+        if (newScreen != null && BlurConfig.excludedScreens.contains(newScreen.getClass().getCanonicalName())) return;
         prevScreenHasBlur = screenHasBlur;
         prevScreenHasBackground = screenHasBackground;
         screenHasBlur = false;

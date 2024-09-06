@@ -15,8 +15,6 @@ Various enhancements for the blur effect behind Minecraft GUIs
 
 [[mixins]]
 config = "blur.mixins.json"
-[[mixins]]
-config = "blur_compat.mixins.json"
 
 [[dependencies.blur]]
 modId = "neoforge"
