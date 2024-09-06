@@ -1,13 +1,15 @@
 pluginManagement {
     repositories {
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
+        maven { url "https://maven.fabricmc.net/" }
         maven { url "https://maven.architectury.dev/" }
-		mavenCentral()
+        maven { url "https://maven.neoforged.net/releases" }
         gradlePluginPortal()
     }
 }
+
+include("common")
+include("fabric")
+include("neoforge")
+//include("quilt")
 
 rootProject.name = "blur"

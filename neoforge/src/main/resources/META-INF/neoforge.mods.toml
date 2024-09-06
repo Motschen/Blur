@@ -1,0 +1,33 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+#issueTrackerURL = ""
+license = "MIT License"
+
+[[mods]]
+modId = "blur"
+version = "${version}"
+displayName = "Blur+"
+logoFile = "blur.png"
+authors = "Motschen, tterrag1098, Pyrofab, backryun, byquanton"
+description = '''
+Various enhancements for the blur effect behind Minecraft GUIs
+'''
+
+[[mixins]]
+config = "blur.mixins.json"
+[[mixins]]
+config = "blur_compat.mixins.json"
+
+[[dependencies.blur]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21.0,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.blur]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "CLIENT"
