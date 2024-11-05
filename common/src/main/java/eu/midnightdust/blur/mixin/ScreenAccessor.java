@@ -7,5 +7,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(Screen.class)
 public interface ScreenAccessor {
     @Invoker("applyBlur")
-    void forceApplyBlur(float delta);
+    void forceApplyBlur();
 }

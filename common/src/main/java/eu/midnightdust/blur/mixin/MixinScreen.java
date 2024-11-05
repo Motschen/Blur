@@ -32,7 +32,7 @@ public abstract class MixinScreen {
         }
 
         if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            this.client.gameRenderer.renderBlur(delta);
+            this.client.gameRenderer.renderBlur();
             this.client.getFramebuffer().beginWrite(false);
 
             if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, width, height);
@@ -44,7 +44,7 @@ public abstract class MixinScreen {
         BlurInfo.screenHasBackground = true; // Test if the screen has a background
     }
     @Inject(at = @At("HEAD"), method = "applyBlur", cancellable = true)
-    public void blur$getBlurEnabled(float delta, CallbackInfo ci) {
+    public void blur$getBlurEnabled(CallbackInfo ci) {
         if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
             ci.cancel(); return;
         }
@@ -63,7 +63,7 @@ public abstract class MixinScreen {
     @Inject(at = @At("HEAD"), method = "renderInGameBackground", cancellable = true)
     public void blur$rotatedGradient(DrawContext context, CallbackInfo ci) {
         if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()))
-            ((ScreenAccessor)this).forceApplyBlur(client.getRenderTickCounter().getTickDelta(true));
+            ((ScreenAccessor)this).forceApplyBlur();
 
         Blur.renderRotatedGradient(context, width, height); // Replaces the default gradient with our rotated one
         ci.cancel();
