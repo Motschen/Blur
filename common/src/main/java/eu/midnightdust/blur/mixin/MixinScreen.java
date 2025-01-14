@@ -26,18 +26,7 @@ public abstract class MixinScreen {
 
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
-            Blur.onScreenChange();
-            BlurInfo.screenChanged = false;
-        }
-
-        if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            this.client.gameRenderer.renderBlur();
-            this.client.getFramebuffer().beginWrite(false);
-
-            if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, width, height);
-        }
-        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
+        Blur.onRender(context, width, height, this.client);
     }
     @Inject(at = @At("HEAD"), method = "renderInGameBackground")
     public void blur$getBackgroundEnabled(DrawContext context, CallbackInfo ci) {
