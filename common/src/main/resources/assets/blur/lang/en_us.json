@@ -18,6 +18,7 @@
   "blur.midnightconfig.enum.Easing.BACK": "Back",
   "blur.midnightconfig.enum.Easing.ELASTIC": "Elastic",
   "blur.midnightconfig.radius": "Radius",
+  "blur.midnightconfig.radius.label.tooltip": "Mirror of \"Menu Background Blur\" found in Minecraft's Accessibility Settings",
   "blur.midnightconfig.rainbowMode": "Rainbow Mode \uD83C\uDF08",
   "blur.midnightconfig.useGradient": "Gradient as Background",
   "blur.midnightconfig.gradientStart": "Gradient Start Color",

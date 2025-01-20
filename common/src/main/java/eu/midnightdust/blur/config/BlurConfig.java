@@ -2,6 +2,7 @@ package eu.midnightdust.blur.config;
 
 import com.google.common.collect.Lists;
 import eu.midnightdust.lib.config.MidnightConfig;
+import net.minecraft.client.MinecraftClient;
 
 import java.util.List;
 import java.util.function.Function;
@@ -22,6 +23,8 @@ public class BlurConfig extends MidnightConfig {
     public static int fadeOutTimeMillis = 300;
     @Entry(category = ANIMATIONS)
     public static BlurConfig.Easing animationCurve = Easing.FLAT;
+    @Entry(category = STYLE, isSlider = true, min = 0, max = 20)
+    public static int radius = 5;
     @Entry(category = STYLE)
     public static boolean useGradient = true;
     @Entry(category = STYLE, isColor = true, width = 7, min = 7)
@@ -42,6 +45,11 @@ public class BlurConfig extends MidnightConfig {
     public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen");
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled
     public static List<String> forceDisabledScreens = Lists.newArrayList();
+
+    @Override
+    public void writeChanges(String modid) {
+        MinecraftClient.getInstance().options.getMenuBackgroundBlurriness().setValue(radius);
+    }
 
     public enum Easing {
         // Based on https://gist.github.com/dev-hydrogen/21a66f83f0386123e0c0acf107254843
