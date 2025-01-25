@@ -12,6 +12,7 @@
     "MixinMidnightSliderWidget",
     "MixinMinecraftClient",
     "MixinScreen",
+    "MixinTitleScreen",
     "ScreenAccessor"
   ],
   "injectors": {

@@ -17,6 +17,10 @@ public class BlurConfig extends MidnightConfig {
 
     @Entry(category = SCREENS)
     public static boolean blurContainers = true;
+    @Entry(category = SCREENS)
+    public static boolean blurTitleScreen = false;
+    @Entry(category = SCREENS)
+    public static boolean darkenTitleScreen = false;
     @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
     public static int fadeTimeMillis = 300;
     @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
@@ -48,6 +52,7 @@ public class BlurConfig extends MidnightConfig {
 
     @Override
     public void writeChanges(String modid) {
+        super.writeChanges(modid);
         MinecraftClient.getInstance().options.getMenuBackgroundBlurriness().setValue(radius);
     }
 
