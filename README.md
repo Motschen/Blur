@@ -1,5 +1,3 @@
-![Banner art for the mod Blur+](https://i.ibb.co/GM4HVDC/PoBrnNM.png)  
-
 Ever thought that the world behind your inventory was just too distracting?  
 Or that the default Minecraft blur effect is just too boring?  
 Then this mod is just right for you!
