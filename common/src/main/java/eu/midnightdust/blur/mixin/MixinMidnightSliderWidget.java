@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = MidnightConfig.MidnightSliderWidget.class, remap = false)
+@Mixin(value = MidnightConfig.MidnightSliderWidget.class)
 public abstract class MixinMidnightSliderWidget {
-    @Shadow @Final private MidnightConfig.EntryInfo info;
+    @Shadow(remap = false) @Final private MidnightConfig.EntryInfo info;
 
     @Inject(at = @At(value = "TAIL"), method = "applyValue")
     private void blur$instantlyApplyRadius(CallbackInfo ci) {
