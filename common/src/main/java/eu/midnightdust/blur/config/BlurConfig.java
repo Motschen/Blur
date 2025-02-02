@@ -53,7 +53,8 @@ public class BlurConfig extends MidnightConfig {
     @Override
     public void writeChanges(String modid) {
         super.writeChanges(modid);
-        MinecraftClient.getInstance().options.getMenuBackgroundBlurriness().setValue(radius);
+        if (MinecraftClient.getInstance().options != null)
+            MinecraftClient.getInstance().options.getMenuBackgroundBlurriness().setValue(radius);
     }
 
     public enum Easing {
