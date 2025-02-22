@@ -3,6 +3,8 @@
   "blur.midnightconfig.category.animations": "Animationen",
   "blur.midnightconfig.category.style": "Stil",
   "blur.midnightconfig.blurContainers": "Unschärfe in Containern",
+  "blur.midnightconfig.blurTitleScreen": "Unschärfe im Titelbildschirm",
+  "blur.midnightconfig.darkenTitleScreen": "Abgedunkelter Titelhintergrund",
   "blur.midnightconfig.fadeTimeMillis": "Überblendzeit (in Millisekunden)",
   "blur.midnightconfig.fadeOutTimeMillis": "Ausblendzeit (in Millisekunden)",
   "blur.midnightconfig.animationCurve": "Animationskurve",

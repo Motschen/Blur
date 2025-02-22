@@ -4,6 +4,8 @@
   "blur.midnightconfig.category.style": "Style",
   "blur.midnightconfig.category.screens": "Screens",
   "blur.midnightconfig.blurContainers": "Apply Blur to Containers",
+  "blur.midnightconfig.blurTitleScreen": "Apply Blur to Title Screen",
+  "blur.midnightconfig.darkenTitleScreen": "Darken Title Screen Background",
   "blur.midnightconfig.fadeTimeMillis": "Fade Time (in milliseconds)",
   "blur.midnightconfig.fadeOutTimeMillis": "Fade Out Time (in milliseconds)",
   "blur.midnightconfig.animationCurve": "Animation Curve",
