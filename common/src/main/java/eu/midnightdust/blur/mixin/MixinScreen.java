@@ -26,7 +26,7 @@ public abstract class MixinScreen {
 
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        Blur.onRender(context, width, height, this.client);
+        Blur.onRender(context, width, height, this.client, delta);
     }
     @Inject(at = @At("HEAD"), method = "renderInGameBackground")
     public void blur$getBackgroundEnabled(DrawContext context, CallbackInfo ci) {

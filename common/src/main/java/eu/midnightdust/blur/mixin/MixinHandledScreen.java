@@ -24,6 +24,6 @@ public class MixinHandledScreen extends Screen {
     }
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (PlatformFunctions.getPlatformName().equals("neoforge")) Blur.onRender(context, width, height, this.client);
+        if (PlatformFunctions.getPlatformName().equals("neoforge")) Blur.onRender(context, width, height, this.client, delta);
     }
 }

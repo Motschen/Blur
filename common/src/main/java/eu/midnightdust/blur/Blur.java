@@ -23,7 +23,8 @@ public class Blur {
 
     public static boolean doFade = false;
 
-    public static void onRender(DrawContext context, int width, int height, MinecraftClient client) {
+    static float lastDelta;
+    public static void onRender(DrawContext context, int width, int height, MinecraftClient client, float delta) {
         if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
             Blur.onScreenChange();
             BlurInfo.screenChanged = false;
@@ -31,9 +32,9 @@ public class Blur {
 
         if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
             client.gameRenderer.renderBlur();
-            client.getFramebuffer().beginWrite(false);
 
-            if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, width, height);
+            if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient && lastDelta != delta) Blur.renderRotatedGradient(context, width, height);
+            lastDelta = delta;
         }
         BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
     }
@@ -78,10 +79,7 @@ public class Blur {
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
         float prog = progress;
-        a *= prog;
-        r *= prog;
-        g *= prog;
-        b *= prog;
+        a *= prog; r *= prog; g *= prog; b *= prog;
         return a << 24 | r << 16 | b << 8 | g;
     }
     public static int getRotation() {

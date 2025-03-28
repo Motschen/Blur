@@ -19,6 +19,7 @@ public class BlurConfig extends MidnightConfig {
     public static boolean blurContainers = true;
     @Entry(category = SCREENS)
     public static boolean blurTitleScreen = false;
+    @Condition(requiredOption = "blurTitleScreen", visibleButLocked = true)
     @Entry(category = SCREENS)
     public static boolean darkenTitleScreen = false;
     @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
@@ -31,14 +32,19 @@ public class BlurConfig extends MidnightConfig {
     public static int radius = 5;
     @Entry(category = STYLE)
     public static boolean useGradient = true;
+    @Condition(requiredOption = "useGradient", visibleButLocked = true)
     @Entry(category = STYLE, isColor = true, width = 7, min = 7)
     public static String gradientStart = "#000000";
+    @Condition(requiredOption = "useGradient", visibleButLocked = true)
     @Entry(category = STYLE, isSlider = true, min = 0, max = 255)
     public static int gradientStartAlpha = 75;
+    @Condition(requiredOption = "useGradient", visibleButLocked = true)
     @Entry(category = STYLE, isColor = true, width = 7, min = 7)
     public static String gradientEnd = "#000000";
+    @Condition(requiredOption = "useGradient", visibleButLocked = true)
     @Entry(category = STYLE, isSlider = true, min = 0, max = 255)
     public static int gradientEndAlpha = 75;
+    @Condition(requiredOption = "useGradient", visibleButLocked = true)
     @Entry(category = STYLE, isSlider = true, min = 0, max = 360)
     public static int gradientRotation = 0;
     @Entry(category = STYLE)
