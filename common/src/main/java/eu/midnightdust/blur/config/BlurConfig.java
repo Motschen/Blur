@@ -15,6 +15,8 @@ public class BlurConfig extends MidnightConfig {
     public static final String SCREENS = "screens";
     @Entry @Hidden public static int configVersion = 2;
 
+    @Comment(category = SCREENS, centered = true)
+    public static Comment _general;
     @Entry(category = SCREENS)
     public static boolean blurContainers = true;
     @Entry(category = SCREENS)
@@ -22,14 +24,21 @@ public class BlurConfig extends MidnightConfig {
     @Condition(requiredOption = "blurTitleScreen", visibleButLocked = true)
     @Entry(category = SCREENS)
     public static boolean darkenTitleScreen = false;
-    @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
-    public static int fadeTimeMillis = 300;
-    @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
-    public static int fadeOutTimeMillis = 300;
-    @Entry(category = ANIMATIONS)
-    public static BlurConfig.Easing animationCurve = Easing.FLAT;
+    @Comment(category = SCREENS, centered = true)
+    public static Comment _advanced;
+    @Entry(category = SCREENS) // Screens where Blur+ should not apply transition effects (mostly dynamically blurred screens)
+    public static List<String> excludedScreens = Lists.newArrayList("net.irisshaders.iris.gui.screen.ShaderPackScreen");
+    @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force enabled
+    public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen");
+    @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled
+    public static List<String> forceDisabledScreens = Lists.newArrayList();
+
+    @Comment(category = STYLE, centered = true)
+    public static Comment _blur;
     @Entry(category = STYLE, isSlider = true, min = 0, max = 20)
     public static int radius = 5;
+    @Comment(category = STYLE, centered = true)
+    public static Comment _gradient;
     @Entry(category = STYLE)
     public static boolean useGradient = true;
     @Condition(requiredOption = "useGradient", visibleButLocked = true)
@@ -49,12 +58,15 @@ public class BlurConfig extends MidnightConfig {
     public static int gradientRotation = 0;
     @Entry(category = STYLE)
     public static boolean rainbowMode = false;
-    @Entry(category = SCREENS) // Screens where Blur+ should not apply transition effects (mostly dynamically blurred screens)
-    public static List<String> excludedScreens = Lists.newArrayList("net.irisshaders.iris.gui.screen.ShaderPackScreen");
-    @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force enabled
-    public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen");
-    @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled
-    public static List<String> forceDisabledScreens = Lists.newArrayList();
+
+    @Comment(category = ANIMATIONS, centered = true)
+    public static Comment _animations;
+    @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
+    public static int fadeTimeMillis = 300;
+    @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
+    public static int fadeOutTimeMillis = 300;
+    @Entry(category = ANIMATIONS)
+    public static BlurConfig.Easing animationCurve = Easing.FLAT;
 
     @Override
     public void writeChanges(String modid) {
