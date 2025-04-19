@@ -23,20 +23,19 @@ public class Blur {
 
     public static boolean doFade = false;
 
-    static float lastDelta;
-    public static void onRender(DrawContext context, int width, int height, MinecraftClient client, float delta) {
+    public static void onRender() {
         if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
             Blur.onScreenChange();
             BlurInfo.screenChanged = false;
         }
-
+        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
+    }
+    public static void renderFadeout(DrawContext context, int width, int height, MinecraftClient client) {
         if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
             client.gameRenderer.renderBlur();
 
-            if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient && lastDelta != delta) Blur.renderRotatedGradient(context, width, height);
-            lastDelta = delta;
+            if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
         }
-        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
     }
 
     public static void onScreenChange() {
@@ -79,7 +78,10 @@ public class Blur {
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
         float prog = progress;
-        a *= prog; r *= prog; g *= prog; b *= prog;
+        a = (int) (prog * a);
+        r = (int) (prog * r);
+        g = (int) (prog * g);
+        b = (int) (prog * b);
         return a << 24 | r << 16 | b << 8 | g;
     }
     public static int getRotation() {
@@ -90,11 +92,12 @@ public class Blur {
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
 
+        context.getMatrices().push();
         Matrix4f posMatrix = context.getMatrices().peek().getPositionMatrix();
         posMatrix.rotationZ(Math.toRadians(getRotation()));
-        posMatrix.setTranslation(width / 2f, height / 2f, 0); // Make the gradient's center the pivot point
+        posMatrix.setTranslation(width / 2f, height / 2f, -1); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
         context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
-        posMatrix.rotationZ(0);
+        context.getMatrices().pop();
     }
 }

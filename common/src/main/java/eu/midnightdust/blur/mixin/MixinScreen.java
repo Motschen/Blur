@@ -30,8 +30,10 @@ public abstract class MixinScreen {
 
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        Blur.onRender(context, width, height, this.client, delta);
+        Blur.onRender();
+        Blur.renderFadeout(context, width, height, client);
     }
+
     @Inject(at = @At("HEAD"), method = "applyBlur", cancellable = true)
     public void blur$getBlurEnabled(CallbackInfo ci) {
         if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
