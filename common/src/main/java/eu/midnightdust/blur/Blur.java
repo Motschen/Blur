@@ -75,11 +75,13 @@ public class Blur {
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
 
+        context.getMatrices().push();
         Matrix4f posMatrix = context.getMatrices().peek().getPositionMatrix();
         posMatrix.rotationZ(Math.toRadians(getRotation()));
-        posMatrix.setTranslation(width / 2f, height / 2f, 0); // Make the gradient's center the pivot point
+        posMatrix.setTranslation(width / 2f, height / 2f, -1000); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
         context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
         posMatrix.rotationZ(0);
+        context.getMatrices().pop();
     }
 }
