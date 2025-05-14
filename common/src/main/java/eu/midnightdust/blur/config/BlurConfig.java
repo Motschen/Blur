@@ -1,10 +1,18 @@
 package eu.midnightdust.blur.config;
 
 import com.google.common.collect.Lists;
+import eu.midnightdust.blur.Blur;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.gui.widget.TextIconButtonWidget;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 import static java.lang.Math.*;
@@ -33,10 +41,6 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled
     public static List<String> forceDisabledScreens = Lists.newArrayList();
 
-    @Comment(category = STYLE, centered = true)
-    public static Comment _blur;
-    @Entry(category = STYLE, isSlider = true, min = 0, max = 20)
-    public static int radius = 5;
     @Comment(category = STYLE, centered = true)
     public static Comment _gradient;
     @Entry(category = STYLE)
@@ -68,13 +72,6 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = ANIMATIONS)
     public static BlurConfig.Easing animationCurve = Easing.FLAT;
 
-    @Override
-    public void writeChanges(String modid) {
-        super.writeChanges(modid);
-        if (MinecraftClient.getInstance().options != null)
-            MinecraftClient.getInstance().options.getMenuBackgroundBlurriness().setValue(radius);
-    }
-
     public enum Easing {
         // Based on https://gist.github.com/dev-hydrogen/21a66f83f0386123e0c0acf107254843
         // Thank you very much!
@@ -100,6 +97,53 @@ public class BlurConfig extends MidnightConfig {
         public Double apply(Double x, boolean in) {
             if (in) return functionIn.apply(x).doubleValue();
             return functionOut.apply(x).doubleValue();
+        }
+    }
+    private static GameOptions options;
+
+    @Override
+    public void onTabInit(String tabName, MidnightConfigListWidget list, MidnightConfigScreen screen) {
+        options = MinecraftClient.getInstance().options;
+        if (Objects.equals(tabName, STYLE)) {
+            EntryInfo centered = new EntryInfo(null, Blur.MOD_ID);
+            centered.comment = new Comment(){
+                @Override
+                public boolean centered() {
+                    return true;
+                }
+                public Class<? extends Annotation> annotationType() {return null;}
+                public String category() {return "";}
+                public String name() {return "";}
+                public String url() {return "";}
+                public String requiredMod() {return "";}
+            };
+            RadiusSliderWidget slider = new RadiusSliderWidget(screen.width - 185, 0, 150, 20);
+
+            TextIconButtonWidget resetButton = TextIconButtonWidget.builder(Text.translatable("controls.reset"), (button -> {
+                options.getMenuBackgroundBlurriness().setValue(5);
+                screen.updateList();
+            }), true).texture(Identifier.of("midnightlib","icon/reset"), 12, 12).dimension(20, 20).build();
+            resetButton.setPosition(screen.width - 205 + 150 + 25, 0);
+            slider.resetButton = resetButton;
+            slider.updateMessage();
+
+            list.addButton(Lists.newArrayList(), Text.translatable("blur.midnightconfig._blur"), centered);
+            list.addButton(Lists.newArrayList(slider, resetButton), Text.translatable("blur.midnightconfig.radius"), new EntryInfo(null, Blur.MOD_ID));
+        }
+    }
+
+    public static class RadiusSliderWidget extends SliderWidget {
+        TextIconButtonWidget resetButton;
+        public RadiusSliderWidget(int x, int y, int width, int height) {
+            super(x, y, width, height, Text.empty(), options.getMenuBackgroundBlurrinessValue() / 20d);
+        }
+        public void updateMessage() {
+            this.setMessage(Text.of(String.valueOf(options.getMenuBackgroundBlurrinessValue())));
+            if (resetButton != null) resetButton.active = options.getMenuBackgroundBlurrinessValue() != 5;
+        }
+
+        public void applyValue() {
+            options.getMenuBackgroundBlurriness().setValue(Double.valueOf(this.value * 20).intValue());
         }
     }
 }

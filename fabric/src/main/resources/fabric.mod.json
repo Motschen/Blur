@@ -22,7 +22,9 @@
   "authors": [
     "Motschen",
     "tterrag1098",
-    "Pyrofab",
+    "Pyrofab"
+  ],
+  "contributors": [
     "backryun",
     "byquanton"
   ],
@@ -31,6 +33,7 @@
     "blur.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.21.2"
+    "minecraft": ">=1.21.2",
+    "midnightlib": ">=1.7.3"
   }
 }

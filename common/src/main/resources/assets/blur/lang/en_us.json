@@ -34,9 +34,9 @@
   "blur.midnightconfig.forceEnabledScreens.tooltip": "Screens where the vanilla blur effect should be force-enabled\nMight not work 100% of the time",
   "blur.midnightconfig.forceDisabledScreens": "Force-disabled Screens",
   "blur.midnightconfig.forceDisabledScreens.tooltip": "Screens where the vanilla blur effect should be force-disabled",
-  "blur.midnightconfig._general": "§7⛏ General",
-  "blur.midnightconfig._advanced": "§7⚒ Advanced",
-  "blur.midnightconfig._blur": "§7▒ Blur",
-  "blur.midnightconfig._gradient": "§7\uD83D\uDFE2 Gradient",
-  "blur.midnightconfig._animations": "§7\uD83D\uDCFD Animations"
+  "blur.midnightconfig._general": "⛏ General",
+  "blur.midnightconfig._advanced": "⚒ Advanced",
+  "blur.midnightconfig._blur": "▒ Blur",
+  "blur.midnightconfig._gradient": "\uD83D\uDFE2 Gradient",
+  "blur.midnightconfig._animations": "\uD83D\uDCFD Animations"
 }

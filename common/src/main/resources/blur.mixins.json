@@ -8,8 +8,6 @@
     "MixinGameRenderer",
     "MixinHandledScreen",
     "MixinInGameHud",
-    "MixinMidnightConfig",
-    "MixinMidnightConfig$EntryInfo",
     "MixinMinecraftClient",
     "MixinScreen",
     "MixinTitleScreen",

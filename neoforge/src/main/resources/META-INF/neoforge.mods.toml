@@ -29,3 +29,10 @@ mandatory = true
 versionRange = "[1.21.2,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.blur]]
+modId = "midnightlib"
+mandatory = true
+versionRange = "[1.7.3,)"
+ordering = "NONE"
+side = "CLIENT"

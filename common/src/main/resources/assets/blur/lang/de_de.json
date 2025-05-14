@@ -28,9 +28,9 @@
   "blur.midnightconfig.gradientEndAlpha": "Farbverlauf-Endstransparenz",
   "blur.midnightconfig.gradientRotation": "Farbverlauf-Rotation",
   "blur.midnightconfig.excludedScreens": "Ausgeschlossene Bildschirme",
-  "blur.midnightconfig._general": "§7⛏ Generell",
-  "blur.midnightconfig._advanced": "§7⚒ Fortgeschritten",
-  "blur.midnightconfig._blur": "§7▒ Unschärfe",
-  "blur.midnightconfig._gradient": "§7\uD83D\uDFE2 Farbverlauf",
-  "blur.midnightconfig._animations": "§7\uD83D\uDCFD Animationen"
+  "blur.midnightconfig._general": "⛏ Generell",
+  "blur.midnightconfig._advanced": "⚒ Fortgeschritten",
+  "blur.midnightconfig._blur": "▒ Unschärfe",
+  "blur.midnightconfig._gradient": "\uD83D\uDFE2 Farbverlauf",
+  "blur.midnightconfig._animations": "\uD83D\uDCFD Animationen"
 }
