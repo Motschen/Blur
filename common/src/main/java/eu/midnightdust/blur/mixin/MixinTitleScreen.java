@@ -17,11 +17,11 @@ public abstract class MixinTitleScreen extends Screen {
         super(title);
     }
 
-    @Inject(method = "renderPanoramaBackground", at = @At("TAIL"))
-    private void blur$renderTitleBlur(DrawContext context, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;renderPanoramaBackground(Lnet/minecraft/client/gui/DrawContext;F)V"))
+    private void blur$renderTitleBlur(DrawContext context, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
         if (BlurConfig.blurTitleScreen) {
             Blur.updateProgress(true);
-            this.applyBlur();
+            this.applyBlur(context);
             if (BlurConfig.darkenTitleScreen) this.renderDarkening(context);
         }
     }

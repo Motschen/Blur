@@ -10,8 +10,7 @@
     "MixinInGameHud",
     "MixinMinecraftClient",
     "MixinScreen",
-    "MixinTitleScreen",
-    "ScreenAccessor"
+    "MixinTitleScreen"
   ],
   "injectors": {
     "defaultRequire": 1

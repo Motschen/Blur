@@ -6,7 +6,7 @@ import eu.midnightdust.lib.util.MidnightColorUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import org.joml.Math;
-import org.joml.Matrix4f;
+import org.joml.Matrix3x2f;
 
 import java.awt.Color;
 import java.lang.Double;
@@ -92,12 +92,12 @@ public class Blur {
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
 
-        context.getMatrices().push();
-        Matrix4f posMatrix = context.getMatrices().peek().getPositionMatrix();
-        posMatrix.rotationZ(Math.toRadians(getRotation()));
-        posMatrix.setTranslation(width / 2f, height / 2f, -1000); // Make the gradient's center the pivot point
+        context.getMatrices().pushMatrix();
+        Matrix3x2f posMatrix = context.getMatrices();
+        posMatrix.rotate(Math.toRadians(getRotation()));
+        posMatrix.setTranslation(width / 2f, height / 2f); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
         context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
-        context.getMatrices().pop();
+        context.getMatrices().popMatrix();
     }
 }
