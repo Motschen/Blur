@@ -33,7 +33,7 @@
     "blur.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.21.2",
-    "midnightlib": ">=1.7.3"
+    "minecraft": ">=1.21",
+    "midnightlib": ">=1.7.5"
   }
 }

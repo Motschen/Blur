@@ -19,8 +19,8 @@ public class MixinHandledScreen extends Screen {
     }
 
     @Inject(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", shift = At.Shift.BEFORE))
-    private void blur$renderContainerBlur(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
-        if (BlurConfig.blurContainers) this.applyBlur(context);
+    private void blur$renderContainerBlur(DrawContext context, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
+        if (BlurConfig.blurContainers) this.applyBlur(tickDelta);
     }
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {

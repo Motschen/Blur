@@ -26,13 +26,13 @@ side = "CLIENT"
 [[dependencies.blur]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.21.2,)"
+versionRange = "[1.21,1.21.1]"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.blur]]
 modId = "midnightlib"
 mandatory = true
-versionRange = "[1.7.3,)"
+versionRange = "[1.7.5,)"
 ordering = "NONE"
 side = "CLIENT"

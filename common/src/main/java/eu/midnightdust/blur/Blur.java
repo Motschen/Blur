@@ -6,7 +6,7 @@ import eu.midnightdust.lib.util.MidnightColorUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import org.joml.Math;
-import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
 
 import java.awt.Color;
 import java.lang.Double;
@@ -32,7 +32,8 @@ public class Blur {
     }
     public static void renderFadeout(DrawContext context, int width, int height, MinecraftClient client) {
         if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            client.gameRenderer.renderBlur();
+            client.gameRenderer.renderBlur(client.getRenderTickCounter().getTickDelta(true));
+            client.getFramebuffer().beginWrite(false);
 
             if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
         }

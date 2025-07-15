@@ -26,8 +26,6 @@ public abstract class MixinScreen {
     @Shadow protected MinecraftClient client;
     @Shadow public int width;
     @Shadow public int height;
-    @Shadow protected abstract void applyBlur(DrawContext context);
-
     @Shadow protected abstract void applyBlur(float delta);
 
     @Inject(at = @At("HEAD"), method = "render")

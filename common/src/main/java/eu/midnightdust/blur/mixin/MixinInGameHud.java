@@ -22,7 +22,8 @@ public class MixinInGameHud {
         if (client.currentScreen == null && client.world != null && BlurInfo.start >= 0 && BlurInfo.prevScreenHasBlur) {
             BlurInfo.doTest = false;
             BlurInfo.screenChanged = false;
-            context.applyBlur();
+            this.client.gameRenderer.renderBlur(tickCounter.getTickDelta(true));
+            this.client.getFramebuffer().beginWrite(false);
 
             if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
         }
