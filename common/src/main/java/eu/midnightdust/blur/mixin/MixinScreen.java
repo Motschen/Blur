@@ -28,12 +28,13 @@ public abstract class MixinScreen {
     @Shadow public int height;
     @Shadow protected abstract void applyBlur(DrawContext context);
 
+    @Shadow protected abstract void applyBlur(float delta);
+
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         Blur.onRender();
         Blur.renderFadeout(context, width, height, client);
     }
-
     @Inject(at = @At("HEAD"), method = "applyBlur", cancellable = true)
     public void blur$getBlurEnabled(CallbackInfo ci) {
         if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
@@ -42,7 +43,6 @@ public abstract class MixinScreen {
         if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName()))
             BlurInfo.screenHasBlur = true; // Test if the screen has blur
     }
-
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;renderBackgroundTexture(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/util/Identifier;IIFFII)V"), method = "renderDarkening(Lnet/minecraft/client/gui/DrawContext;IIII)V")
     private void blur$applyGradient(DrawContext context, Identifier texture, int x, int y, float u, float v, int width, int height, Operation<Void> original) {
         if (BlurConfig.useGradient) {
@@ -58,7 +58,7 @@ public abstract class MixinScreen {
     private void blur$renderGradient(DrawContext context) {
         BlurInfo.screenHasBackground = true; // Test if the screen has a background
         if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()))
-            this.applyBlur(context);
+            this.applyBlur(client.getRenderTickCounter().getTickDelta(true));
 
         Blur.renderRotatedGradient(context, width, height); // Replaces the default gradient with our rotated one
     }
