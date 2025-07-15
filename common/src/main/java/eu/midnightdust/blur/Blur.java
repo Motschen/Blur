@@ -3,6 +3,7 @@ package eu.midnightdust.blur;
 import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import org.joml.Math;
 import org.joml.Matrix4f;
@@ -15,11 +16,28 @@ import static eu.midnightdust.blur.util.RainbowColor.hue;
 import static eu.midnightdust.blur.util.RainbowColor.hue2;
 
 public class Blur {
+    public static final String MOD_ID = "blur";
     public static void init() {
-        BlurConfig.init("blur", BlurConfig.class);
+        BlurConfig.init(MOD_ID, BlurConfig.class);
     }
 
     public static boolean doFade = false;
+
+    public static void onRender() {
+        if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
+            Blur.onScreenChange();
+            BlurInfo.screenChanged = false;
+        }
+        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
+    }
+    public static void renderFadeout(DrawContext context, int width, int height, MinecraftClient client) {
+        if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
+            client.gameRenderer.renderBlur(client.getRenderTickCounter().getTickDelta(true));
+            client.getFramebuffer().beginWrite(false);
+
+            if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
+        }
+    }
 
     public static void onScreenChange() {
         if (screenHasBlur) {
@@ -61,10 +79,10 @@ public class Blur {
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
         float prog = progress;
-        a *= prog;
-        r *= prog;
-        g *= prog;
-        b *= prog;
+        a = (int) (prog * a);
+        r = (int) (prog * r);
+        g = (int) (prog * g);
+        b = (int) (prog * b);
         return a << 24 | r << 16 | b << 8 | g;
     }
     public static int getRotation() {

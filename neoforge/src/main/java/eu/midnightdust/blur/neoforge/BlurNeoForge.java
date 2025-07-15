@@ -8,13 +8,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 
-@Mod(value = "blur", dist = Dist.CLIENT)
+@Mod(value = Blur.MOD_ID, dist = Dist.CLIENT)
 public class BlurNeoForge {
     public BlurNeoForge() {
         Blur.init();
     }
 
-    @EventBusSubscriber(modid = "blur", bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = Blur.MOD_ID, value = Dist.CLIENT)
     public static class ClientGameEvents {
         @SubscribeEvent
         public static void endClientTick(ClientTickEvent.Post event) {

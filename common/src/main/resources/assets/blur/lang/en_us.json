@@ -4,6 +4,8 @@
   "blur.midnightconfig.category.style": "Style",
   "blur.midnightconfig.category.screens": "Screens",
   "blur.midnightconfig.blurContainers": "Apply Blur to Containers",
+  "blur.midnightconfig.blurTitleScreen": "Apply Blur to Title Screen",
+  "blur.midnightconfig.darkenTitleScreen": "Darken Title Screen Background",
   "blur.midnightconfig.fadeTimeMillis": "Fade Time (in milliseconds)",
   "blur.midnightconfig.fadeOutTimeMillis": "Fade Out Time (in milliseconds)",
   "blur.midnightconfig.animationCurve": "Animation Curve",
@@ -18,6 +20,7 @@
   "blur.midnightconfig.enum.Easing.BACK": "Back",
   "blur.midnightconfig.enum.Easing.ELASTIC": "Elastic",
   "blur.midnightconfig.radius": "Radius",
+  "blur.midnightconfig.radius.label.tooltip": "Mirror of \"Menu Background Blur\" found in Minecraft's Accessibility Settings",
   "blur.midnightconfig.rainbowMode": "Rainbow Mode \uD83C\uDF08",
   "blur.midnightconfig.useGradient": "Gradient as Background",
   "blur.midnightconfig.gradientStart": "Gradient Start Color",
@@ -30,5 +33,10 @@
   "blur.midnightconfig.forceEnabledScreens": "Force-enabled Screens",
   "blur.midnightconfig.forceEnabledScreens.tooltip": "Screens where the vanilla blur effect should be force-enabled\nMight not work 100% of the time",
   "blur.midnightconfig.forceDisabledScreens": "Force-disabled Screens",
-  "blur.midnightconfig.forceDisabledScreens.tooltip": "Screens where the vanilla blur effect should be force-disabled"
+  "blur.midnightconfig.forceDisabledScreens.tooltip": "Screens where the vanilla blur effect should be force-disabled",
+  "blur.midnightconfig._general": "⛏ General",
+  "blur.midnightconfig._advanced": "⚒ Advanced",
+  "blur.midnightconfig._blur": "▒ Blur",
+  "blur.midnightconfig._gradient": "\uD83D\uDFE2 Gradient",
+  "blur.midnightconfig._animations": "\uD83D\uDCFD Animations"
 }

@@ -1,0 +1,41 @@
+{
+  "blur.midnightconfig.title": "Configuración de Blur+",
+  "blur.midnightconfig.category.animations": "Animaciones",
+  "blur.midnightconfig.category.style": "Estilo",
+  "blur.midnightconfig.category.screens": "Pantallas",
+  
+  "blur.midnightconfig.blurContainers": "Aplicar Desenfoque a Contenedores",
+  "blur.midnightconfig.fadeTimeMillis": "Tiempo de Aparición (en milisegundos)",
+  "blur.midnightconfig.fadeOutTimeMillis": "Tiempo de Desaparición (en milisegundos)",
+  "blur.midnightconfig.animationCurve": "Curva de Animación",
+  
+  "blur.midnightconfig.enum.Easing.FLAT": "Plano",
+  "blur.midnightconfig.enum.Easing.SINE": "Seno",
+  "blur.midnightconfig.enum.Easing.QUAD": "Cuadrática",
+  "blur.midnightconfig.enum.Easing.CUBIC": "Cúbica",
+  "blur.midnightconfig.enum.Easing.QUART": "Cuártica",
+  "blur.midnightconfig.enum.Easing.QUINT": "Quíntica",
+  "blur.midnightconfig.enum.Easing.EXPO": "Exponencial",
+  "blur.midnightconfig.enum.Easing.CIRC": "Circular",
+  "blur.midnightconfig.enum.Easing.BACK": "Retroceso",
+  "blur.midnightconfig.enum.Easing.ELASTIC": "Elástica",
+  
+  "blur.midnightconfig.radius": "Radio",
+  "blur.midnightconfig.rainbowMode": "Modo Arcoíris \ud83c\udf08",
+  
+  "blur.midnightconfig.useGradient": "Usar Gradiente como Fondo",
+  "blur.midnightconfig.gradientStart": "Color Inicial del Gradiente",
+  "blur.midnightconfig.gradientEnd": "Color Final del Gradiente",
+  "blur.midnightconfig.gradientStartAlpha": "Transparencia Inicial del Gradiente",
+  "blur.midnightconfig.gradientEndAlpha": "Transparencia Final del Gradiente",
+  "blur.midnightconfig.gradientRotation": "Rotación del Gradiente",
+  
+  "blur.midnightconfig.excludedScreens": "Pantallas Excluidas",
+  "blur.midnightconfig.excludedScreens.tooltip": "Pantallas donde Blur+ no debería animar",
+  
+  "blur.midnightconfig.forceEnabledScreens": "Pantallas con Blur Forzado",
+  "blur.midnightconfig.forceEnabledScreens.tooltip": "Pantallas donde el desenfoque vanilla debería forzarse habilitado\nPuede que no funcione siempre al 100%",
+  
+  "blur.midnightconfig.forceDisabledScreens": "Pantallas con Blur Deshabilitado",
+  "blur.midnightconfig.forceDisabledScreens.tooltip": "Pantallas donde el desenfoque vanilla debería forzarse deshabilitado"
+}

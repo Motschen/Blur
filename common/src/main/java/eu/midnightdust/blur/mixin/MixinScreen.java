@@ -26,26 +26,15 @@ public abstract class MixinScreen {
     @Shadow protected MinecraftClient client;
     @Shadow public int width;
     @Shadow public int height;
-
     @Shadow protected abstract void applyBlur(float delta);
 
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
-            Blur.onScreenChange();
-            BlurInfo.screenChanged = false;
-        }
-
-        if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            this.client.gameRenderer.renderBlur(delta);
-            this.client.getFramebuffer().beginWrite(false);
-
-            if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, width, height);
-        }
-        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
+        Blur.onRender();
+        Blur.renderFadeout(context, width, height, client);
     }
     @Inject(at = @At("HEAD"), method = "applyBlur", cancellable = true)
-    public void blur$getBlurEnabled(float delta, CallbackInfo ci) {
+    public void blur$getBlurEnabled(CallbackInfo ci) {
         if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
             ci.cancel(); return;
         }
@@ -70,6 +59,5 @@ public abstract class MixinScreen {
             this.applyBlur(client.getRenderTickCounter().getTickDelta(true));
 
         Blur.renderRotatedGradient(context, width, height); // Replaces the default gradient with our rotated one
-
     }
 }

@@ -1,8 +1,11 @@
 {
   "blur.midnightconfig.title": "Blur+ Konfiguration",
   "blur.midnightconfig.category.animations": "Animationen",
+  "blur.midnightconfig.category.screens": "Bildschirme",
   "blur.midnightconfig.category.style": "Stil",
   "blur.midnightconfig.blurContainers": "Unschärfe in Containern",
+  "blur.midnightconfig.blurTitleScreen": "Unschärfe im Titelbildschirm",
+  "blur.midnightconfig.darkenTitleScreen": "Abgedunkelter Titelhintergrund",
   "blur.midnightconfig.fadeTimeMillis": "Überblendzeit (in Millisekunden)",
   "blur.midnightconfig.fadeOutTimeMillis": "Ausblendzeit (in Millisekunden)",
   "blur.midnightconfig.animationCurve": "Animationskurve",
@@ -24,5 +27,10 @@
   "blur.midnightconfig.gradientStartAlpha": "Farbverlauf-Anfangstransparenz",
   "blur.midnightconfig.gradientEndAlpha": "Farbverlauf-Endstransparenz",
   "blur.midnightconfig.gradientRotation": "Farbverlauf-Rotation",
-  "blur.midnightconfig.excludedScreens": "Ausgeschlossene Bildschirme"
+  "blur.midnightconfig.excludedScreens": "Ausgeschlossene Bildschirme",
+  "blur.midnightconfig._general": "⛏ Generell",
+  "blur.midnightconfig._advanced": "⚒ Fortgeschritten",
+  "blur.midnightconfig._blur": "▒ Unschärfe",
+  "blur.midnightconfig._gradient": "\uD83D\uDFE2 Farbverlauf",
+  "blur.midnightconfig._animations": "\uD83D\uDCFD Animationen"
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "blur",
-  "name": "Blur+ (Fabric)",
+  "name": "Blur+",
   "version": "$version",
   "environment": "client",
   "license": "MIT",
@@ -22,7 +22,9 @@
   "authors": [
     "Motschen",
     "tterrag1098",
-    "Pyrofab",
+    "Pyrofab"
+  ],
+  "contributors": [
     "backryun",
     "byquanton"
   ],
@@ -31,6 +33,7 @@
     "blur.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.20.5"
+    "minecraft": ">=1.21",
+    "midnightlib": ">=1.7.5"
   }
 }
