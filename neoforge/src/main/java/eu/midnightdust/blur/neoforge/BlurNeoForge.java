@@ -14,7 +14,7 @@ public class BlurNeoForge {
         Blur.init();
     }
 
-    @EventBusSubscriber(modid = Blur.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = Blur.MOD_ID, value = Dist.CLIENT)
     public static class ClientGameEvents {
         @SubscribeEvent
         public static void endClientTick(ClientTickEvent.Post event) {

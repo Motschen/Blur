@@ -2,7 +2,7 @@ package eu.midnightdust.blur.config;
 
 import com.google.common.collect.Lists;
 import eu.midnightdust.blur.Blur;
-import eu.midnightdust.lib.config.MidnightConfig;
+import eu.midnightdust.lib.config.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.gui.widget.TextIconButtonWidget;
