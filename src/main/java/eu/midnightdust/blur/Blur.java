@@ -19,7 +19,14 @@ import static eu.midnightdust.blur.util.RainbowColor.hue2;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-//?}
+//?} else if neoforge {
+/*import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+*///?}
+
 
 public class Blur {
     public static final String MOD_ID = "blur";
@@ -119,5 +126,20 @@ public class Blur {
             ClientTickEvents.END_CLIENT_TICK.register(client -> RainbowColor.tick());
         }
     }
-    //?}
+    //?} else if neoforge {
+    /*@Mod(value = Blur.MOD_ID, dist = Dist.CLIENT)
+    public static class BlurNeoForge {
+        public BlurNeoForge() {
+            Blur.init();
+        }
+
+        @EventBusSubscriber(modid = Blur.MOD_ID, value = Dist.CLIENT)
+        public static class ClientGameEvents {
+            @SubscribeEvent
+            public static void endClientTick(ClientTickEvent.Post event) {
+                RainbowColor.tick();
+            }
+        }
+    }
+    *///?}
 }
