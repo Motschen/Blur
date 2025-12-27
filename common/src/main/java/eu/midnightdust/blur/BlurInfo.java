@@ -1,7 +1,7 @@
 package eu.midnightdust.blur;
 
 import eu.midnightdust.blur.config.BlurConfig;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 public class BlurInfo {
     public static long start;

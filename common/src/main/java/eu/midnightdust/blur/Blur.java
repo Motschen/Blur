@@ -3,13 +3,13 @@ package eu.midnightdust.blur;
 import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import org.joml.Math;
 import org.joml.Matrix3x2f;
 
 import java.awt.Color;
 import java.lang.Double;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 import static eu.midnightdust.blur.BlurInfo.*;
 import static eu.midnightdust.blur.util.RainbowColor.hue;
@@ -30,9 +30,9 @@ public class Blur {
         }
         BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
     }
-    public static void renderFadeout(DrawContext context, int width, int height, MinecraftClient client) {
+    public static void renderFadeout(GuiGraphics context, int width, int height, Minecraft client) {
         if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            client.gameRenderer.renderBlur();
+            client.gameRenderer.processBlurEffect();
 
             if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
         }
@@ -88,16 +88,16 @@ public class Blur {
         if (BlurConfig.rainbowMode) return RainbowColor.rotation;
         return BlurConfig.gradientRotation;
     }
-    public static void renderRotatedGradient(DrawContext context, int width, int height) {
+    public static void renderRotatedGradient(GuiGraphics context, int width, int height) {
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
 
-        context.getMatrices().pushMatrix();
-        Matrix3x2f posMatrix = context.getMatrices();
+        context.pose().pushMatrix();
+        Matrix3x2f posMatrix = context.pose();
         posMatrix.rotate(Math.toRadians(getRotation()));
         posMatrix.setTranslation(width / 2f, height / 2f); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
         context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
-        context.getMatrices().popMatrix();
+        context.pose().popMatrix();
     }
 }

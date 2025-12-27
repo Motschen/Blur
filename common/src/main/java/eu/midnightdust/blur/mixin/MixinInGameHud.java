@@ -2,10 +2,10 @@ package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.BlurInfo;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,18 +13,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(InGameHud.class)
+@Mixin(Gui.class)
 public class MixinInGameHud {
-    @Final @Shadow private MinecraftClient client;
+    @Final @Shadow private Minecraft minecraft;
 
     @Inject(at = @At("TAIL"), method = "render")
-    public void blur$renderFadeOut(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) { // Adds a fade-out effect when a player is in a world and closes all screens
-        if (client.currentScreen == null && client.world != null && BlurInfo.start >= 0 && BlurInfo.prevScreenHasBlur) {
+    public void blur$renderFadeOut(GuiGraphics context, DeltaTracker tickCounter, CallbackInfo ci) { // Adds a fade-out effect when a player is in a world and closes all screens
+        if (minecraft.screen == null && minecraft.level != null && BlurInfo.start >= 0 && BlurInfo.prevScreenHasBlur) {
             BlurInfo.doTest = false;
             BlurInfo.screenChanged = false;
-            context.applyBlur();
+            context.blurBeforeThisStratum();
 
-            if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
+            if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
         }
     }
 }
