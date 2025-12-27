@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "blur",
+  "name": "Blur+",
+  "version": "$version",
+  "environment": "client",
+  "license": "MIT",
+  "icon": "assets/blur/icon.png",
+  "entrypoints": {
+    "main": [
+      "eu.midnightdust.blur.Blur\$BlurFabric"
+    ],
+    "client": [
+      "eu.midnightdust.blur.Blur\$BlurFabric"
+    ]
+  },
+  "contact": {
+    "homepage": "https://modrinth.com/mod/blur-fabric",
+    "sources": "https://github.com/Motschen/Blur",
+    "issues": "https://github.com/Motschen/Blur/issues"
+  },
+  "authors": [
+    "Motschen",
+    "tterrag1098",
+    "Pyrofab"
+  ],
+  "contributors": [
+    "backryun",
+    "byquanton"
+  ],
+  "description": "Various enhancements for the blur effect behind Minecraft GUIs",
+  "mixins": [
+    "blur.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${minecraft}",
+    "midnightlib": ">=1.9.2"
+  }
+}

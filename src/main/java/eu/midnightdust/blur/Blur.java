@@ -15,6 +15,12 @@ import static eu.midnightdust.blur.BlurInfo.*;
 import static eu.midnightdust.blur.util.RainbowColor.hue;
 import static eu.midnightdust.blur.util.RainbowColor.hue2;
 
+//? fabric {
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+//?}
+
 public class Blur {
     public static final String MOD_ID = "blur";
     public static void init() {
@@ -100,4 +106,18 @@ public class Blur {
         context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
         context.pose().popMatrix();
     }
+
+
+    //? fabric {
+    public static class BlurFabric implements ModInitializer, ClientModInitializer {
+        @Override
+        public void onInitialize() {
+            Blur.init();
+        }
+        @Override
+        public void onInitializeClient() {
+            ClientTickEvents.END_CLIENT_TICK.register(client -> RainbowColor.tick());
+        }
+    }
+    //?}
 }
