@@ -14,9 +14,17 @@ public abstract class MixinGameOptions {
     @Shadow @Final private OptionInstance<Double> chatLineSpacing;
 
     @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/client/OptionInstance$IntRange", ordinal = 3))
-    private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
+    //? if > 1.21.11 {
+    private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive, boolean applyValueImmediately) {
         if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
-            return new OptionInstance.IntRange(minInclusive, 20);
-        return new OptionInstance.IntRange(minInclusive, maxInclusive);
+            return new OptionInstance.IntRange(minInclusive, 20, applyValueImmediately);
+        return new OptionInstance.IntRange(minInclusive, maxInclusive, applyValueImmediately);
     }
+    //? } else {
+//    private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
+//        if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
+//            return new OptionInstance.IntRange(minInclusive, 20);
+//        return new OptionInstance.IntRange(minInclusive, maxInclusive);
+//    }
+    //?}
 }

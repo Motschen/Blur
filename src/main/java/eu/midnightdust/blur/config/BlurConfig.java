@@ -12,7 +12,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import static java.lang.Math.*;
 
@@ -121,7 +121,7 @@ public class BlurConfig extends MidnightConfig {
             SpriteIconButton resetButton = SpriteIconButton.builder(Component.translatable("controls.reset"), (button -> {
                 options.menuBackgroundBlurriness().set(5);
                 screen.updateList();
-            }), true).sprite(ResourceLocation.fromNamespaceAndPath("midnightlib","icon/reset"), 12, 12).size(20, 20).build();
+            }), true).sprite(Identifier.fromNamespaceAndPath("midnightlib","icon/reset"), 12, 12).size(20, 20).build();
             resetButton.setPosition(screen.width - 205 + 150 + 25, 0);
             slider.resetButton = resetButton;
             slider.updateMessage();
