@@ -13,18 +13,18 @@ public abstract class MixinGameOptions {
     @Shadow @Final private OptionInstance<Integer> menuBackgroundBlurriness;
     @Shadow @Final private OptionInstance<Double> chatLineSpacing;
 
-    @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/client/OptionInstance$IntRange", ordinal = 3))
-    //? if > 1.21.11 {
+    @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/client/OptionInstance$IntRange", ordinal = /*? if > 1.21.5 {*/ 3 /*?} else {*/ /*2 *//*?}*/))
+    //? if >= 1.21.11 {
     private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive, boolean applyValueImmediately) {
         if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
             return new OptionInstance.IntRange(minInclusive, 20, applyValueImmediately);
         return new OptionInstance.IntRange(minInclusive, maxInclusive, applyValueImmediately);
     }
-    //? } else {
-//    private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
-//        if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
-//            return new OptionInstance.IntRange(minInclusive, 20);
-//        return new OptionInstance.IntRange(minInclusive, maxInclusive);
-//    }
-    //?}
+    //?} else {
+    /*private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
+        if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
+            return new OptionInstance.IntRange(minInclusive, 20);
+        return new OptionInstance.IntRange(minInclusive, maxInclusive);
+    }
+    *///?}
 }

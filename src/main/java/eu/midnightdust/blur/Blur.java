@@ -4,7 +4,6 @@ import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import org.joml.Math;
-import org.joml.Matrix3x2f;
 
 import java.awt.Color;
 import java.lang.Double;
@@ -14,6 +13,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import static eu.midnightdust.blur.BlurInfo.*;
 import static eu.midnightdust.blur.util.RainbowColor.hue;
 import static eu.midnightdust.blur.util.RainbowColor.hue2;
+
+//? if > 1.21.5 {
+import org.joml.Matrix3x2f;
+//?} else {
+/*import org.joml.Matrix4f;
+*///?}
 
 //? fabric {
 import net.fabricmc.api.ClientModInitializer;
@@ -105,6 +110,7 @@ public class Blur {
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
 
+        //? if > 1.21.5 {
         context.pose().pushMatrix();
         Matrix3x2f posMatrix = context.pose();
         posMatrix.rotate(Math.toRadians(getRotation()));
@@ -112,6 +118,15 @@ public class Blur {
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
         context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
         context.pose().popMatrix();
+        //?} else {
+        /*context.pose().pushPose();
+        Matrix4f posMatrix = context.pose().last().pose();
+        posMatrix.rotateZ(Math.toRadians(getRotation()));
+        posMatrix.setTranslation(width / 2f, height / 2f, -1000); // Make the gradient's center the pivot point
+        posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
+        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
+        context.pose().popPose();
+        *///?}
     }
 
 

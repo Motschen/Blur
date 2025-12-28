@@ -21,7 +21,7 @@ public abstract class MixinTitleScreen extends Screen {
     private void blur$renderTitleBlur(GuiGraphics context, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
         if (BlurConfig.blurTitleScreen) {
             Blur.updateProgress(true);
-            this.renderBlurredBackground(context);
+            this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?}*/);
             if (BlurConfig.darkenTitleScreen) this.renderMenuBackground(context);
         }
     }

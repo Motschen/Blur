@@ -22,7 +22,11 @@ public class MixinInGameHud {
         if (minecraft.screen == null && minecraft.level != null && BlurInfo.start >= 0 && BlurInfo.prevScreenHasBlur) {
             BlurInfo.doTest = false;
             BlurInfo.screenChanged = false;
+            //? if > 1.21.5 {
             context.blurBeforeThisStratum();
+            //?} else {
+            /*minecraft.gameRenderer.processBlurEffect();
+            *///?}
 
             if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
         }
