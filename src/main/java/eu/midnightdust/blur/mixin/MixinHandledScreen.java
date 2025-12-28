@@ -2,7 +2,6 @@ package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.config.BlurConfig;
-import eu.midnightdust.lib.util.PlatformFunctions;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -22,8 +21,10 @@ public class MixinHandledScreen extends Screen {
     private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
         if (BlurConfig.blurContainers) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
-    @Inject(at = @At("HEAD"), method = "render")
+    //? neoforge {
+    /*@Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (PlatformFunctions.getPlatformName().equals("neoforge")) Blur.onRender();
+        Blur.onRender();
     }
+    *///?}
 }
