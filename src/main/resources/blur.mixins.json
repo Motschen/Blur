@@ -4,6 +4,8 @@
   "package": "eu.midnightdust.blur.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "GuiGraphicsAccessor",
+    "GuiRenderStateAccessor",
     "MixinGameOptions",
     "MixinGameRenderer",
     "MixinHandledScreen",

@@ -23,7 +23,8 @@ public class MixinInGameHud {
             BlurInfo.doTest = false;
             BlurInfo.screenChanged = false;
             //? if > 1.21.5 {
-            context.blurBeforeThisStratum();
+            if (((GuiRenderStateAccessor) ((GuiGraphicsAccessor) context).getGuiRenderState()).getFirstStratumAfterBlur() == Integer.MAX_VALUE)
+                context.blurBeforeThisStratum();
             //?} else {
             /*minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^tickCounter.getGameTimeDeltaTicks() ^//^?}^/);
             *///?}
