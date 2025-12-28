@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.network.chat.Component;
@@ -98,11 +97,9 @@ public class BlurConfig extends MidnightConfig {
             return functionOut.apply(x).doubleValue();
         }
     }
-    private static Options options;
 
     @Override
     public void onTabInit(String tabName, MidnightConfigListWidget list, MidnightConfigScreen screen) {
-        options = Minecraft.getInstance().options;
         if (Objects.equals(tabName, STYLE)) {
             EntryInfo centered = new EntryInfo(null, Blur.MOD_ID);
             centered.comment = new Comment(){
@@ -119,7 +116,7 @@ public class BlurConfig extends MidnightConfig {
             RadiusSliderWidget slider = new RadiusSliderWidget(screen.width - 185, 0, 150, 20);
 
             SpriteIconButton resetButton = SpriteIconButton.builder(Component.translatable("controls.reset"), (button -> {
-                options.menuBackgroundBlurriness().set(5);
+                Minecraft.getInstance().options.menuBackgroundBlurriness().set(5);
                 screen.updateList();
             }), true).sprite(Identifier.fromNamespaceAndPath("midnightlib","icon/reset"), 12, 12).size(20, 20).build();
             resetButton.setPosition(screen.width - 205 + 150 + 25, 0);
@@ -134,15 +131,15 @@ public class BlurConfig extends MidnightConfig {
     public static class RadiusSliderWidget extends AbstractSliderButton {
         SpriteIconButton resetButton;
         public RadiusSliderWidget(int x, int y, int width, int height) {
-            super(x, y, width, height, Component.empty(), options.getMenuBackgroundBlurriness() / 20d);
+            super(x, y, width, height, Component.empty(), Minecraft.getInstance().options.getMenuBackgroundBlurriness() / 20d);
         }
         public void updateMessage() {
-            this.setMessage(Component.nullToEmpty(String.valueOf(options.getMenuBackgroundBlurriness())));
-            if (resetButton != null) resetButton.active = options.getMenuBackgroundBlurriness() != 5;
+            this.setMessage(Component.nullToEmpty(String.valueOf(Minecraft.getInstance().options.getMenuBackgroundBlurriness())));
+            if (resetButton != null) resetButton.active = Minecraft.getInstance().options.getMenuBackgroundBlurriness() != 5;
         }
 
         public void applyValue() {
-            options.menuBackgroundBlurriness().set(Double.valueOf(this.value * 20).intValue());
+            Minecraft.getInstance().options.menuBackgroundBlurriness().set(Double.valueOf(this.value * 20).intValue());
         }
     }
 }
