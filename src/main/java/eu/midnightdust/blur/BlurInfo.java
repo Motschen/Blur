@@ -2,6 +2,11 @@ package eu.midnightdust.blur;
 
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.GuiGraphics;
+//? if > 1.21.5 {
+import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
+import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
+//?}
 
 public class BlurInfo {
     public static long start;
@@ -28,5 +33,13 @@ public class BlurInfo {
         screenChanged = true;
         start = -1;
         lastScreenChange = System.currentTimeMillis();
+    }
+
+    public static boolean canBlur(GuiGraphics graphics) {
+        //? if > 1.21.5 {
+        return ((GuiRenderStateAccessor) ((GuiGraphicsAccessor) graphics).getGuiRenderState()).getFirstStratumAfterBlur() == Integer.MAX_VALUE;
+        //?} else {
+        //return true;
+        //?}
     }
 }

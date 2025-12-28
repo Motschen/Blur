@@ -56,7 +56,7 @@ public abstract class MixinScreen {
     @Unique
     private void blur$renderGradient(GuiGraphics context) {
         BlurInfo.screenHasBackground = true; // Test if the screen has a background
-        if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()))
+        if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()) && BlurInfo.canBlur(context))
             this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*minecraft.getTimer().getGameTimeDeltaTicks() *//*?}*/);
 
         Blur.renderRotatedGradient(context, width, height); // Replaces the default gradient with our rotated one

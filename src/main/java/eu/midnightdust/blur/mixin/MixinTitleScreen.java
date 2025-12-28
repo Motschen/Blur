@@ -1,6 +1,7 @@
 package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
+import eu.midnightdust.blur.BlurInfo;
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -21,7 +22,7 @@ public abstract class MixinTitleScreen extends Screen {
     private void blur$renderTitleBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (BlurConfig.blurTitleScreen) {
             Blur.updateProgress(true);
-            this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
+            if (BlurInfo.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
             if (BlurConfig.darkenTitleScreen) this.renderMenuBackground(context);
         }
     }
