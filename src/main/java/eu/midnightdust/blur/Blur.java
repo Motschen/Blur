@@ -53,8 +53,8 @@ public class Blur {
             //? if > 1.21.5 {
             if (BlurInfo.canBlur(context)) context.blurBeforeThisStratum();
             //?} else {
-            //client.gameRenderer.processBlurEffect(/*? if <= 1.21.1 {*/ /*client.getTimer().getGameTimeDeltaTicks() *//*?}*/);
-            //?}
+            /*client.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^client.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
+            *///?}
 
             if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
         }

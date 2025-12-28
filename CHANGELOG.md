@@ -1,3 +1,7 @@
+### Blur+ v5.3.2
+- **always** check if blur effect is applicable
+  - Should resolve all remainng instances of the `Can only blur once per frame` crash
+
 ### Blur+ v5.3.1
 - Fix crash `java.lang.IllegalStateException: Can only blur once per frame` that occurred in edge cases
 

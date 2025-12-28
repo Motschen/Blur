@@ -11,10 +11,10 @@ public interface GuiRenderStateAccessor {
     int getFirstStratumAfterBlur();
 }
 //?} else {
-//import eu.midnightdust.core.MidnightLib;
-//import org.spongepowered.asm.mixin.Mixin;
-//
-//@Mixin(MidnightLib.class)
-//public interface GuiRenderStateAccessor {
-//}
-//?}
+/*import eu.midnightdust.core.MidnightLib;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(MidnightLib.class)
+public interface GuiRenderStateAccessor {
+}
+*///?}

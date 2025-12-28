@@ -39,7 +39,7 @@ public class BlurInfo {
         //? if > 1.21.5 {
         return ((GuiRenderStateAccessor) ((GuiGraphicsAccessor) graphics).getGuiRenderState()).getFirstStratumAfterBlur() == Integer.MAX_VALUE;
         //?} else {
-        //return true;
-        //?}
+        /*return true;
+        *///?}
     }
 }
