@@ -25,7 +25,7 @@ public class MixinInGameHud {
             //? if > 1.21.5 {
             context.blurBeforeThisStratum();
             //?} else {
-            /*minecraft.gameRenderer.processBlurEffect();
+            /*minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^tickCounter.getGameTimeDeltaTicks() ^//^?}^/);
             *///?}
 
             if (BlurInfo.prevScreenHasBackground) Blur.renderRotatedGradient(context, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());

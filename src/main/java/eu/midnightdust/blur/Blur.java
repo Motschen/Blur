@@ -50,7 +50,7 @@ public class Blur {
     }
     public static void renderFadeout(GuiGraphics context, int width, int height, Minecraft client) {
         if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            client.gameRenderer.processBlurEffect();
+            client.gameRenderer.processBlurEffect(/*? if <= 1.21.1 {*/ /*client.getTimer().getGameTimeDeltaTicks() *//*?}*/);
 
             if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
         }

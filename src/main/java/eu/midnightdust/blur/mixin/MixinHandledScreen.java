@@ -20,7 +20,7 @@ public class MixinHandledScreen extends Screen {
 
     @Inject(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", shift = At.Shift.BEFORE))
     private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
-        if (BlurConfig.blurContainers) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?}*/);
+        if (BlurConfig.blurContainers) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {

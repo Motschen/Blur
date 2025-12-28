@@ -19,7 +19,7 @@ public class MixinGameRenderer {
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;getMenuBackgroundBlurriness()I"))
     private int blur$modifyRadius(Options instance, Operation<Integer> original) {
     //?} else {
-    /*@ModifyVariable(method = "processBlurEffect", at = @At("STORE"), ordinal = 0)
+    /*@ModifyVariable(method = "processBlurEffect", at = @At("STORE"), ordinal = /^? if > 1.21.1 {^/ 0 /^?} else {^/ /^1 ^//^?}^/)
     private float blur$modifyRadius(float radius) {
     *///?}
         //? if > 1.21.5
