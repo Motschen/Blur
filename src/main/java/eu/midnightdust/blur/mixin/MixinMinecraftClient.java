@@ -17,12 +17,6 @@ public class MixinMinecraftClient {
                      target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;",
                      opcode = Opcodes.PUTFIELD))
     private void blur$onScreenOpen(Screen newScreen, CallbackInfo info) {
-        if (BlurInfo.lastScreenChange < System.currentTimeMillis() - 100) { // For some reason, in certain scenarios the screen is set to a new one multiple times in a tick. We want to avoid that.
-            // Here, we reset all tests, to check if the new screen has blur and/or a background
-            BlurInfo.reset(newScreen);
-
-            // Manually activate the onScreenChange method when all screens are closed (in-game)
-            if (newScreen == null) Blur.onScreenChange();
-        }
+        Blur.onScreenChange();
     }
 }
