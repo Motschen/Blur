@@ -28,8 +28,7 @@ public abstract class MixinScreen {
 
     @Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        Blur.onRender();
-        Blur.renderFadeout(context, width, height, minecraft);
+        Blur.onRender(context);
     }
 
     @Inject(at = @At("HEAD"), method = "renderBlurredBackground", cancellable = true)
@@ -38,7 +37,7 @@ public abstract class MixinScreen {
             ci.cancel(); return;
         }
         if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName()))
-            BlurInfo.screenHasBlur = true; // Test if the screen has blur
+            Blur.screenHasBlur = true; // Test if the screen has blur
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderMenuBackgroundTexture(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/resources/Identifier;IIFFII)V"), method = "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
@@ -54,8 +53,8 @@ public abstract class MixinScreen {
     }
     @Unique
     private void blur$renderGradient(GuiGraphics context) {
-        BlurInfo.screenHasBackground = true; // Test if the screen has a background
-        if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()) && BlurInfo.canBlur(context))
+        Blur.screenHasBackground = true; // Test if the screen has a background
+        if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()) && Blur.canBlur(context))
             this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*minecraft.getTimer().getGameTimeDeltaTicks() *//*?}*/);
 
         Blur.renderRotatedGradient(context, width, height); // Replaces the default gradient with our rotated one
