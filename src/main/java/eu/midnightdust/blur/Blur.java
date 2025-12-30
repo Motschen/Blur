@@ -56,7 +56,7 @@ public class Blur {
          *///?}
     }
 
-    public static void onRender() {
+    public static void onRender(GuiGraphics context) {
         long currentTime = System.currentTimeMillis();
         if (lastRender <= 0) {
             lastRender = currentTime;
@@ -96,21 +96,15 @@ public class Blur {
         }
     }
 
-    public static void updateFadeAnimation(boolean fadeIn) {
-        double x;
-        if (fadeIn) {
-            x = Math.min((System.currentTimeMillis() - start) / (double) BlurConfig.fadeTimeMillis, 1);
+    public static void updateFadeAnimation(GuiGraphics context) {
+        if (screenHasBlur) {
+            fadeTimeState += deltaTime / (float) BlurConfig.fadeTimeMillis;
         }
         else {
-            x = Math.max(1 + (start - System.currentTimeMillis()) / (double) BlurConfig.fadeOutTimeMillis, 0);
-            if (x <= 0) {
-                start = -1;
-            }
+            fadeTimeState -= deltaTime / (float) BlurConfig.fadeOutTimeMillis;
         }
-        x = BlurConfig.animationCurve.apply(x, fadeIn);
-        x = Math.clamp(0, 1, x);
-
-        progress = Double.valueOf(x).floatValue();
+        fadeTimeState = Math.clamp(0, 1, fadeTimeState);
+        fadeProgress = BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue();
     }
 
     public static int getBackgroundColor(boolean second) {
