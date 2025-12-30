@@ -90,7 +90,7 @@ publishMods {
         }
     }
 
-    curseforge {
+    /*curseforge {
         projectId = property("publish.curseforge").toString()
         accessToken = curseforgeToken.toString()
         targets.forEach(minecraftVersions::add)
@@ -98,7 +98,7 @@ publishMods {
         if (loader == "fabric") {
             requires("fabric-api")
         }
-    }
+    }*/
 
 //    github {
 //        accessToken = githubToken
