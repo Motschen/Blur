@@ -20,7 +20,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --stacktrace --info
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Blur-Artifact
           path: versions/**/build/libs/blur-*.*.jar
