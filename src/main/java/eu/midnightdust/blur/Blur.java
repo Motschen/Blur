@@ -12,7 +12,6 @@ import java.lang.Double;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
-import static eu.midnightdust.blur.BlurInfo.*;
 import static eu.midnightdust.blur.util.RainbowColor.hue;
 import static eu.midnightdust.blur.util.RainbowColor.hue2;
 
