@@ -1,12 +1,12 @@
 {
-  "blur.midnightconfig.title": "Конфігурація Blur",
-  "blur.midnightconfig.blurExclusions": "Винятки розмиття",
-  "blur.midnightconfig.fadeTimeMillis": "Час появи розмиття (у мілісекундах)",
-  "blur.midnightconfig.ease": "Пом'якшення анімації",
-  "blur.midnightconfig.radius": "Радіус",
-  "blur.midnightconfig.gradientStart": "Початковий колір градієнта",
-  "blur.midnightconfig.gradientEnd": "Кінцевий колір градієнта",
-  "blur.midnightconfig.gradientStartAlpha": "Початкова прозорість градієнта",
-  "blur.midnightconfig.gradientEndAlpha": "Кінцева прозорість градієнтаa",
-  "blur.midnightconfig.showScreenTitle": "Показати назву екрана"
+  "blur-perfected.midnightconfig.title": "Конфігурація Blur Perfected",
+  "blur-perfected.midnightconfig.blurExclusions": "Винятки розмиття",
+  "blur-perfected.midnightconfig.fadeTimeMillis": "Час появи розмиття (у мілісекундах)",
+  "blur-perfected.midnightconfig.ease": "Пом'якшення анімації",
+  "blur-perfected.midnightconfig.radius": "Радіус",
+  "blur-perfected.midnightconfig.gradientStart": "Початковий колір градієнта",
+  "blur-perfected.midnightconfig.gradientEnd": "Кінцевий колір градієнта",
+  "blur-perfected.midnightconfig.gradientStartAlpha": "Початкова прозорість градієнта",
+  "blur-perfected.midnightconfig.gradientEndAlpha": "Кінцева прозорість градієнтаa",
+  "blur-perfected.midnightconfig.showScreenTitle": "Показати назву екрана"
 }

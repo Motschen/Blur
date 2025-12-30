@@ -27,4 +27,4 @@ stonecutter {
     create(rootProject)
 }
 
-rootProject.name = "Blur Perfected"
+rootProject.name = "Blur-Perfected"

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "blur",
-  "name": "Blur+",
+  "id": "blur-perfected",
+  "name": "Blur-Perfected",
   "version": "$version",
   "environment": "client",
   "license": "MIT",

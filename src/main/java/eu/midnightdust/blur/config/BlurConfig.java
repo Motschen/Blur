@@ -120,8 +120,8 @@ public class BlurConfig extends MidnightConfig {
             slider.resetButton = resetButton;
             slider.updateMessage();
 
-            list.addButton(Lists.newArrayList(), Component.translatable("blur.midnightconfig._blur"), centered);
-            list.addButton(Lists.newArrayList(slider, resetButton), Component.translatable("blur.midnightconfig.radius"), new EntryInfo(null, Blur.MOD_ID));
+            list.addButton(Lists.newArrayList(), Component.translatable(Blur.MOD_ID, "midnightconfig._blur"), centered);
+            list.addButton(Lists.newArrayList(slider, resetButton), Component.translatable(Blur.MOD_ID, "midnightconfig.radius"), new EntryInfo(null, Blur.MOD_ID));
         }
     }
 
