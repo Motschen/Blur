@@ -24,7 +24,7 @@ public class MixinGameRenderer {
         //? if > 1.21.5
         int radius = instance.getMenuBackgroundBlurriness();
         if (!BlurInfo.screenChanged && BlurInfo.start >= 0) // Only update the progress after all tests have been completed
-            Blur.updateProgress(BlurInfo.screenHasBlur);
+            Blur.updateFadeAnimation(BlurInfo.screenHasBlur);
         return /*? if > 1.21.5 {*/ (int) /*?}*/ (radius * BlurInfo.progress);
     }
 }

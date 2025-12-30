@@ -57,11 +57,17 @@ public class Blur {
     }
 
     public static void onRender() {
-        if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
-            Blur.onScreenChange();
-            BlurInfo.screenChanged = false;
+        long currentTime = System.currentTimeMillis();
+        if (lastRender <= 0) {
+            lastRender = currentTime;
+            deltaTime = 0;
+        } else {
+            deltaTime = System.currentTimeMillis() - lastRender;
+            lastRender = currentTime;
         }
-        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
+
+        Blur.updateFadeAnimation(context);
+        blurApplied = false;
     }
     public static void renderFadeout(GuiGraphics context, int width, int height, Minecraft client) {
         if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
@@ -90,7 +96,7 @@ public class Blur {
         }
     }
 
-    public static void updateProgress(boolean fadeIn) {
+    public static void updateFadeAnimation(boolean fadeIn) {
         double x;
         if (fadeIn) {
             x = Math.min((System.currentTimeMillis() - start) / (double) BlurConfig.fadeTimeMillis, 1);
