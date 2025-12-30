@@ -45,7 +45,6 @@ public class Blur {
     public static float fadeTimeState = 1.0F;
     public static float fadeProgress = 1.0F;
     public static boolean screenHasBlur = false;
-    public static boolean screenHasBackground = false;
 
     public static boolean canBlur(GuiGraphics graphics) {
         //? if > 1.21.5 {
@@ -70,7 +69,6 @@ public class Blur {
 
     public static void onScreenChange() {
         screenHasBlur = false;
-        screenHasBackground = false;
     }
 
     public static void updateFadeAnimation(GuiGraphics context) {

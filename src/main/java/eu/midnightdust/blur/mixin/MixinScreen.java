@@ -6,6 +6,7 @@ import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -36,8 +37,12 @@ public abstract class MixinScreen {
         if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
             ci.cancel(); return;
         }
-        if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName()))
+        if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName())) {
+            if (this.getClass().getCanonicalName().equals(TitleScreen.class.getCanonicalName())) {
+                return;
+            }
             Blur.screenHasBlur = true; // Test if the screen has blur
+        }
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderMenuBackgroundTexture(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/resources/Identifier;IIFFII)V"), method = "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
@@ -53,7 +58,6 @@ public abstract class MixinScreen {
     }
     @Unique
     private void blur$renderGradient(GuiGraphics context) {
-        Blur.screenHasBackground = true; // Test if the screen has a background
         if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()) && Blur.canBlur(context))
             this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*minecraft.getTimer().getGameTimeDeltaTicks() *//*?}*/);
 
