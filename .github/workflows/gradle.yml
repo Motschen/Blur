@@ -1,6 +1,6 @@
 on:
-  push: {}        # triggers on every push to any branch
-  pull_request: {} # optional: triggers on PRs targeting any branch
+  push: {}         # triggers on every push to any branch
+  pull_request: {} # triggers on PRs targeting any branch
 
 permissions:
   contents: read
@@ -19,9 +19,9 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build --stacktrace --info
-      - name: Upload a Build Artifact
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Blur-Artifact
-          path: versions/**/build/libs/blur-*.*.jar
+          name: Blur-Perfected-Artifact
+          path: versions/**/build/libs/*.jar
           if-no-files-found: error
