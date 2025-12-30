@@ -1,7 +1,6 @@
 package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
-import eu.midnightdust.blur.BlurInfo;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

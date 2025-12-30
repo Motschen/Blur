@@ -1,7 +1,6 @@
 package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
-import eu.midnightdust.blur.BlurInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import org.objectweb.asm.Opcodes;

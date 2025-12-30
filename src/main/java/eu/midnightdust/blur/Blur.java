@@ -1,6 +1,8 @@
 package eu.midnightdust.blur;
 
 import eu.midnightdust.blur.config.BlurConfig;
+import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
+import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import org.joml.Math;
@@ -39,7 +41,20 @@ public class Blur {
         BlurConfig.init(MOD_ID, BlurConfig.class);
     }
 
-    public static boolean doFade = false;
+    public static long lastRender = -1;
+    public static long deltaTime = -1;
+    public static float fadeTimeState = 1.0F;
+    public static float fadeProgress = 1.0F;
+    public static boolean screenHasBlur = false;
+    public static boolean blurApplied = false;
+
+    public static boolean canBlur(GuiGraphics graphics) {
+        //? if > 1.21.5 {
+        return ((GuiRenderStateAccessor) ((GuiGraphicsAccessor) graphics).getGuiRenderState()).getFirstStratumAfterBlur() == Integer.MAX_VALUE;
+        //?} else {
+        /*return true;
+         *///?}
+    }
 
     public static void onRender() {
         if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
