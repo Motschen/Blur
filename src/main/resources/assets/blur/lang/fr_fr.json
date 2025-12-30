@@ -1,12 +1,12 @@
 {
-  "blur-perfected.midnightconfig.title": "Configuration du flou",
-  "blur-perfected.midnightconfig.blurExclusions": "Flouter les exclusions",
-  "blur-perfected.midnightconfig.fadeTimeMillis": "Temps de fondu (en millisecondes)",
-  "blur-perfected.midnightconfig.ease": "Fluidité de l'animation",
-  "blur-perfected.midnightconfig.radius": "Rayon",
-  "blur-perfected.midnightconfig.gradientStart": "Couleur de départ du dégradé",
-  "blur-perfected.midnightconfig.gradientEnd": "Couleur de fin du dégradé",
-  "blur-perfected.midnightconfig.gradientStartAlpha": "Alpha de début du dégradé",
-  "blur-perfected.midnightconfig.gradientEndAlpha": "Alpha de fin du dégradé",
-  "blur-perfected.midnightconfig.showScreenTitle": "Montrer le titre de l'écran"
+  "blurperfected.midnightconfig.title": "Configuration du flou",
+  "blurperfected.midnightconfig.blurExclusions": "Flouter les exclusions",
+  "blurperfected.midnightconfig.fadeTimeMillis": "Temps de fondu (en millisecondes)",
+  "blurperfected.midnightconfig.ease": "Fluidité de l'animation",
+  "blurperfected.midnightconfig.radius": "Rayon",
+  "blurperfected.midnightconfig.gradientStart": "Couleur de départ du dégradé",
+  "blurperfected.midnightconfig.gradientEnd": "Couleur de fin du dégradé",
+  "blurperfected.midnightconfig.gradientStartAlpha": "Alpha de début du dégradé",
+  "blurperfected.midnightconfig.gradientEndAlpha": "Alpha de fin du dégradé",
+  "blurperfected.midnightconfig.showScreenTitle": "Montrer le titre de l'écran"
 }

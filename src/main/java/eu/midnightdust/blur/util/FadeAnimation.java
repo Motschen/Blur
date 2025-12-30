@@ -7,8 +7,8 @@ import org.joml.Math;
 public class FadeAnimation {
     public long lastRender = -1;
     public long deltaTime = -1;
-    public float fadeTimeState = 1.0F;
-    public float fadeProgress = 1.0F;
+    public float fadeTimeState = 0.0F;
+    public float fadeProgress = 0.0F;
     public boolean enabled = false;
 
     public void onRender(GuiGraphics context) {

@@ -1,8 +1,10 @@
 package eu.midnightdust.blur;
 
 import eu.midnightdust.blur.config.BlurConfig;
+//? if > 1.21.5 {
 import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
 import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
+//?}
 import eu.midnightdust.blur.util.FadeAnimation;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
@@ -19,6 +21,7 @@ import static eu.midnightdust.blur.util.RainbowColor.hue2;
 import org.joml.Matrix3x2f;
 //?} else {
 /*import org.joml.Matrix4f;
+import net.minecraft.client.Minecraft;
 *///?}
 
 //? fabric {
@@ -35,7 +38,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 
 public class Blur {
-    public static final String MOD_ID = "blur-perfected";
+    public static final String MOD_ID = "blurperfected";
     public static void init() {
         BlurConfig.init(MOD_ID, BlurConfig.class);
     }
@@ -56,12 +59,13 @@ public class Blur {
         backgroundAnimation.onRender(context);
     }
 
-    public static void renderBlurredBackground(GuiGraphics context) {
+    public static void renderBackground(GuiGraphics context) {
         //? if > 1.21.5 {
         if (Blur.canBlur(context))
             context.blurBeforeThisStratum();
         //?} else {
-        /*minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^tickCounter.getGameTimeDeltaTicks() ^//^?}^/);
+        /*Minecraft minecraft = Minecraft.getInstance();
+        minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^minecraft.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
          *///?}
 
         Blur.renderRotatedGradient(context, context.guiWidth(), context.guiHeight());
@@ -93,22 +97,25 @@ public class Blur {
     public static void renderRotatedGradient(GuiGraphics context, int width, int height) {
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
+        float rotation = Math.toRadians(getRotation());
+        int first_color = Blur.getBackgroundColor(false);
+        int second_color = Blur.getBackgroundColor(true);
 
         //? if > 1.21.5 {
         context.pose().pushMatrix();
         Matrix3x2f posMatrix = context.pose();
-        posMatrix.rotate(Math.toRadians(getRotation()));
+        posMatrix.rotate(rotation);
         posMatrix.setTranslation(width / 2f, height / 2f); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
-        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
+        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, first_color, second_color); // Actually draw the gradient
         context.pose().popMatrix();
         //?} else {
         /*context.pose().pushPose();
         Matrix4f posMatrix = context.pose().last().pose();
-        posMatrix.rotateZ(Math.toRadians(getRotation()));
+        posMatrix.rotateZ(rotation);
         posMatrix.setTranslation(width / 2f, height / 2f, -1000); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
-        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
+        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, first_color, second_color); // Actually draw the gradient
         context.pose().popPose();
         *///?}
     }

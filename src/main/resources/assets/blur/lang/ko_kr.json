@@ -1,11 +1,11 @@
 {
-  "blur-perfected.midnightconfig.title": "Blur Perfected 설정",
-  "blur-perfected.midnightconfig.blurExclusions": "블러 제외",
-  "blur-perfected.midnightconfig.fadeTimeMillis": "페이드 시간 (밀리초 단위)",
-  "blur-perfected.midnightconfig.radius": "범위",
-  "blur-perfected.midnightconfig.gradientStart": "그라디언트 시작 색상",
-  "blur-perfected.midnightconfig.gradientEnd": "그라디언트 종료 색상",
-  "blur-perfected.midnightconfig.gradientStartAlpha": "그라디언트 시작 알파",
-  "blur-perfected.midnightconfig.gradientEndAlpha": "그라디언트 종료 알파",
-  "blur-perfected.midnightconfig.showScreenTitle": "화면 타이틀 보기"
+  "blurperfected.midnightconfig.title": "Blur Perfected 설정",
+  "blurperfected.midnightconfig.blurExclusions": "블러 제외",
+  "blurperfected.midnightconfig.fadeTimeMillis": "페이드 시간 (밀리초 단위)",
+  "blurperfected.midnightconfig.radius": "범위",
+  "blurperfected.midnightconfig.gradientStart": "그라디언트 시작 색상",
+  "blurperfected.midnightconfig.gradientEnd": "그라디언트 종료 색상",
+  "blurperfected.midnightconfig.gradientStartAlpha": "그라디언트 시작 알파",
+  "blurperfected.midnightconfig.gradientEndAlpha": "그라디언트 종료 알파",
+  "blurperfected.midnightconfig.showScreenTitle": "화면 타이틀 보기"
 }

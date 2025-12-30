@@ -22,7 +22,7 @@ public class MixinInGameHud {
             Blur.blurAnimation.enabled = false;
             Blur.backgroundAnimation.enabled = false;
             Blur.onRender(context);
-            Blur.renderBlurredBackground(context);
+            Blur.renderBackground(context);
         }
     }
 }

@@ -38,9 +38,7 @@ public abstract class MixinScreen {
             ci.cancel(); return;
         }
         if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName())) {
-            if (!this.getClass().getCanonicalName().equals(TitleScreen.class.getCanonicalName())) {
-                Blur.blurAnimation.enabled = true; // Test if the screen has blur
-            }
+            Blur.blurAnimation.enabled = true; // Test if the screen has blur
         }
     }
 
@@ -57,9 +55,7 @@ public abstract class MixinScreen {
     }
     @Unique
     private void blur$renderGradient(GuiGraphics context) {
-        if (!this.getClass().getCanonicalName().equals(TitleScreen.class.getCanonicalName())) {
-            Blur.backgroundAnimation.enabled = true; // Test if the screen has background
-        }
+        Blur.backgroundAnimation.enabled = true; // Test if the screen has background
 
         if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()) && Blur.canBlur(context))
             this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*minecraft.getTimer().getGameTimeDeltaTicks() *//*?}*/);

@@ -24,7 +24,7 @@ public class MixinHandledScreen extends Screen {
     //? neoforge {
     /*@Inject(at = @At("HEAD"), method = "render")
     public void blur$processScreenChange(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        Blur.onRender();
+        //Blur.onRender();
     }
     *///?}
 }
