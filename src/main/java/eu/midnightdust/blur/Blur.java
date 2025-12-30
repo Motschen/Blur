@@ -69,31 +69,10 @@ public class Blur {
         Blur.updateFadeAnimation(context);
         blurApplied = false;
     }
-    public static void renderFadeout(GuiGraphics context, int width, int height, Minecraft client) {
-        if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            //? if > 1.21.5 {
-            if (BlurInfo.canBlur(context)) context.blurBeforeThisStratum();
-            //?} else {
-            /*client.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^client.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
-            *///?}
-
-            if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
-        }
-    }
 
     public static void onScreenChange() {
-        if (screenHasBlur) {
-            if (doFade) {
-                start = System.currentTimeMillis();
-                doFade = false;
-            }
-        } else if (prevScreenHasBlur && BlurConfig.fadeOutTimeMillis > 0) {
-            start = System.currentTimeMillis();
-            doFade = true;
-        } else {
-            start = -1;
-            doFade = true;
-        }
+        screenHasBlur = false;
+        blurApplied = false;
     }
 
     public static void updateFadeAnimation(GuiGraphics context) {
@@ -114,7 +93,7 @@ public class Blur {
         int r = (col.getRGB() >> 16) & 0xFF;
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
-        float prog = progress;
+        float prog = fadeProgress;
         a = (int) (prog * a);
         r = (int) (prog * r);
         g = (int) (prog * g);
