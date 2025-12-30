@@ -27,7 +27,6 @@ public class BlurConfig extends MidnightConfig {
     public static boolean blurContainers = true;
     @Entry(category = SCREENS)
     public static boolean blurTitleScreen = false;
-    @Condition(requiredOption = "blurTitleScreen", visibleButLocked = true)
     @Entry(category = SCREENS)
     public static boolean darkenTitleScreen = false;
     @Comment(category = SCREENS, centered = true)

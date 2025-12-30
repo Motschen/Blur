@@ -23,6 +23,6 @@ public class MixinGameRenderer {
     *///?}
         //? if > 1.21.5
         int radius = instance.getMenuBackgroundBlurriness();
-        return /*? if > 1.21.5 {*/ (int) /*?}*/ (radius * Blur.fadeProgress);
+        return /*? if > 1.21.5 {*/ (int) /*?}*/ (radius * Blur.blurAnimation.fadeProgress);
     }
 }

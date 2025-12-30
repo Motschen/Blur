@@ -3,13 +3,13 @@ package eu.midnightdust.blur;
 import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
 import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
+import eu.midnightdust.blur.util.FadeAnimation;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import org.joml.Math;
 
 import java.awt.Color;
-import java.lang.Double;
-import net.minecraft.client.Minecraft;
+
 import net.minecraft.client.gui.GuiGraphics;
 
 import static eu.midnightdust.blur.util.RainbowColor.hue;
@@ -40,11 +40,8 @@ public class Blur {
         BlurConfig.init(MOD_ID, BlurConfig.class);
     }
 
-    public static long lastRender = -1;
-    public static long deltaTime = -1;
-    public static float fadeTimeState = 1.0F;
-    public static float fadeProgress = 1.0F;
-    public static boolean screenHasBlur = false;
+    public static FadeAnimation blurAnimation = new FadeAnimation();
+    public static FadeAnimation backgroundAnimation = new FadeAnimation();
 
     public static boolean canBlur(GuiGraphics graphics) {
         //? if > 1.21.5 {
@@ -55,31 +52,24 @@ public class Blur {
     }
 
     public static void onRender(GuiGraphics context) {
-        long currentTime = System.currentTimeMillis();
-        if (lastRender <= 0) {
-            lastRender = currentTime;
-            deltaTime = 0;
-        } else {
-            deltaTime = System.currentTimeMillis() - lastRender;
-            lastRender = currentTime;
-        }
+        blurAnimation.onRender(context);
+        backgroundAnimation.onRender(context);
+    }
 
-        Blur.updateFadeAnimation(context);
+    public static void renderBlurredBackground(GuiGraphics context) {
+        //? if > 1.21.5 {
+        if (Blur.canBlur(context))
+            context.blurBeforeThisStratum();
+        //?} else {
+        /*minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^tickCounter.getGameTimeDeltaTicks() ^//^?}^/);
+         *///?}
+
+        Blur.renderRotatedGradient(context, context.guiWidth(), context.guiHeight());
     }
 
     public static void onScreenChange() {
-        screenHasBlur = false;
-    }
-
-    public static void updateFadeAnimation(GuiGraphics context) {
-        if (screenHasBlur) {
-            fadeTimeState += deltaTime / (float) BlurConfig.fadeTimeMillis;
-        }
-        else {
-            fadeTimeState -= deltaTime / (float) BlurConfig.fadeOutTimeMillis;
-        }
-        fadeTimeState = Math.clamp(0, 1, fadeTimeState);
-        fadeProgress = BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue();
+        blurAnimation.enabled = false;
+        backgroundAnimation.enabled = false;
     }
 
     public static int getBackgroundColor(boolean second) {
@@ -89,7 +79,7 @@ public class Blur {
         int r = (col.getRGB() >> 16) & 0xFF;
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
-        float prog = fadeProgress;
+        float prog = backgroundAnimation.fadeProgress;
         a = (int) (prog * a);
         r = (int) (prog * r);
         g = (int) (prog * g);
