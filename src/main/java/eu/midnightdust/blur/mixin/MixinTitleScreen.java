@@ -20,8 +20,8 @@ public abstract class MixinTitleScreen extends Screen {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/TitleScreen;renderPanorama(Lnet/minecraft/client/gui/GuiGraphics;F)V"))
     private void blur$renderTitleBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (BlurConfig.blurTitleScreen) {
-            Blur.updateFadeAnimation(true);
-            if (BlurInfo.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
+            Blur.updateFadeAnimation(context);
+            if (Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
             if (BlurConfig.darkenTitleScreen) this.renderMenuBackground(context);
         }
     }
