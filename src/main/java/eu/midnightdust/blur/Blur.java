@@ -59,19 +59,26 @@ public class Blur {
     }
 
     public static void onRender(GuiGraphics context) {
+        blurAnimation.setEasing(BlurConfig.blurAnimationCurve);
         blurAnimation.onRender(context);
+        backgroundAnimation.setEasing(BlurConfig.backgroundAnimationCurve);
         backgroundAnimation.onRender(context);
     }
 
-    public static void renderBackground(GuiGraphics context) {
+    public static void renderBlurredBackground(GuiGraphics context) {
+        if (blurAnimation.fadeProgress < 0.001F) return; // there's no blur to apply
+
         //? if > 1.21.5 {
         if (Blur.canBlur(context))
             context.blurBeforeThisStratum();
         //?} else {
-        /*Minecraft minecraft = Minecraft.getInstance();
-        minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^minecraft.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
-         *///?}
+            /*Minecraft minecraft = Minecraft.getInstance();
+            minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^minecraft.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
+        *///?}
+    }
 
+    public static void renderBackground(GuiGraphics context) {
+        Blur.renderBlurredBackground(context);
         Blur.renderRotatedGradient(context, context.guiWidth(), context.guiHeight());
     }
 
@@ -102,6 +109,8 @@ public class Blur {
         return BlurConfig.gradientRotation;
     }
     public static void renderRotatedGradient(GuiGraphics context, int width, int height) {
+        if (!BlurConfig.useGradient || backgroundAnimation.fadeProgress < 0.001F) return;  // there's no gradient to draw
+
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
         float rotation = Math.toRadians(getRotation());

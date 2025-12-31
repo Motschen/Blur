@@ -51,7 +51,9 @@ public abstract class MixinScreen {
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fillGradient(IIIIII)V"), method = "renderTransparentBackground")
     public void blur$rotatedGradient(GuiGraphics context, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, Operation<Void> original) {
-        blur$renderGradient(context);
+        if (BlurConfig.useGradient) {
+            blur$renderGradient(context);
+        } else original.call(context, startX, startY, endX, endY, colorStart, colorEnd);
     }
     @Unique
     private void blur$renderGradient(GuiGraphics context) {

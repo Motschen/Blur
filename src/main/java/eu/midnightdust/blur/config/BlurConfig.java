@@ -73,7 +73,9 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
     public static int fadeOutTimeMillis = 300;
     @Entry(category = ANIMATIONS)
-    public static BlurConfig.Easing animationCurve = Easing.FLAT;
+    public static BlurConfig.Easing blurAnimationCurve = Easing.FLAT;
+    @Entry(category = ANIMATIONS)
+    public static BlurConfig.Easing backgroundAnimationCurve = Easing.FLAT;
 
     public enum Easing {
         // Based on https://gist.github.com/dev-hydrogen/21a66f83f0386123e0c0acf107254843

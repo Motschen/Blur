@@ -10,6 +10,11 @@ public class FadeAnimation {
     public float fadeTimeState = 0.0F;
     public float fadeProgress = 0.0F;
     public boolean enabled = false;
+    public BlurConfig.Easing easing = BlurConfig.Easing.FLAT;
+
+    public void setEasing(BlurConfig.Easing easing) {
+        this.easing = easing;
+    }
 
     public void onRender(GuiGraphics context) {
         long currentTime = System.currentTimeMillis();
@@ -33,9 +38,9 @@ public class FadeAnimation {
         }
         fadeTimeState = Math.clamp(0, 1, fadeTimeState);
         if (enabled) {
-            fadeProgress = BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue();
+            fadeProgress = easing.apply((double) fadeTimeState).floatValue();
         } else {
-            fadeProgress = 1-BlurConfig.animationCurve.apply((double) 1-fadeTimeState).floatValue();
+            fadeProgress = 1-easing.apply((double) 1-fadeTimeState).floatValue();
         }
         fadeProgress = Math.clamp(0, 1, fadeProgress);
     }
