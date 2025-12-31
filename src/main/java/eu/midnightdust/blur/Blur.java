@@ -8,6 +8,7 @@ import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
 import eu.midnightdust.blur.util.FadeAnimation;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
+import net.minecraft.client.gui.screens.Screen;
 import org.joml.Math;
 
 import java.awt.Color;
@@ -28,6 +29,8 @@ import net.minecraft.client.Minecraft;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //?} else if neoforge {
 /*import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -39,6 +42,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 public class Blur {
     public static final String MOD_ID = "blurperfected";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static void init() {
         BlurConfig.init(MOD_ID, BlurConfig.class);
     }
@@ -71,7 +75,10 @@ public class Blur {
         Blur.renderRotatedGradient(context, context.guiWidth(), context.guiHeight());
     }
 
-    public static void onScreenChange() {
+    public static void onScreenChange(Screen newScreen) {
+        if (newScreen != null) {
+            Blur.LOGGER.debug("onScreenChange: {}", newScreen.getClass().getCanonicalName());
+        }
         blurAnimation.enabled = false;
         backgroundAnimation.enabled = false;
     }

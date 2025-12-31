@@ -26,6 +26,12 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = SCREENS)
     public static boolean blurContainers = true;
     @Entry(category = SCREENS)
+    public static boolean blurBooks = true;
+    @Entry(category = SCREENS)
+    public static boolean blurSigns = true;
+    @Entry(category = SCREENS)
+    public static boolean blurCommandBlocks = true;
+    @Entry(category = SCREENS)
     public static boolean blurTitleScreen = false;
     @Entry(category = SCREENS)
     public static boolean darkenTitleScreen = false;

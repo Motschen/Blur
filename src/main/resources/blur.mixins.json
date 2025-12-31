@@ -6,6 +6,11 @@
   "client": [
     "GuiGraphicsAccessor",
     "GuiRenderStateAccessor",
+    "MixinAbstractCommandBlockEditScreen",
+    "MixinAbstractSignEditScreen",
+    "MixinBookEditScreen",
+    "MixinBookSignScreen",
+    "MixinBookViewScreen",
     "MixinGameOptions",
     "MixinGameRenderer",
     "MixinHandledScreen",
