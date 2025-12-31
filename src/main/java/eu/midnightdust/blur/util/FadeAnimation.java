@@ -32,6 +32,10 @@ public class FadeAnimation {
             fadeTimeState -= deltaTime / (float) BlurConfig.fadeOutTimeMillis;
         }
         fadeTimeState = Math.clamp(0, 1, fadeTimeState);
-        fadeProgress = BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue();
+        if (enabled) {
+            fadeProgress = Math.clamp(0, 1, BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue());
+        } else {
+            fadeProgress = Math.clamp(0, 1, 1-BlurConfig.animationCurve.apply((double) 1-fadeTimeState).floatValue());
+        }
     }
 }
