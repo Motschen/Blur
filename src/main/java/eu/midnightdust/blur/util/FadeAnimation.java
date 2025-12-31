@@ -33,9 +33,10 @@ public class FadeAnimation {
         }
         fadeTimeState = Math.clamp(0, 1, fadeTimeState);
         if (enabled) {
-            fadeProgress = Math.clamp(0, 1, BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue());
+            fadeProgress = BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue();
         } else {
-            fadeProgress = Math.clamp(0, 1, 1-BlurConfig.animationCurve.apply((double) 1-fadeTimeState).floatValue());
+            fadeProgress = 1-BlurConfig.animationCurve.apply((double) 1-fadeTimeState).floatValue();
         }
+        fadeProgress = Math.clamp(0, 1, fadeProgress);
     }
 }
