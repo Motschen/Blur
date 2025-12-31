@@ -14,6 +14,8 @@ import org.joml.Math;
 import java.awt.Color;
 
 import net.minecraft.client.gui.GuiGraphics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static eu.midnightdust.blur.util.RainbowColor.hue;
 import static eu.midnightdust.blur.util.RainbowColor.hue2;
@@ -29,8 +31,6 @@ import net.minecraft.client.Minecraft;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 //?} else if neoforge {
 /*import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;

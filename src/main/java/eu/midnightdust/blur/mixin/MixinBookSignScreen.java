@@ -1,5 +1,5 @@
 package eu.midnightdust.blur.mixin;
-
+//? if > 1.21.5 {
 import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,8 +17,22 @@ public class MixinBookSignScreen extends Screen {
         super(title);
     }
 
-    @Inject(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderBackground(Lnet/minecraft/client/gui/GuiGraphics;IIF)V"))
+    @Inject(
+            method = "renderBackground",
+            at = @At(
+                    value = "INVOKE",
+                    target = /*? if > 1.21.8 {*/ /*"Lnet/minecraft/client/gui/screens/Screen;renderBackground(Lnet/minecraft/client/gui/GuiGraphics;IIF)V" *//*?} else {*/ "Lnet/minecraft/client/gui/screens/inventory/BookSignScreen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V" /*?}*/
+            )
+    )
     private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
         if (BlurConfig.blurBooks && Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
 }
+//?} else {
+/*import eu.midnightdust.core.MidnightLib;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(MidnightLib.class)
+public interface MixinBookSignScreen {
+}
+*///?}

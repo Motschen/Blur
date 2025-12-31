@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,8 +42,8 @@ public abstract class MixinScreen {
         }
     }
 
-    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderMenuBackgroundTexture(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/resources/Identifier;IIFFII)V"), method = "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
-    private void blur$applyGradient(GuiGraphics context, Identifier texture, int x, int y, float u, float v, int width, int height, Operation<Void> original) {
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderMenuBackgroundTexture(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/resources/ResourceLocation;IIFFII)V"), method = "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
+    private void blur$applyGradient(GuiGraphics context, ResourceLocation texture, int x, int y, float u, float v, int width, int height, Operation<Void> original) {
         if (BlurConfig.useGradient) {
             blur$renderGradient(context); // Replaces the background texture with a gradient
         } else original.call(context, texture, x, y, u, v, width, height);

@@ -17,7 +17,7 @@ public class MixinAbstractCommandBlockEditScreen extends Screen {
         super(title);
     }
 
-    @Inject(method = "render", at = @At(value = "TAIL"))
+    @Inject(method = /*? if > 1.21.5 {*/ "render" /*?} else {*/ /*"renderBackground" *//*?}*/, at = @At(value = "TAIL"))
     private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
         if (BlurConfig.blurCommandBlocks && Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
