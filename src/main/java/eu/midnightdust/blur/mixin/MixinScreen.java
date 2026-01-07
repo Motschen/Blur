@@ -35,12 +35,9 @@ public abstract class MixinScreen {
         Blur.onRenderEnd(this.getClass().getCanonicalName());
     }
 
-    @Inject(at = @At("HEAD"), method = "renderBlurredBackground", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "renderBlurredBackground")
     public void blur$onRenderBlurredBackground(CallbackInfo ci) {
-        if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
-            ci.cancel(); return;
-        }
-        if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName())) {
+        if (!BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
             Blur.blurAnimation.enabled = true; // Test if the screen has blur
         }
     }
@@ -49,13 +46,15 @@ public abstract class MixinScreen {
             "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;)V", // used by screens while not in a level
             "renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V"  // used by screens while in a level
     })
-    private void blur$replaceMenuBackground(GuiGraphics context, Operation<Void> original) {
-        if (!BlurConfig.useGradient || BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
-            original.call(context); return; // draw the original background
+    private void blur$replaceScreenBackground(GuiGraphics context, Operation<Void> original) {
+        if (!BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
+            Blur.backgroundAnimation.enabled = true; // Test if the screen has blur
         }
-        if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName())) {
-            Blur.backgroundAnimation.enabled = true; // Test if the screen has background
+        if (BlurConfig.useGradient) {
             blur$renderRotatedGradient(context); // draw our gradient as background
+
+        } else {
+            original.call(context); // draw the original background
         }
     }
 

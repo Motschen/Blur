@@ -12,7 +12,6 @@
     "MixinBookSignScreen",
     "MixinBookViewScreen",
     "MixinGameOptions",
-    "MixinGameRenderer",
     "MixinAbstractContainerScreen",
     "MixinInGameHud",
     "MixinMinecraftClient",

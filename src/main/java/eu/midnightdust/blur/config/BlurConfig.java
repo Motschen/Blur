@@ -37,12 +37,10 @@ public class BlurConfig extends MidnightConfig {
     public static boolean darkenTitleScreen = false;
     @Comment(category = SCREENS, centered = true)
     public static Comment _advanced;
-    @Entry(category = SCREENS) // Screens where Blur+ should not apply transition effects (mostly dynamically blurred screens)
-    public static List<String> excludedScreens = Lists.newArrayList("net.irisshaders.iris.gui.screen.ShaderPackScreen");
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force enabled
     public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen");
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled
-    public static List<String> forceDisabledScreens = Lists.newArrayList();
+    public static List<String> forceDisabledScreens = Lists.newArrayList("net.irisshaders.iris.gui.screen.ShaderPackScreen");
 
     @Comment(category = STYLE, centered = true)
     public static Comment _gradient;

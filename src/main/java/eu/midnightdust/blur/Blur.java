@@ -90,8 +90,14 @@ public class Blur {
             Blur.LOGGER.debug("onScreenChange: null");
         }
         screenChangeProcessed = false;
-        blurAnimation.enabled = false;
-        backgroundAnimation.enabled = false;
+
+        if (newScreen != null && BlurConfig.forceEnabledScreens.contains(newScreen.getClass().getCanonicalName())) {
+            blurAnimation.enabled = true;
+            backgroundAnimation.enabled = true;
+        } else {
+            blurAnimation.enabled = false;
+            backgroundAnimation.enabled = false;
+        }
     }
 
     public static int getBackgroundColor(boolean second) {
@@ -142,9 +148,9 @@ public class Blur {
 
     public static void onRenderEnd(String screenName) {
         if (!screenChangeProcessed) {
-            Blur.LOGGER.debug("current screen: {}, has blur: {}, has background: {}", screenName, blurAnimation.enabled, backgroundAnimation.enabled);
+            Blur.LOGGER.debug("processed screen: {}, has blur: {}, has background: {}", screenName, blurAnimation.enabled, backgroundAnimation.enabled);
+            screenChangeProcessed = true;
         }
-        screenChangeProcessed = true;
     }
 
     //? fabric {
