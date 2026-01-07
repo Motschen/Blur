@@ -1,9 +1,9 @@
 {
-  "blurperfected.midnightconfig.title": "Blur Perfected Config",
-  "blurperfected.midnightconfig.blurExclusions": "Undantag till Blur",
-  "blurperfected.midnightconfig.fadeTimeMillis": "Toningstid (i millisekunder)",
-  "blurperfected.midnightconfig.radius": "Radie",
-  "blurperfected.midnightconfig.gradientStart": "Toningsfärg (start)",
-  "blurperfected.midnightconfig.gradientEnd": "Toningsfärg (slut)",
-  "blurperfected.midnightconfig.showScreenTitle": "Visa skärmtitel"
+  "blur.midnightconfig.title": "Blur Config",
+  "blur.midnightconfig.blurExclusions": "Undantag till Blur",
+  "blur.midnightconfig.fadeTimeMillis": "Toningstid (i millisekunder)",
+  "blur.midnightconfig.radius": "Radie",
+  "blur.midnightconfig.gradientStart": "Toningsfärg (start)",
+  "blur.midnightconfig.gradientEnd": "Toningsfärg (slut)",
+  "blur.midnightconfig.showScreenTitle": "Visa skärmtitel"
 }

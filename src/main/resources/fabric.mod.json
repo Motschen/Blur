@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "blurperfected",
-  "name": "Blur Perfected",
+  "id": "blur",
+  "name": "Blur+",
   "version": "$version",
   "environment": "client",
   "license": "MIT",
@@ -15,9 +15,9 @@
     ]
   },
   "contact": {
-    "homepage": "https://modrinth.com/mod/blur-perfected",
-    "sources": "https://github.com/amiralimollaei/Blur-Perfected",
-    "issues": "https://github.com/amiralimollaei/Blur-Perfected/issues"
+    "homepage": "https://modrinth.com/mod/blur-fabric",
+    "sources": "https://github.com/Motschen/Blur",
+    "issues": "https://github.com/Motschen/Blur/issues"
   },
   "authors": [
     "Motschen",

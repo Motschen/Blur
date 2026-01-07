@@ -4,11 +4,11 @@ loaderVersion = "[2,)"
 license = "MIT License"
 
 [[mods]]
-modId = "blurperfected"
+modId = "blur"
 version = "${version}"
-displayName = "Blur Perfected"
+displayName = "Blur+"
 logoFile = "blur.png"
-authors = "Motschen, tterrag1098, Pyrofab, backryun, byquanton, amiralimollaei"
+authors = "Motschen, tterrag1098, Pyrofab, backryun, byquanton"
 description = '''
 Various enhancements for the blur effect behind Minecraft GUIs
 '''
@@ -16,21 +16,21 @@ Various enhancements for the blur effect behind Minecraft GUIs
 [[mixins]]
 config = "blur.mixins.json"
 
-[[dependencies.blurperfected]]
+[[dependencies.blur]]
 modId = "neoforge"
 mandatory = true
 versionRange = "[21.0,)"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.blurperfected]]
+[[dependencies.blur]]
 modId = "minecraft"
 mandatory = true
 versionRange = "${minecraft}"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.blurperfected]]
+[[dependencies.blur]]
 modId = "midnightlib"
 mandatory = true
 versionRange = "[1.9.2,)"

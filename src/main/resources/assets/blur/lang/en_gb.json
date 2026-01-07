@@ -1,4 +1,4 @@
 {
-  "blurperfected.midnightconfig.gradientStart": "Gradient Start Colour",
-  "blurperfected.midnightconfig.gradientEnd": "Gradient End Colour"
+  "blur.midnightconfig.gradientStart": "Gradient Start Colour",
+  "blur.midnightconfig.gradientEnd": "Gradient End Colour"
 }

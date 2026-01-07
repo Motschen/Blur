@@ -41,7 +41,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 
 public class Blur {
-    public static final String MOD_ID = "blurperfected";
+    public static final String MOD_ID = "blur";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static void init() {
         BlurConfig.init(MOD_ID, BlurConfig.class);
