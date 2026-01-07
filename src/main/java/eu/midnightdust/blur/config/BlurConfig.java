@@ -26,18 +26,21 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = SCREENS)
     public static boolean blurContainers = true;
     @Entry(category = SCREENS)
+    public static boolean blurBooks = true;
+    @Entry(category = SCREENS)
+    public static boolean blurSigns = true;
+    @Entry(category = SCREENS)
+    public static boolean blurCommandBlocks = true;
+    @Entry(category = SCREENS)
     public static boolean blurTitleScreen = false;
-    @Condition(requiredOption = "blurTitleScreen", visibleButLocked = true)
     @Entry(category = SCREENS)
     public static boolean darkenTitleScreen = false;
     @Comment(category = SCREENS, centered = true)
     public static Comment _advanced;
-    @Entry(category = SCREENS) // Screens where Blur+ should not apply transition effects (mostly dynamically blurred screens)
-    public static List<String> excludedScreens = Lists.newArrayList("net.irisshaders.iris.gui.screen.ShaderPackScreen");
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force enabled
     public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen");
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled
-    public static List<String> forceDisabledScreens = Lists.newArrayList();
+    public static List<String> forceDisabledScreens = Lists.newArrayList("net.irisshaders.iris.gui.screen.ShaderPackScreen");
 
     @Comment(category = STYLE, centered = true)
     public static Comment _gradient;
@@ -68,33 +71,32 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
     public static int fadeOutTimeMillis = 300;
     @Entry(category = ANIMATIONS)
-    public static BlurConfig.Easing animationCurve = Easing.FLAT;
+    public static BlurConfig.Easing blurAnimationCurve = Easing.FLAT;
+    @Entry(category = ANIMATIONS)
+    public static BlurConfig.Easing backgroundAnimationCurve = Easing.FLAT;
 
     public enum Easing {
         // Based on https://gist.github.com/dev-hydrogen/21a66f83f0386123e0c0acf107254843
         // Thank you very much!
 
-        FLAT(x -> x,                                    x -> x),
-        SINE(x -> 1 - cos(x * PI) / 2,                  x -> sin(x * PI) / 2),
-        QUAD(x -> x * x,                                x -> 1 - (1 - x) * (1 - x)),
-        CUBIC(x -> x * x * x,                           x -> 1 - pow(1 - x, 3)),
-        QUART(x -> x * x * x * x,                       x -> 1 - pow(1 - x, 4)),
-        QUINT(x -> x * x * x * x * x,                   x -> 1 - pow(1 - x, 5)),
-        EXPO(x -> x == 0 ? 0 : pow(2, 10 * x - 10),     x -> x == 1 ? 1 : 1 - pow(2, -10 * x)),
-        CIRC(x -> 1 - sqrt(1 - pow(x, 2)),              x -> sqrt(1 - pow(x - 1, 2))),
-        BACK(x -> 2.70158 * x * x * x - 1.70158 * x * x,x -> 1 + 2.70158 * pow(x - 1, 3) + 1.70158 * pow(x - 1, 2)),
-        ELASTIC(x -> x == 0 ? 0 : x == 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * ((2 * PI) / 3)), x -> x == 0 ? 0 : x == 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * ((2 * PI) / 3)) + 1);
+        FLAT(x -> x),
+        SINE(x -> 0.5 - cos(x * PI) / 2),
+        QUAD(x -> x * x),
+        CUBIC(x -> x * x * x),
+        QUART(x -> x * x * x * x),
+        QUINT(x -> x * x * x * x * x),
+        EXPO(x -> x == 0 ? 0 : pow(2, 10 * x - 10)),
+        CIRC(x -> 1 - sqrt(1 - pow(x, 2))),
+        BACK(x -> 2.70158 * x * x * x - 1.70158 * x * x),
+        ELASTIC(x -> x == 0 ? 0 : x == 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * ((2 * PI) / 3)));
 
-        final Function<Double, Number> functionIn;
-        final Function<Double, Number> functionOut;
+        final Function<Double, Number> function;
 
-        Easing(Function<Double, Number> functionIn, Function<Double, Number> functionOut) {
-            this.functionIn = functionIn;
-            this.functionOut = functionOut;
+        Easing(Function<Double, Number> function) {
+            this.function = function;
         }
-        public Double apply(Double x, boolean in) {
-            if (in) return functionIn.apply(x).doubleValue();
-            return functionOut.apply(x).doubleValue();
+        public Double apply(Double x) {
+            return function.apply(x).doubleValue();
         }
     }
 
@@ -123,8 +125,8 @@ public class BlurConfig extends MidnightConfig {
             slider.resetButton = resetButton;
             slider.updateMessage();
 
-            list.addButton(Lists.newArrayList(), Component.translatable("blur.midnightconfig._blur"), centered);
-            list.addButton(Lists.newArrayList(slider, resetButton), Component.translatable("blur.midnightconfig.radius"), new EntryInfo(null, Blur.MOD_ID));
+            list.addButton(Lists.newArrayList(), Component.translatable("%s.midnightconfig._blur".formatted(Blur.MOD_ID)), centered);
+            list.addButton(Lists.newArrayList(slider, resetButton), Component.translatable("%s.midnightconfig.radius".formatted(Blur.MOD_ID)), new EntryInfo(null, Blur.MOD_ID));
         }
     }
 

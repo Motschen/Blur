@@ -1,3 +1,21 @@
+# Blur+ v6.0.0
+Huge thanks to [@amiralimollaei](https://github.com/amiralimollaei) for submitting these changes as a [pull request](https://github.com/Motschen/Blur/pull/149)!  
+Many longstanding issues have now finally been fixed – Blur is now smoother than ever :D
+
+**Key Improvements & Fixes:**
+*   **Revamped Blur Animation:** Complete overhaul of the blur animation calculation logic, including runtime detection of blurred screens for improved compatibility.
+*   **Stabilized Fade Animations:** Resolved an issue where fade animations desynchronized during rapid screen transitions (e.g., holding E or Esc).  This ensures smooth and consistent fade-in/out effects.
+*   **Eliminated Frame Skipping/Resets:** Fixed bugs that caused frames of the fade animation to be skipped or animations to unexpectedly reset. Now provides a consistently continuous animation.
+*   **Independent Blur & Gradient Control:** Decoupled the background blurriness animation and background gradient animation, allowing for separate and independent control over each.
+*   **"Force Disabled" Screens:** Deprecated the "excluded screens" configuration, Use "force disabled screens" for clearer and more intuitive control.
+*   **New Animations for Title Screens:** Added animations for the "Blur Title Screen" and "Darken Title Screen" options, leveraging the new decoupled animation functionality.
+*   **Enabled Blur on Ignored Screens:** Added blur to the book edit/view/sign screens, command block edit screen, and sign edit screen, with configurable options in the settings.
+*   **Performance Optimization:**  Improved performance by preventing unnecessary drawing when animations are completely faded out.
+*   **Improved Mod Compatibility:** Increased compatibility with other mods and modded scenarios by utilizing simpler, more chainable Mixins.
+*   **Fixed Blur Slider Issue on 1.21.11:** Fixed a bug where the blur slider didn't work correctly past 10 in version 1.21.11.
+*   **Truly Configure Gradient:**  Ensures that disabling the gradient completely removes any instance where Blur+'s special background gradient would be drawn, instead falling back to the original screen background.
+*   **Eliminated Flickering:** Fixed all known instances of flickering, including the title screen, excluded screens, force-disabled screens, and force-enabled screens.
+
 ### Blur+ v5.3.2
 - **always** check if blur effect is applicable
   - Should resolve all remainng instances of the `Can only blur once per frame` crash

@@ -1,14 +1,12 @@
 package eu.midnightdust.blur.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import eu.midnightdust.blur.BlurInfo;
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,43 +20,48 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Screen.class)
 public abstract class MixinScreen {
     @Shadow @Final protected Component title;
-    @Shadow protected Minecraft minecraft;
+    @Shadow @Final protected Minecraft minecraft;
     @Shadow public int width;
     @Shadow public int height;
     @Shadow protected abstract void renderBlurredBackground(/*? if > 1.21.5 {*/ GuiGraphics context /*?} else if <= 1.21.1 {*/ /*float delta *//*?}*/);
 
     @Inject(at = @At("HEAD"), method = "render")
-    public void blur$processScreenChange(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    public void blur$onRenderStart(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         Blur.onRender();
-        Blur.renderFadeout(context, width, height, minecraft);
     }
 
-    @Inject(at = @At("HEAD"), method = "renderBlurredBackground", cancellable = true)
-    public void blur$getBlurEnabled(CallbackInfo ci) {
-        if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
-            ci.cancel(); return;
+    @Inject(at = @At("TAIL"), method = "render")
+    public void blur$onRenderEnd(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        Blur.onRenderEnd(this.getClass().getCanonicalName());
+    }
+
+    @Inject(at = @At("HEAD"), method = "renderBlurredBackground")
+    public void blur$onRenderBlurredBackground(CallbackInfo ci) {
+        if (!BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
+            Blur.blurAnimation.enabled = true; // Test if the screen has blur
         }
-        if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName()))
-            BlurInfo.screenHasBlur = true; // Test if the screen has blur
     }
 
-    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderMenuBackgroundTexture(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/resources/Identifier;IIFFII)V"), method = "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
-    private void blur$applyGradient(GuiGraphics context, Identifier texture, int x, int y, float u, float v, int width, int height, Operation<Void> original) {
+    @WrapMethod(method = {
+            "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;)V", // used by screens while not in a level
+            "renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V"  // used by screens while in a level
+    })
+    private void blur$replaceScreenBackground(GuiGraphics context, Operation<Void> original) {
+        if (!BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
+            Blur.backgroundAnimation.enabled = true; // Test if the screen has blur
+        }
         if (BlurConfig.useGradient) {
-            blur$renderGradient(context); // Replaces the background texture with a gradient
-        } else original.call(context, texture, x, y, u, v, width, height);
+            blur$renderRotatedGradient(context); // draw our gradient as background
+
+        } else {
+            original.call(context); // draw the original background
+        }
     }
 
-    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fillGradient(IIIIII)V"), method = "renderTransparentBackground")
-    public void blur$rotatedGradient(GuiGraphics context, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, Operation<Void> original) {
-        blur$renderGradient(context);
-    }
     @Unique
-    private void blur$renderGradient(GuiGraphics context) {
-        BlurInfo.screenHasBackground = true; // Test if the screen has a background
-        if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()) && BlurInfo.canBlur(context))
+    private void blur$renderRotatedGradient(GuiGraphics context) {
+        if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName()))
             this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*minecraft.getTimer().getGameTimeDeltaTicks() *//*?}*/);
-
         Blur.renderRotatedGradient(context, width, height); // Replaces the default gradient with our rotated one
     }
 }
