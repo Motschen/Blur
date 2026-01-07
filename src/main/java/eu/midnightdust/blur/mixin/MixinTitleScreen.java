@@ -1,7 +1,6 @@
 package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
-import eu.midnightdust.blur.BlurInfo;
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -18,12 +17,11 @@ public abstract class MixinTitleScreen extends Screen {
         super(title);
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/TitleScreen;renderPanorama(Lnet/minecraft/client/gui/GuiGraphics;F)V"))
-    private void blur$renderTitleBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (BlurConfig.blurTitleScreen) {
-            Blur.updateProgress(true);
-            if (BlurInfo.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
-            if (BlurConfig.darkenTitleScreen) this.renderMenuBackground(context);
-        }
+    @Inject(method = "renderBackground", at = @At(value = "HEAD"))
+    private void blur$renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (Blur.canBlur(context)) super.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
+        Blur.blurAnimation.enabled = BlurConfig.blurTitleScreen;
+        if (BlurConfig.useGradient) super.renderMenuBackground(context);
+        Blur.backgroundAnimation.enabled = BlurConfig.darkenTitleScreen;
     }
 }

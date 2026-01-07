@@ -1,5 +1,8 @@
 package eu.midnightdust.blur.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import eu.midnightdust.blur.Blur;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Final;
@@ -13,18 +16,21 @@ public abstract class MixinGameOptions {
     @Shadow @Final private OptionInstance<Integer> menuBackgroundBlurriness;
     @Shadow @Final private OptionInstance<Double> chatLineSpacing;
 
-    @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/client/OptionInstance$IntRange", ordinal = /*? if > 1.21.5 {*/ 3 /*?} else {*/ /*2 *//*?}*/))
-    //? if >= 1.21.11 {
-    private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive, boolean applyValueImmediately) {
-        if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
-            return new OptionInstance.IntRange(minInclusive, 20, applyValueImmediately);
-        return new OptionInstance.IntRange(minInclusive, maxInclusive, applyValueImmediately);
-    }
-    //?} else {
-    /*private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
+    @Redirect(
+            method = "<init>",
+            at = @At(value = "NEW",
+                    target = "net/minecraft/client/OptionInstance$IntRange",
+                    ordinal = /*? if > 1.21.10 {*/ 5 /*?} else if > 1.21.5 {*/ /*3*//*?} else {*/ /*2 *//*?}*/
+            )
+    )
+    private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
         if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
             return new OptionInstance.IntRange(minInclusive, 20);
         return new OptionInstance.IntRange(minInclusive, maxInclusive);
     }
-    *///?}
+
+    @WrapMethod(method = "getMenuBackgroundBlurriness")
+    private int blur$applyMenuBackgroundBlurCoefficient(Operation<Integer> original) {
+        return (int) (original.call() * Blur.blurAnimation.fadeProgress);
+    }
 }

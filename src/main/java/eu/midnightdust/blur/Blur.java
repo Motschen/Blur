@@ -1,16 +1,22 @@
 package eu.midnightdust.blur;
 
 import eu.midnightdust.blur.config.BlurConfig;
+//? if > 1.21.5 {
+import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
+import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
+//?}
+import eu.midnightdust.blur.util.FadeAnimation;
 import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
+import net.minecraft.client.gui.screens.Screen;
 import org.joml.Math;
 
 import java.awt.Color;
-import java.lang.Double;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 
-import static eu.midnightdust.blur.BlurInfo.*;
+import net.minecraft.client.gui.GuiGraphics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static eu.midnightdust.blur.util.RainbowColor.hue;
 import static eu.midnightdust.blur.util.RainbowColor.hue2;
 
@@ -18,6 +24,7 @@ import static eu.midnightdust.blur.util.RainbowColor.hue2;
 import org.joml.Matrix3x2f;
 //?} else {
 /*import org.joml.Matrix4f;
+import net.minecraft.client.Minecraft;
 *///?}
 
 //? fabric {
@@ -35,61 +42,62 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 public class Blur {
     public static final String MOD_ID = "blur";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static void init() {
         BlurConfig.init(MOD_ID, BlurConfig.class);
     }
 
-    public static boolean doFade = false;
+    public static FadeAnimation blurAnimation = new FadeAnimation();
+    public static FadeAnimation backgroundAnimation = new FadeAnimation();
+    public static boolean screenChangeProcessed = false;
+
+    public static boolean canBlur(GuiGraphics graphics) {
+        //? if > 1.21.5 {
+        return ((GuiRenderStateAccessor) ((GuiGraphicsAccessor) graphics).getGuiRenderState()).getFirstStratumAfterBlur() == Integer.MAX_VALUE;
+        //?} else {
+        /*return true;
+         *///?}
+    }
 
     public static void onRender() {
-        if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
-            Blur.onScreenChange();
-            BlurInfo.screenChanged = false;
-        }
-        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
-    }
-    public static void renderFadeout(GuiGraphics context, int width, int height, Minecraft client) {
-        if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            //? if > 1.21.5 {
-            if (BlurInfo.canBlur(context)) context.blurBeforeThisStratum();
-            //?} else {
-            /*client.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^client.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
-            *///?}
-
-            if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
-        }
+        blurAnimation.setEasing(BlurConfig.blurAnimationCurve);
+        blurAnimation.onRender();
+        backgroundAnimation.setEasing(BlurConfig.backgroundAnimationCurve);
+        backgroundAnimation.onRender();
     }
 
-    public static void onScreenChange() {
-        if (screenHasBlur) {
-            if (doFade) {
-                start = System.currentTimeMillis();
-                doFade = false;
-            }
-        } else if (prevScreenHasBlur && BlurConfig.fadeOutTimeMillis > 0) {
-            start = System.currentTimeMillis();
-            doFade = true;
+    public static void renderBlurredBackground(GuiGraphics context) {
+        if (blurAnimation.fadeProgress < 0.001F) return; // there's no blur to apply
+
+        //? if > 1.21.5 {
+        if (Blur.canBlur(context))
+            context.blurBeforeThisStratum();
+        //?} else {
+            /*Minecraft minecraft = Minecraft.getInstance();
+            minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^minecraft.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
+        *///?}
+    }
+
+    public static void renderBackground(GuiGraphics context) {
+        Blur.renderBlurredBackground(context);
+        Blur.renderRotatedGradient(context, context.guiWidth(), context.guiHeight());
+    }
+
+    public static void onScreenChange(Screen newScreen) {
+        if (newScreen != null) {
+            Blur.LOGGER.debug("onScreenChange: {}", newScreen.getClass().getCanonicalName());
         } else {
-            start = -1;
-            doFade = true;
+            Blur.LOGGER.debug("onScreenChange: null");
         }
-    }
+        screenChangeProcessed = false;
 
-    public static void updateProgress(boolean fadeIn) {
-        double x;
-        if (fadeIn) {
-            x = Math.min((System.currentTimeMillis() - start) / (double) BlurConfig.fadeTimeMillis, 1);
+        if (newScreen != null && BlurConfig.forceEnabledScreens.contains(newScreen.getClass().getCanonicalName())) {
+            blurAnimation.enabled = true;
+            backgroundAnimation.enabled = true;
+        } else {
+            blurAnimation.enabled = false;
+            backgroundAnimation.enabled = false;
         }
-        else {
-            x = Math.max(1 + (start - System.currentTimeMillis()) / (double) BlurConfig.fadeOutTimeMillis, 0);
-            if (x <= 0) {
-                start = -1;
-            }
-        }
-        x = BlurConfig.animationCurve.apply(x, fadeIn);
-        x = Math.clamp(0, 1, x);
-
-        progress = Double.valueOf(x).floatValue();
     }
 
     public static int getBackgroundColor(boolean second) {
@@ -99,7 +107,7 @@ public class Blur {
         int r = (col.getRGB() >> 16) & 0xFF;
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
-        float prog = progress;
+        float prog = backgroundAnimation.fadeProgress;
         a = (int) (prog * a);
         r = (int) (prog * r);
         g = (int) (prog * g);
@@ -111,28 +119,39 @@ public class Blur {
         return BlurConfig.gradientRotation;
     }
     public static void renderRotatedGradient(GuiGraphics context, int width, int height) {
+        if (!BlurConfig.useGradient || backgroundAnimation.fadeProgress < 0.001F) return;  // there's no gradient to draw
+
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);
+        float rotation = Math.toRadians(getRotation());
+        int first_color = Blur.getBackgroundColor(false);
+        int second_color = Blur.getBackgroundColor(true);
 
         //? if > 1.21.5 {
         context.pose().pushMatrix();
         Matrix3x2f posMatrix = context.pose();
-        posMatrix.rotate(Math.toRadians(getRotation()));
+        posMatrix.rotate(rotation);
         posMatrix.setTranslation(width / 2f, height / 2f); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
-        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
+        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, first_color, second_color); // Actually draw the gradient
         context.pose().popMatrix();
         //?} else {
         /*context.pose().pushPose();
         Matrix4f posMatrix = context.pose().last().pose();
-        posMatrix.rotateZ(Math.toRadians(getRotation()));
+        posMatrix.rotateZ(rotation);
         posMatrix.setTranslation(width / 2f, height / 2f, -1000); // Make the gradient's center the pivot point
         posMatrix.scale(diagonal / smallestDimension); // Scales the gradient to the maximum diagonal value needed
-        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, Blur.getBackgroundColor(false), Blur.getBackgroundColor(true)); // Actually draw the gradient
+        context.fillGradient(-width / 2, -height / 2, width / 2, height / 2, first_color, second_color); // Actually draw the gradient
         context.pose().popPose();
         *///?}
     }
 
+    public static void onRenderEnd(String screenName) {
+        if (!screenChangeProcessed) {
+            Blur.LOGGER.debug("processed screen: {}, has blur: {}, has background: {}", screenName, blurAnimation.enabled, backgroundAnimation.enabled);
+            screenChangeProcessed = true;
+        }
+    }
 
     //? fabric {
     public static class BlurFabric implements ModInitializer, ClientModInitializer {
