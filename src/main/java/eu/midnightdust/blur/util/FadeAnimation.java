@@ -1,7 +1,6 @@
 package eu.midnightdust.blur.util;
 
 import eu.midnightdust.blur.config.BlurConfig;
-import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Math;
 
 public class FadeAnimation {
