@@ -16,7 +16,7 @@ public class FadeAnimation {
         this.easing = easing;
     }
 
-    public void onRender(GuiGraphics context) {
+    public void onRender() {
         long currentTime = System.currentTimeMillis();
         if (lastRender <= 0) {
             lastRender = currentTime;
@@ -26,10 +26,10 @@ public class FadeAnimation {
             lastRender = currentTime;
         }
 
-        updateFadeAnimation(context);
+        updateFadeAnimation();
     }
 
-    public void updateFadeAnimation(GuiGraphics context) {
+    public void updateFadeAnimation() {
         if (enabled) {
             fadeTimeState += deltaTime / (float) BlurConfig.fadeTimeMillis;
         }

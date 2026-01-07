@@ -21,7 +21,7 @@ public class MixinBookViewScreen extends Screen {
             method = "renderBackground",
             at = @At(
                     value = "INVOKE",
-                    target = /*? if > 1.21.8 {*/ /*"Lnet/minecraft/client/gui/screens/Screen;renderBackground(Lnet/minecraft/client/gui/GuiGraphics;IIF)V" *//*?} else {*/ "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V" /*?}*/
+                    target = /*? if > 1.21.8 {*/ "Lnet/minecraft/client/gui/screens/Screen;renderBackground(Lnet/minecraft/client/gui/GuiGraphics;IIF)V" /*?} else {*/ /*"Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V" *//*?}*/
             )
     )
     private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)

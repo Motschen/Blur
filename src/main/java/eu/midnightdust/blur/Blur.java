@@ -49,6 +49,7 @@ public class Blur {
 
     public static FadeAnimation blurAnimation = new FadeAnimation();
     public static FadeAnimation backgroundAnimation = new FadeAnimation();
+    public static boolean screenChangeProcessed = false;
 
     public static boolean canBlur(GuiGraphics graphics) {
         //? if > 1.21.5 {
@@ -58,11 +59,11 @@ public class Blur {
          *///?}
     }
 
-    public static void onRender(GuiGraphics context) {
+    public static void onRender() {
         blurAnimation.setEasing(BlurConfig.blurAnimationCurve);
-        blurAnimation.onRender(context);
+        blurAnimation.onRender();
         backgroundAnimation.setEasing(BlurConfig.backgroundAnimationCurve);
-        backgroundAnimation.onRender(context);
+        backgroundAnimation.onRender();
     }
 
     public static void renderBlurredBackground(GuiGraphics context) {
@@ -85,7 +86,10 @@ public class Blur {
     public static void onScreenChange(Screen newScreen) {
         if (newScreen != null) {
             Blur.LOGGER.debug("onScreenChange: {}", newScreen.getClass().getCanonicalName());
+        } else {
+            Blur.LOGGER.debug("onScreenChange: null");
         }
+        screenChangeProcessed = false;
         blurAnimation.enabled = false;
         backgroundAnimation.enabled = false;
     }
@@ -136,6 +140,12 @@ public class Blur {
         *///?}
     }
 
+    public static void onRenderEnd(String screenName) {
+        if (!screenChangeProcessed) {
+            Blur.LOGGER.debug("current screen: {}, has blur: {}, has background: {}", screenName, blurAnimation.enabled, backgroundAnimation.enabled);
+        }
+        screenChangeProcessed = true;
+    }
 
     //? fabric {
     public static class BlurFabric implements ModInitializer, ClientModInitializer {

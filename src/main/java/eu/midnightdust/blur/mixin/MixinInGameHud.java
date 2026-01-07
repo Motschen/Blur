@@ -19,9 +19,9 @@ public class MixinInGameHud {
     @Inject(at = @At("TAIL"), method = "render")
     public void blur$renderFadeOut(GuiGraphics context, DeltaTracker tickCounter, CallbackInfo ci) { // Adds a fade-out effect when a player is in a world and closes all screens
         if (minecraft.screen == null && minecraft.level != null) {
+            Blur.onRender();
             Blur.blurAnimation.enabled = false;
             Blur.backgroundAnimation.enabled = false;
-            Blur.onRender(context);
             Blur.renderBackground(context);
         }
     }

@@ -13,7 +13,7 @@
     "MixinBookViewScreen",
     "MixinGameOptions",
     "MixinGameRenderer",
-    "MixinHandledScreen",
+    "MixinAbstractContainerScreen",
     "MixinInGameHud",
     "MixinMinecraftClient",
     "MixinScreen",

@@ -12,13 +12,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractContainerScreen.class)
-public class MixinHandledScreen extends Screen {
-    protected MixinHandledScreen(Component title) {
+public class MixinAbstractContainerScreen extends Screen {
+    protected MixinAbstractContainerScreen(Component title) {
         super(title);
     }
 
+    //? if <= 1.21.1 {
+    /*@Inject(at = @At("HEAD"), method = "render")
+    public void blur$onRenderContainer(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        Blur.onRender();
+    }
+    *///?}
+
     @Inject(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", shift = At.Shift.BEFORE))
     private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
-        if (BlurConfig.blurContainers && Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
+        if (BlurConfig.blurContainers && Blur.canBlur(context)) {
+            this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
+        }
     }
 }
