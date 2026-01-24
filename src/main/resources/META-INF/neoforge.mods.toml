@@ -8,7 +8,7 @@ modId = "blur"
 version = "${version}"
 displayName = "Blur+"
 logoFile = "blur.png"
-authors = "Motschen, tterrag1098, Pyrofab, backryun, byquanton"
+authors = "Motschen, amiralimollaei, tterrag1098, Pyrofab, backryun, byquanton"
 description = '''
 Various enhancements for the blur effect behind Minecraft GUIs
 '''
