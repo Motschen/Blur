@@ -25,9 +25,6 @@ repositories {
 
     // MidnightLib
     maven("https://maven.midnightdust.eu/releases/")
-
-    // Sodium
-    maven("https://maven.caffeinemc.net/releases")
 }
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
@@ -63,7 +60,6 @@ loom {
 publishMods {
     val modrinthToken = System.getenv("MODRINTH_TOKEN")
     val curseforgeToken = System.getenv("CURSEFORGE_TOKEN")
-    val githubToken = System.getenv("GITHUB_TOKEN").orEmpty()
 
     file = project.tasks.remapJar.get().archiveFile
     dryRun = modrinthToken == null || curseforgeToken == null
@@ -90,6 +86,7 @@ publishMods {
         }
     }
 
+/*
     curseforge {
         projectId = property("publish.curseforge").toString()
         accessToken = curseforgeToken.toString()
@@ -99,6 +96,7 @@ publishMods {
             requires("fabric-api")
         }
     }
+*/
 
 //    github {
 //        accessToken = githubToken

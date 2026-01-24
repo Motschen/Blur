@@ -12,10 +12,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Options.class)
-public abstract class MixinGameOptions {
+public abstract class MixinOptions {
     @Shadow @Final private OptionInstance<Integer> menuBackgroundBlurriness;
     @Shadow @Final private OptionInstance<Double> chatLineSpacing;
 
+    // increases the menu blurriness slider's maximum allowed value
     @Redirect(
             method = "<init>",
             at = @At(value = "NEW",
@@ -24,13 +25,15 @@ public abstract class MixinGameOptions {
             )
     )
     private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
-        if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
+        if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)  // do we need this condition?
             return new OptionInstance.IntRange(minInclusive, 20);
         return new OptionInstance.IntRange(minInclusive, maxInclusive);
     }
 
+
+    // applies our blur radius coefficient to getMenuBackgroundBlurriness method
     @WrapMethod(method = "getMenuBackgroundBlurriness")
     private int blur$applyMenuBackgroundBlurCoefficient(Operation<Integer> original) {
-        return (int) (original.call() * Blur.blurAnimation.fadeProgress);
+        return (int) (original.call() * Blur.blurAnimation.progress);
     }
 }

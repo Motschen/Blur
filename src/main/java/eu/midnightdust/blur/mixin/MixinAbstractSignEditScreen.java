@@ -17,8 +17,9 @@ public class MixinAbstractSignEditScreen extends Screen {
         super(title);
     }
 
+    // forces sign edit screen to also render a blurred background
     @Inject(method = /*? if > 1.21.5 {*/ "render" /*?} else {*/ /*"renderBackground" *//*?}*/, at = @At(value = "TAIL"))
-    private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
+    private void blur$renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (BlurConfig.blurSigns && Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
 }

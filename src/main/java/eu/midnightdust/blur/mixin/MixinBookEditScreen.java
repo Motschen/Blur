@@ -17,6 +17,7 @@ public class MixinBookEditScreen extends Screen {
         super(title);
     }
 
+    // forces book edit screen to also render a blurred background
     @Inject(
             method = "renderBackground",
             at = @At(
@@ -24,7 +25,7 @@ public class MixinBookEditScreen extends Screen {
                     target = /*? if > 1.21.8 {*/ "Lnet/minecraft/client/gui/screens/Screen;renderBackground(Lnet/minecraft/client/gui/GuiGraphics;IIF)V" /*?} else {*/ /*"Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V" *//*?}*/
             )
     )
-    private void blur$renderContainerBlur(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
+    private void blur$renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (BlurConfig.blurBooks && Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
 }
