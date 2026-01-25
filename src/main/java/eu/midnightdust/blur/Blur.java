@@ -103,7 +103,7 @@ public class Blur {
             Blur.renderRotatedGradient(context);
             forceRenderedBackground = true;
         } else {
-            Blur.LOGGER.warn("renderBackground has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
+            // Blur.LOGGER.warn("renderBackground has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
         }
     }
 
