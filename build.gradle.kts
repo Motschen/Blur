@@ -86,17 +86,16 @@ publishMods {
         }
     }
 
-/*
     curseforge {
         projectId = property("publish.curseforge").toString()
-        accessToken = curseforgeToken.toString()
+        accessToken = curseforgeToken
         targets.forEach(minecraftVersions::add)
         requires("midnightlib")
         if (loader == "fabric") {
             requires("fabric-api")
         }
     }
-*/
+
 
 //    github {
 //        accessToken = githubToken
