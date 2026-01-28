@@ -1,39 +1,32 @@
 package eu.midnightdust.blur.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import eu.midnightdust.blur.Blur;
-import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Options.class)
 public abstract class MixinOptions {
-    @Shadow @Final private OptionInstance<Integer> menuBackgroundBlurriness;
-    @Shadow @Final private OptionInstance<Double> chatLineSpacing;
 
     // increases the menu blurriness slider's maximum allowed value
-    @Redirect(
+    @ModifyArg(
             method = "<init>",
-            at = @At(value = "NEW",
-                    target = "net/minecraft/client/OptionInstance$IntRange",
-                    ordinal = /*? if > 1.21.10 {*/ 5 /*?} else if > 1.21.5 {*/ /*3*//*?} else {*/ /*2 *//*?}*/
-            )
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/client/OptionInstance$IntRange;<init>(II)V",
+                    ordinal = /*? if > 1.21.10 {*/ 3 /*?} else {*/ /*2 *//*?}*/
+            ),
+            index = 1  // to modify the 2nd integer (e.g. the max value)
     )
-    private OptionInstance.IntRange blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
-        if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)  // do we need this condition?
-            return new OptionInstance.IntRange(minInclusive, 20);
-        return new OptionInstance.IntRange(minInclusive, maxInclusive);
+    private int blur$increaseMaxBlurriness(int maxInclusive) {
+        return 20;
     }
 
 
     // applies our blur radius coefficient to getMenuBackgroundBlurriness method
-    @WrapMethod(method = "getMenuBackgroundBlurriness")
-    private int blur$applyMenuBackgroundBlurCoefficient(Operation<Integer> original) {
-        return (int) (original.call() * Blur.blurAnimation.progress);
+    @ModifyReturnValue(method = "getMenuBackgroundBlurriness", at = @At(value = "RETURN"))
+    private int blur$applyMenuBackgroundBlurCoefficient(int original) {
+        return (int) (original * Blur.blurAnimation.progress);
     }
 }
