@@ -81,7 +81,7 @@ public class Blur {
             backgroundAnimation.enabled = false;
             forceRenderedBackground = false;
         } else {
-            Blur.LOGGER.warn("onRender has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
+            Blur.LOGGER.debug("onRender has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
         }
     }
 
@@ -103,7 +103,7 @@ public class Blur {
             Blur.renderRotatedGradient(context);
             forceRenderedBackground = true;
         } else {
-            // Blur.LOGGER.warn("renderBackground has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
+            Blur.LOGGER.debug("renderBackground has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
         }
     }
 
@@ -195,7 +195,7 @@ public class Blur {
 
             isProcessingRenderPass = false;
         }  else {
-            Blur.LOGGER.warn("onRenderEnd has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
+            Blur.LOGGER.debug("onRenderEnd has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
         }
     }
 
