@@ -17,6 +17,8 @@ public abstract class MixinTitleScreen extends Screen {
         super(title);
     }
 
+    // force the TitleScreen to also render a blurred background and menu background, but don't fade-in animations
+    // unless blurTitleScreen or darkenTitleScreen is enabled
     @Inject(method = "renderBackground", at = @At(value = "HEAD"))
     private void blur$renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (Blur.canBlur(context)) super.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);

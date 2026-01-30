@@ -133,11 +133,11 @@ public class BlurConfig extends MidnightConfig {
     public static class RadiusSliderWidget extends AbstractSliderButton {
         SpriteIconButton resetButton;
         public RadiusSliderWidget(int x, int y, int width, int height) {
-            super(x, y, width, height, Component.empty(), Minecraft.getInstance().options.getMenuBackgroundBlurriness() / 20d);
+            super(x, y, width, height, Component.empty(), Minecraft.getInstance().options.menuBackgroundBlurriness().get() / 20d);
         }
         public void updateMessage() {
-            this.setMessage(Component.nullToEmpty(String.valueOf(Minecraft.getInstance().options.getMenuBackgroundBlurriness())));
-            if (resetButton != null) resetButton.active = Minecraft.getInstance().options.getMenuBackgroundBlurriness() != 5;
+            this.setMessage(Component.nullToEmpty(String.valueOf(Minecraft.getInstance().options.menuBackgroundBlurriness().get())));
+            if (resetButton != null) resetButton.active = Minecraft.getInstance().options.menuBackgroundBlurriness().get() != 5;
         }
 
         public void applyValue() {
