@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 
@@ -47,11 +48,24 @@ public abstract class MixinScreen {
         Blur.blurRadiusAnimation.setState(FadeAnimationState.FadeIn);
     }
 
-    @Inject(at = @At("HEAD"), method = {
-            "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;)V", // used by screens while not in a level
-            "renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V"  // used by screens while in a level
-    })
+    @Inject(
+            at = @At("HEAD"),
+            method = "renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V" // used by screens while in a level
+    )
     private void blur$onScreenBackground(GuiGraphics context, CallbackInfo ci) {
+        blur$onRenderBackground(context);
+    }
+
+    @Inject(
+            at = @At("HEAD"),
+            method = "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V" // used by screens while not in a level
+    )
+    private void blur$onScreenBackground(GuiGraphics context, int i, int j, int k, int l, CallbackInfo ci) {
+        blur$onRenderBackground(context);
+    }
+
+    @Unique
+    private void blur$onRenderBackground(GuiGraphics context) {
         // if the screen tries to call this function we can determine the screen had a background, and we can set the
         // background animation to fade-in mode
         Blur.backgroundAlphaAnimation.setState(FadeAnimationState.FadeIn);
