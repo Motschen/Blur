@@ -1,3 +1,24 @@
+# Blur+ v6.1.0
+Huge thanks to [@amiralimollaei](https://github.com/amiralimollaei) for submitting these changes as a [pull request](https://github.com/Motschen/Blur/pull/156), once again!
+
+Changes So Far:
+- Fixed screen flickering & flashing in edge cases
+- Every property about a screen is now gathered within a single frame,
+  previous versions would not be able to determine the properties of a screen within one frame and
+  thus had slight flickering issues where the fade-out animation would be triggered for one frame where it shouldn't
+  (e.g. switching between two screens that both have blurred backgrounds),
+  likewise the fade animations all happened with one frame of delay, this is now fixed,
+  improving responsiveness as well.
+- `Blur.onRender` and `Blur.onRenderEnd` are now only called once per render pass, and log useful information when something is wrong
+- `Blur.onScreenChange` and it's Mixin is deleted as we don't need that information anymore
+- The timer for fade animation now uses time in nanoseconds, to be able to more accurately work with higher frame rates, the timer is also shared between all animations instead of being instantiated per animation
+- Fixed a bug where the background gradient color would dim to black when fading out, which would cause flickers with bright background colors
+- Added more informative comments, renamed variables and classes for better clearance and refactored parts of the code for better readability
+- Try to not render the background gradient more than once per frame, even if the screen calls `renderBackground` multiple times.
+- Fix the menu blurriness slider not showing an accurate value sometimes
+- don't replace the entire background texture of screens, only replace the darkening textures.
+- uses a chain-able mixin for applying menu blur radius coefficient
+
 # Blur+ v6.0.0
 Huge thanks to [@amiralimollaei](https://github.com/amiralimollaei) for submitting these changes as a [pull request](https://github.com/Motschen/Blur/pull/149)!  
 Many longstanding issues have now finally been fixed – Blur is now smoother than ever :D
