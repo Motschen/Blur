@@ -17,7 +17,7 @@ public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAn
         float newProgress;
 
         if (BlurConfig.fadeTimeMillis > 0) {
-            newTimeState = org.joml.Math.clamp(0, 1, oldAnimationState.timeState() + 1000 * deltaSeconds / BlurConfig.fadeTimeMillis);
+            newTimeState = Math.clamp(0, 1, oldAnimationState.timeState() + (1000 * deltaSeconds / BlurConfig.fadeTimeMillis));
             newProgress = Math.clamp(0, 1, easing.apply((double) oldAnimationState.progress()).floatValue());
         } else {
             newTimeState = 1.0F;
@@ -32,7 +32,7 @@ public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAn
         float newProgress;
 
         if (BlurConfig.fadeOutTimeMillis > 0) {
-            newTimeState = org.joml.Math.clamp(0, 1, oldAnimationState.timeState() + 1000 * deltaSeconds / BlurConfig.fadeOutTimeMillis);
+            newTimeState = Math.clamp(0, 1, oldAnimationState.timeState() + (1000 * deltaSeconds / BlurConfig.fadeOutTimeMillis));
             newProgress = Math.clamp(0, 1, 1 - easing.apply((double) 1 - oldAnimationState.progress()).floatValue());
         } else {
             newTimeState = 1.0F;
