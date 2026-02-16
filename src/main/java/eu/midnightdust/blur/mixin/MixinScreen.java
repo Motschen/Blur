@@ -2,6 +2,7 @@ package eu.midnightdust.blur.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import eu.midnightdust.blur.animations.FadeAnimationState;
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,7 +25,7 @@ public abstract class MixinScreen {
     public void blur$onRenderBlurredBackground(CallbackInfo ci) {
         // if the screen tries to call `renderBlurredBackground` we can determine the screen had a blurred background,
         // and we can set the blur animation to fade-in mode
-        Blur.blurAnimation.enabled = true;
+        Blur.blurRadiusAnimation.setState(FadeAnimationState.FadeIn);
     }
 
     @Inject(at = @At("HEAD"), method = {
@@ -34,7 +35,7 @@ public abstract class MixinScreen {
     private void blur$onScreenBackground(GuiGraphics context, CallbackInfo ci) {
         // if the screen tries to call this function we can determine the screen had a background, and we can set the
         // background animation to fade-in mode
-        Blur.backgroundAnimation.enabled = true;
+        Blur.backgroundAlphaAnimation.setState(FadeAnimationState.FadeIn);
 
         // also draw a blurred background for forceEnabledScreens that are not also in forceDisabledScreens and only if
         // we can apply blur at all, this must be before we draw the background
