@@ -1,13 +1,11 @@
 package eu.midnightdust.blur.animations.impl;
 
-import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.animations.AbstractAnimationHandler;
 import eu.midnightdust.blur.animations.AnimationState;
 import eu.midnightdust.blur.animations.GradientAnimationState;
 import eu.midnightdust.blur.animations.IAnimationHandler;
 import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.lib.util.MidnightColorUtil;
-import org.joml.Math;
 
 import java.awt.*;
 
