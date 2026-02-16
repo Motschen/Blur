@@ -18,7 +18,7 @@ public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAn
 
         if (BlurConfig.fadeTimeMillis > 0) {
             newTimeState = Math.clamp(0, 1, oldAnimationState.timeState() + (1000 * deltaSeconds / BlurConfig.fadeTimeMillis));
-            newProgress = Math.clamp(0, 1, easing.apply((double) oldAnimationState.progress()).floatValue());
+            newProgress = Math.clamp(0, 1, easing.apply((double) newTimeState).floatValue());
         } else {
             newTimeState = 1.0F;
             newProgress = 1.0F;
@@ -32,11 +32,11 @@ public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAn
         float newProgress;
 
         if (BlurConfig.fadeOutTimeMillis > 0) {
-            newTimeState = Math.clamp(0, 1, oldAnimationState.timeState() + (1000 * deltaSeconds / BlurConfig.fadeOutTimeMillis));
-            newProgress = Math.clamp(0, 1, 1 - easing.apply((double) 1 - oldAnimationState.progress()).floatValue());
+            newTimeState = Math.clamp(0, 1, oldAnimationState.timeState() - (1000 * deltaSeconds / BlurConfig.fadeOutTimeMillis));
+            newProgress = Math.clamp(0, 1, 1 - easing.apply((double) 1 - newTimeState).floatValue());
         } else {
-            newTimeState = 1.0F;
-            newProgress = 1.0F;
+            newTimeState = 0.0F;
+            newProgress = 0.0F;
         }
 
         return new AnimationState(newTimeState, newProgress);
