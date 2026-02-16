@@ -58,6 +58,14 @@ public class Blur {
         *///?}
     }
 
+    public static float getRealtimeDeltaTicks() {
+        //? if >= 1.21.5 {
+        return minecraft.getDeltaTracker().getRealtimeDeltaTicks();
+        //?} else {
+        /*return minecraft.getTimer().getRealtimeDeltaTicks();
+         *///?}
+    }
+
     public static boolean canBlur(GuiGraphics graphics) {
         //? if > 1.21.5 {
         return ((GuiRenderStateAccessor) ((GuiGraphicsAccessor) graphics).getGuiRenderState()).getFirstStratumAfterBlur() == Integer.MAX_VALUE;
@@ -161,7 +169,7 @@ public class Blur {
     }
 
     public static void updateAnimations() {
-        float deltaTimeSeconds = getGameTimeDeltaTicks() / 20F;
+        float deltaTimeSeconds = getRealtimeDeltaTicks() / 20F;
         blurRadiusAnimation.updateAnimation(deltaTimeSeconds, BlurConfig.blurAnimationCurve);
         backgroundAlphaAnimation.updateAnimation(deltaTimeSeconds, BlurConfig.backgroundAnimationCurve);
         gradientAnimation.updateAnimation(deltaTimeSeconds, BlurConfig.backgroundAnimationCurve); // TODO: should we define another curve?
