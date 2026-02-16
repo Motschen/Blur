@@ -5,7 +5,6 @@ import eu.midnightdust.blur.animations.AnimationState;
 import eu.midnightdust.blur.animations.FadeAnimationState;
 import eu.midnightdust.blur.animations.IAnimationHandler;
 import eu.midnightdust.blur.config.BlurConfig;
-import org.joml.Math;
 
 public class FadeAnimationHandler extends AbstractAnimationHandler<FadeAnimationState> implements IAnimationHandler<FadeAnimationState> {
     @Override
