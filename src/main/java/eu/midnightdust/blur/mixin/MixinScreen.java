@@ -2,7 +2,7 @@ package eu.midnightdust.blur.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import eu.midnightdust.blur.animations.FadeAnimationState;
+import eu.midnightdust.blur.animations.impl.FadeAnimationState;
 import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.blur.util.DebugHudRenderer;
 import net.minecraft.client.Minecraft;

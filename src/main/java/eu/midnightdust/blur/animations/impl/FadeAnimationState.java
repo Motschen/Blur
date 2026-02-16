@@ -1,4 +1,4 @@
-package eu.midnightdust.blur.animations;
+package eu.midnightdust.blur.animations.impl;
 
 public enum FadeAnimationState {
     FadeIn,

@@ -1,7 +1,7 @@
 package eu.midnightdust.blur;
 
-import eu.midnightdust.blur.animations.FadeAnimationState;
-import eu.midnightdust.blur.animations.GradientAnimationState;
+import eu.midnightdust.blur.animations.impl.FadeAnimationState;
+import eu.midnightdust.blur.animations.impl.GradientAnimationState;
 import eu.midnightdust.blur.animations.impl.GradientAnimationHandler;
 import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.blur.animations.impl.FadeAnimationHandler;
