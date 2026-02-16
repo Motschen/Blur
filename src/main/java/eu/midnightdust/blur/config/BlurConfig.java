@@ -37,6 +37,8 @@ public class BlurConfig extends MidnightConfig {
     public static boolean darkenTitleScreen = false;
     @Comment(category = SCREENS, centered = true)
     public static Comment _advanced;
+    @Entry(category = SCREENS)
+    public static boolean showScreenID = false;
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force enabled
     public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen");
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled

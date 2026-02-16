@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import eu.midnightdust.blur.animations.FadeAnimationState;
 import eu.midnightdust.blur.config.BlurConfig;
+import eu.midnightdust.blur.util.DebugHudRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,10 +17,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import eu.midnightdust.blur.Blur;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.awt.*;
+
 @Mixin(Screen.class)
 public abstract class MixinScreen {
     @Shadow protected Minecraft minecraft;
     @Shadow protected abstract void renderBlurredBackground(/*? if > 1.21.5 {*/ GuiGraphics context /*?} else if <= 1.21.1 {*/ /*float delta *//*?}*/);
+
+    @Inject(
+            at = @At("TAIL"),
+            //? if > 1.21.8 {
+            method = "renderWithTooltipAndSubtitles"
+            //?} else if > 1.21.1 {
+             /*method = "renderWithTooltip"
+            *///?} else {
+             /*method = "render"
+            *///?}
+    )
+    public void blur$renderDebugHud(GuiGraphics context, int i, int j, float f, CallbackInfo ci) {
+        if (BlurConfig.showScreenID && minecraft.screen != null) {
+            DebugHudRenderer.renderLine(context, minecraft.font, minecraft.screen.getClass().getCanonicalName(), 2, new Color(0xff80dfff), true);
+        }
+    }
 
     @Inject(at = @At("HEAD"), method = "renderBlurredBackground")
     public void blur$onRenderBlurredBackground(CallbackInfo ci) {
