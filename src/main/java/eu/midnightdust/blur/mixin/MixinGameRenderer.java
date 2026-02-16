@@ -42,7 +42,7 @@ public class MixinGameRenderer {
                     shift = At.Shift.BEFORE,  // do we need this shift?
                     opcode = Opcodes.GETFIELD
             ),
-            name = "guiGraphics"
+            ordinal = 0
     )
     public GuiGraphics blur$beforeRenderScreen1(GuiGraphics context) {
         if (minecraft.screen == null && minecraft.level != null) {
