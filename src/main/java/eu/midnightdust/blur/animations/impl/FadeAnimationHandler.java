@@ -9,36 +9,15 @@ import org.joml.Math;
 
 public class FadeAnimationHandler extends AbstractAnimationHandler<FadeAnimationState> implements IAnimationHandler<FadeAnimationState> {
     @Override
-    public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState state) {
-        float newFadeTimeState = state.timeState();
-        float newFadeProgress = state.progress();
-
+    public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
         switch (getState()) {
             case FadeIn -> {
-                if (BlurConfig.fadeTimeMillis > 0) {
-                    newFadeTimeState += deltaSeconds / (BlurConfig.fadeTimeMillis / 1000F);
-                    newFadeTimeState = Math.clamp(0, 1, newFadeTimeState);
-                    newFadeProgress = easing.apply((double) newFadeTimeState).floatValue();
-                } else {
-                    newFadeTimeState = 1.0F;
-                    newFadeProgress = 1.0F;
-                }
+                return this.stepForward(deltaSeconds, easing, oldAnimationState);
             }
             case FadeOut -> {
-                if (BlurConfig.fadeOutTimeMillis > 0) {
-                    newFadeTimeState -= deltaSeconds / (BlurConfig.fadeOutTimeMillis / 1000F);
-                    newFadeTimeState = Math.clamp(0, 1, newFadeTimeState);
-                    newFadeProgress = 1-easing.apply((double) 1-newFadeTimeState).floatValue();
-                } else {
-                    newFadeTimeState = 0.0F;
-                    newFadeProgress = 0.0F;
-                }
+                return this.stepBackward(deltaSeconds, easing, oldAnimationState);
             }
         }
-
-        newFadeTimeState = Math.clamp(0, 1, newFadeTimeState);
-        newFadeProgress = Math.clamp(0, 1, newFadeProgress);
-
-        return new AnimationState(newFadeTimeState, newFadeProgress);
+        return oldAnimationState;
     }
 }

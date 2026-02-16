@@ -1,6 +1,7 @@
 package eu.midnightdust.blur.animations;
 
 import eu.midnightdust.blur.config.BlurConfig;
+import org.joml.Math;
 
 public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAnimationHandler<E> {
     private float timeState = 0.0F;
@@ -9,6 +10,36 @@ public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAn
 
     public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
         return oldAnimationState;
+    }
+
+    public AnimationState stepForward(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
+        float newTimeState;
+        float newProgress;
+
+        if (BlurConfig.fadeTimeMillis > 0) {
+            newTimeState = org.joml.Math.clamp(0, 1, oldAnimationState.timeState() + 1000 * deltaSeconds / BlurConfig.fadeTimeMillis);
+            newProgress = Math.clamp(0, 1, easing.apply((double) oldAnimationState.progress()).floatValue());
+        } else {
+            newTimeState = 1.0F;
+            newProgress = 1.0F;
+        }
+
+        return new AnimationState(newTimeState, newProgress);
+    }
+
+    public AnimationState stepBackward(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
+        float newTimeState;
+        float newProgress;
+
+        if (BlurConfig.fadeOutTimeMillis > 0) {
+            newTimeState = org.joml.Math.clamp(0, 1, oldAnimationState.timeState() + 1000 * deltaSeconds / BlurConfig.fadeOutTimeMillis);
+            newProgress = Math.clamp(0, 1, 1 - easing.apply((double) 1 - oldAnimationState.progress()).floatValue());
+        } else {
+            newTimeState = 1.0F;
+            newProgress = 1.0F;
+        }
+
+        return new AnimationState(newTimeState, newProgress);
     }
 
     @Override

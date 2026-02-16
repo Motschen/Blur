@@ -17,20 +17,11 @@ public class GradientAnimationHandler extends AbstractAnimationHandler<GradientA
     private static float hue2 = 0.35F;
 
     @Override
-    public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState state) {
-        float newFadeTimeState = state.timeState();
-        float newFadeProgress = state.progress();
-
+    public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
+        AnimationState newAnimationState = oldAnimationState;
         switch (getState()) {
             case Rainbow -> {
-                if (BlurConfig.fadeTimeMillis > 0) {
-                    newFadeTimeState += deltaSeconds / (BlurConfig.fadeTimeMillis / 1000F);
-                    newFadeTimeState = org.joml.Math.clamp(0, 1, newFadeTimeState);
-                    newFadeProgress = easing.apply((double) newFadeTimeState).floatValue();
-                } else {
-                    newFadeTimeState = 1.0F;
-                    newFadeProgress = 1.0F;
-                }
+                newAnimationState = this.stepForward(deltaSeconds, easing, oldAnimationState);
 
                 // 20 degrees of rotation per second (or 1 degree per tick, same as before)
                 rotation = (rotation + deltaSeconds * 20F) % 360F;
@@ -40,21 +31,11 @@ public class GradientAnimationHandler extends AbstractAnimationHandler<GradientA
                 hue2 = (hue2 + deltaSeconds * 0.2F) % 1.0F;
             }
             case Fixed -> {
-                if (BlurConfig.fadeOutTimeMillis > 0) {
-                    newFadeTimeState -= deltaSeconds / (BlurConfig.fadeOutTimeMillis / 1000F);
-                    newFadeTimeState = org.joml.Math.clamp(0, 1, newFadeTimeState);
-                    newFadeProgress = 1-easing.apply((double) 1-newFadeTimeState).floatValue();
-                } else {
-                    newFadeTimeState = 0.0F;
-                    newFadeProgress = 0.0F;
-                }
+                newAnimationState = this.stepBackward(deltaSeconds, easing, oldAnimationState);
             }
         }
 
-        newFadeTimeState = org.joml.Math.clamp(0, 1, newFadeTimeState);
-        newFadeProgress = Math.clamp(0, 1, newFadeProgress);
-
-        return new AnimationState(newFadeTimeState, newFadeProgress);
+        return newAnimationState;
     }
 
     public Color getFirstColor() {
