@@ -4,21 +4,19 @@ import eu.midnightdust.blur.animations.FadeAnimationState;
 import eu.midnightdust.blur.animations.GradientAnimationState;
 import eu.midnightdust.blur.animations.impl.GradientAnimationHandler;
 import eu.midnightdust.blur.config.BlurConfig;
-//? if > 1.21.5 {
-import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
-import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
-//?}
 import eu.midnightdust.blur.animations.impl.FadeAnimationHandler;
 import net.minecraft.client.Minecraft;
-import org.joml.Math;
-
-import java.awt.Color;
-
 import net.minecraft.client.gui.GuiGraphics;
+
+import java.awt.*;
+
+import org.joml.Math;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //? if > 1.21.5 {
+import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
+import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
 import org.joml.Matrix3x2f;
 //?} else {
 /*import org.joml.Matrix4f;
