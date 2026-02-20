@@ -2,39 +2,73 @@ package eu.midnightdust.blur.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import eu.midnightdust.blur.animations.impl.FadeAnimationState;
 import eu.midnightdust.blur.config.BlurConfig;
+import eu.midnightdust.blur.util.DebugHudRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 
 import eu.midnightdust.blur.Blur;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.awt.*;
+
 @Mixin(Screen.class)
 public abstract class MixinScreen {
     @Shadow protected Minecraft minecraft;
     @Shadow protected abstract void renderBlurredBackground(/*? if > 1.21.5 {*/ GuiGraphics context /*?} else if <= 1.21.1 {*/ /*float delta *//*?}*/);
 
+    @Inject(
+            at = @At("TAIL"),
+            //? if > 1.21.8 {
+            method = "renderWithTooltipAndSubtitles"
+            //?} else if > 1.21.1 {
+             /*method = "renderWithTooltip"
+            *///?} else {
+             /*method = "render"
+            *///?}
+    )
+    public void blur$renderDebugHud(GuiGraphics context, int i, int j, float f, CallbackInfo ci) {
+        if (BlurConfig.showScreenID && minecraft.screen != null) {
+            DebugHudRenderer.renderLine(context, minecraft.font, minecraft.screen.getClass().getCanonicalName(), 2, new Color(0xff80dfff), true);
+        }
+    }
+
     @Inject(at = @At("HEAD"), method = "renderBlurredBackground")
     public void blur$onRenderBlurredBackground(CallbackInfo ci) {
         // if the screen tries to call `renderBlurredBackground` we can determine the screen had a blurred background,
         // and we can set the blur animation to fade-in mode
-        Blur.blurAnimation.enabled = true;
+        Blur.blurRadiusAnimation.setState(FadeAnimationState.FadeIn);
     }
 
-    @Inject(at = @At("HEAD"), method = {
-            "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;)V", // used by screens while not in a level
-            "renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V"  // used by screens while in a level
-    })
+    @Inject(
+            at = @At("HEAD"),
+            method = "renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V" // used by screens while in a level
+    )
     private void blur$onScreenBackground(GuiGraphics context, CallbackInfo ci) {
+        blur$onRenderBackground(context);
+    }
+
+    @Inject(
+            at = @At("HEAD"),
+            method = "renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V" // used by screens while not in a level
+    )
+    private void blur$onScreenBackground(GuiGraphics context, int i, int j, int k, int l, CallbackInfo ci) {
+        blur$onRenderBackground(context);
+    }
+
+    @Unique
+    private void blur$onRenderBackground(GuiGraphics context) {
         // if the screen tries to call this function we can determine the screen had a background, and we can set the
         // background animation to fade-in mode
-        Blur.backgroundAnimation.enabled = true;
+        Blur.backgroundAlphaAnimation.setState(FadeAnimationState.FadeIn);
 
         // also draw a blurred background for forceEnabledScreens that are not also in forceDisabledScreens and only if
         // we can apply blur at all, this must be before we draw the background

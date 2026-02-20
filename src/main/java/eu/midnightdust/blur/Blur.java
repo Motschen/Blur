@@ -1,27 +1,22 @@
 package eu.midnightdust.blur;
 
+import eu.midnightdust.blur.animations.impl.FadeAnimationState;
+import eu.midnightdust.blur.animations.impl.GradientAnimationState;
+import eu.midnightdust.blur.animations.impl.GradientAnimationHandler;
 import eu.midnightdust.blur.config.BlurConfig;
-//? if > 1.21.5 {
-import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
-import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
-//?}
-import eu.midnightdust.blur.util.AnimationHandler;
-import eu.midnightdust.blur.util.RainbowColor;
-import eu.midnightdust.blur.util.TimingHandler;
-import eu.midnightdust.lib.util.MidnightColorUtil;
+import eu.midnightdust.blur.animations.impl.FadeAnimationHandler;
 import net.minecraft.client.Minecraft;
-import org.joml.Math;
-
-import java.awt.Color;
-
 import net.minecraft.client.gui.GuiGraphics;
+
+import java.awt.*;
+
+import org.joml.Math;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static eu.midnightdust.blur.util.RainbowColor.hue;
-import static eu.midnightdust.blur.util.RainbowColor.hue2;
-
 //? if > 1.21.5 {
+import eu.midnightdust.blur.mixin.GuiGraphicsAccessor;
+import eu.midnightdust.blur.mixin.GuiRenderStateAccessor;
 import org.joml.Matrix3x2f;
 //?} else {
 /*import org.joml.Matrix4f;
@@ -33,10 +28,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //?} else if neoforge {
 /*import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 *///?}
 
 
@@ -49,11 +41,28 @@ public class Blur {
 
     public static Minecraft minecraft = Minecraft.getInstance();
 
-    private static final TimingHandler timingHandler = new TimingHandler();
-    public static final AnimationHandler blurAnimation = new AnimationHandler();
-    public static final AnimationHandler backgroundAnimation = new AnimationHandler();
+    public static final FadeAnimationHandler blurRadiusAnimation = new FadeAnimationHandler();
+    public static final FadeAnimationHandler backgroundAlphaAnimation = new FadeAnimationHandler();
+    public static final GradientAnimationHandler gradientAnimation = new GradientAnimationHandler();
+
     public static boolean isProcessingRenderPass = false;
     public static boolean forceRenderedBackground = false;
+
+    public static float getGameTimeDeltaTicks() {
+        //? if >= 1.21.5 {
+        return minecraft.getDeltaTracker().getGameTimeDeltaTicks();
+        //?} else {
+        /*return minecraft.getTimer().getGameTimeDeltaTicks();
+        *///?}
+    }
+
+    public static float getRealtimeDeltaTicks() {
+        //? if >= 1.21.5 {
+        return minecraft.getDeltaTracker().getRealtimeDeltaTicks();
+        //?} else {
+        /*return minecraft.getTimer().getRealtimeDeltaTicks();
+         *///?}
+    }
 
     public static boolean canBlur(GuiGraphics graphics) {
         //? if > 1.21.5 {
@@ -77,22 +86,25 @@ public class Blur {
         }
         if (!isProcessingRenderPass) {
             isProcessingRenderPass = true;
-            blurAnimation.enabled = false;
-            backgroundAnimation.enabled = false;
+            blurRadiusAnimation.setState(FadeAnimationState.FadeOut);
+            backgroundAlphaAnimation.setState(FadeAnimationState.FadeOut);
             forceRenderedBackground = false;
         } else {
-            Blur.LOGGER.debug("onRender has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
+            Blur.LOGGER.debug("onRender has been called multiple times in one render pass: {}, " +
+                            "blur radius animation state: {}, background alpha animation state: {}",
+                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+            );
         }
     }
 
     public static void renderBlurredBackground(GuiGraphics context) {
-        if (blurAnimation.progress < 0.001F) return; // there's no blur to apply
+        if (blurRadiusAnimation.getProgress() < 0.001F) return; // there's no blur to apply
 
         //? if > 1.21.5 {
         if (Blur.canBlur(context))
             context.blurBeforeThisStratum();
         //?} else {
-            /*minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^minecraft.getTimer().getGameTimeDeltaTicks() ^//^?}^/);
+            /*minecraft.gameRenderer.processBlurEffect(/^? if <= 1.21.1 {^/ /^getGameTimeDeltaTicks() ^//^?}^/);
             /^? if <= 1.21.1 {^/ /^minecraft.getMainRenderTarget().bindWrite(false); ^//^?}^/
         *///?}
     }
@@ -103,31 +115,28 @@ public class Blur {
             Blur.renderRotatedGradient(context);
             forceRenderedBackground = true;
         } else {
-            Blur.LOGGER.debug("renderBackground has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
+            Blur.LOGGER.debug("renderBackground has been called multiple times in one render pass: {}, " +
+                            "blur radius animation state: {}, background alpha animation state: {}",
+                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+            );
         }
     }
 
     public static int getBackgroundGradiantColor(boolean second) {
-        int alpha = (int) (backgroundAnimation.progress * (second ? BlurConfig.gradientEndAlpha : BlurConfig.gradientStartAlpha));
-        Color color;
-        if (BlurConfig.rainbowMode) {
-            color = Color.getHSBColor(second ? hue: hue2, 1, 1);
-        } else {
-            color = MidnightColorUtil.hex2Rgb(second ? BlurConfig.gradientEnd : BlurConfig.gradientStart);
-        }
+        Color color = second ? gradientAnimation.getSecoundColor() : gradientAnimation.getFirstColor();
         int red = color.getRed();
         int blue = color.getBlue();
         int green = color.getGreen();
+        int alpha = (int) (backgroundAlphaAnimation.getProgress() * color.getAlpha());
         return alpha << 24 | red << 16 | blue << 8 | green;
     }
 
     public static int getBackgroundGradiantRotation() {
-        if (BlurConfig.rainbowMode) return RainbowColor.rotation;
-        return BlurConfig.gradientRotation;
+        return (int) gradientAnimation.getRotation();
     }
 
     public static void renderRotatedGradient(GuiGraphics context) {
-        if (!BlurConfig.useGradient || backgroundAnimation.progress < 0.001F) return;  // there's no gradient to draw
+        if (!BlurConfig.useGradient || backgroundAlphaAnimation.getProgress() < 0.001F) return;  // there's no gradient to draw
 
         int width = context.guiWidth();
         int height = context.guiHeight();
@@ -157,6 +166,13 @@ public class Blur {
         *///?}
     }
 
+    public static void updateAnimations() {
+        float deltaTimeSeconds = getRealtimeDeltaTicks() / 20F;
+        blurRadiusAnimation.updateAnimation(deltaTimeSeconds, BlurConfig.blurAnimationCurve);
+        backgroundAlphaAnimation.updateAnimation(deltaTimeSeconds, BlurConfig.backgroundAnimationCurve);
+        gradientAnimation.updateAnimation(deltaTimeSeconds, BlurConfig.backgroundAnimationCurve); // TODO: should we define another curve?
+    }
+
     public static void onRenderEnd() {
         if (minecraft == null) {
             minecraft = Minecraft.getInstance();
@@ -170,8 +186,10 @@ public class Blur {
         // by this time we must have determined whether the screen had a background or not, so we can handle the fade
         // animation calculations for this screen
         if (isProcessingRenderPass) {
-            Blur.LOGGER.debug("processed render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
-
+            Blur.LOGGER.debug("processed render pass: {}," +
+                            "blur radius animation state: {}, background alpha animation state: {}",
+                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+            );
             String screenName = null;
             if (minecraft.screen != null) {
                 screenName = minecraft.screen.getClass().getCanonicalName();
@@ -179,23 +197,27 @@ public class Blur {
 
             // force a background fade-in animation for forceEnabledScreens
             if (screenName != null &&BlurConfig.forceEnabledScreens.contains(screenName)) {
-                blurAnimation.enabled = true;
-                backgroundAnimation.enabled = true;
+                blurRadiusAnimation.setState(FadeAnimationState.FadeIn);
+                backgroundAlphaAnimation.setState(FadeAnimationState.FadeIn);
             }
 
             // force a background fade-out animation for forceDisabledScreens
             if (screenName != null && BlurConfig.forceDisabledScreens.contains(screenName)) {
-                blurAnimation.enabled = false;
-                backgroundAnimation.enabled = false;
+                blurRadiusAnimation.setState(FadeAnimationState.FadeOut);
+                backgroundAlphaAnimation.setState(FadeAnimationState.FadeOut);
             }
 
-            long deltaTime = timingHandler.getDeltaTimeNanos();
-            blurAnimation.updateAnimation(deltaTime, BlurConfig.blurAnimationCurve);
-            backgroundAnimation.updateAnimation(deltaTime, BlurConfig.backgroundAnimationCurve);
+            // update gradientAnimation state from config
+            gradientAnimation.setState(BlurConfig.rainbowMode ? GradientAnimationState.Rainbow : GradientAnimationState.Fixed);
+
+            updateAnimations();
 
             isProcessingRenderPass = false;
         }  else {
-            Blur.LOGGER.debug("onRenderEnd has been called multiple times in one render pass: {}, has blur: {}, has background: {}", minecraft.screen, blurAnimation.enabled, backgroundAnimation.enabled);
+            Blur.LOGGER.debug("onRenderEnd has been called multiple times in one render pass: {}," +
+                            "blur radius animation state: {}, background alpha animation state: {}",
+                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+            );
         }
     }
 
@@ -205,9 +227,10 @@ public class Blur {
         public void onInitialize() {
             Blur.init();
         }
+
         @Override
         public void onInitializeClient() {
-            ClientTickEvents.END_CLIENT_TICK.register(client -> RainbowColor.tick());
+            Blur.init();
         }
     }
     //?} else if neoforge {
@@ -215,14 +238,6 @@ public class Blur {
     public static class BlurNeoForge {
         public BlurNeoForge() {
             Blur.init();
-        }
-
-        @EventBusSubscriber(modid = Blur.MOD_ID, value = Dist.CLIENT)
-        public static class ClientGameEvents {
-            @SubscribeEvent
-            public static void endClientTick(ClientTickEvent.Post event) {
-                RainbowColor.tick();
-            }
         }
     }
     *///?}
