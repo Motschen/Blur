@@ -37,6 +37,12 @@ public class Blur {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static void init() {
         BlurConfig.init(MOD_ID, BlurConfig.class);
+        if (BlurConfig.configVersion < 3) {
+            BlurConfig.forceEnabledScreens.add("mezz.jei.gui.recipes.RecipesGui");
+            BlurConfig.forceEnabledScreens.add("me.shedaniel.rei.impl.client.gui.screen.DefaultDisplayViewingScreen");
+            BlurConfig.configVersion = 3;
+            BlurConfig.write(MOD_ID);
+        }
     }
 
     public static Minecraft minecraft = Minecraft.getInstance();

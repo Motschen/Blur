@@ -19,7 +19,7 @@ public class BlurConfig extends MidnightConfig {
     public static final String ANIMATIONS = "animations";
     public static final String STYLE = "style";
     public static final String SCREENS = "screens";
-    @Entry @Hidden public static int configVersion = 2;
+    @Entry @Hidden public static int configVersion = 3;
 
     @Comment(category = SCREENS, centered = true)
     public static Comment _general;
@@ -40,7 +40,7 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = SCREENS)
     public static boolean showScreenID = false;
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force enabled
-    public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen");
+    public static List<String> forceEnabledScreens = Lists.newArrayList("dev.emi.emi.screen.RecipeScreen", "mezz.jei.gui.recipes.RecipesGui", "me.shedaniel.rei.impl.client.gui.screen.DefaultDisplayViewingScreen");
     @Entry(category = SCREENS) // Screens where the vanilla blur effect should be force disabled
     public static List<String> forceDisabledScreens = Lists.newArrayList("net.irisshaders.iris.gui.screen.ShaderPackScreen");
 
