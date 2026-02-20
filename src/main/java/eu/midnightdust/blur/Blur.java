@@ -222,7 +222,12 @@ public class Blur {
     }
 
     //? fabric {
-    public static class BlurFabric implements ClientModInitializer {
+    public static class BlurFabric implements ModInitializer, ClientModInitializer {
+        @Override
+        public void onInitialize() {
+            Blur.init();
+        }
+
         @Override
         public void onInitializeClient() {
             Blur.init();
