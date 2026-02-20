@@ -131,10 +131,10 @@ public class Blur {
     public static int getBackgroundGradiantColor(boolean second) {
         Color color = second ? gradientAnimation.getSecoundColor() : gradientAnimation.getFirstColor();
         int red = color.getRed();
-        int blue = color.getBlue();
         int green = color.getGreen();
+        int blue = color.getBlue();
         int alpha = (int) (backgroundAlphaAnimation.getProgress() * color.getAlpha());
-        return alpha << 24 | red << 16 | blue << 8 | green;
+        return alpha << 24 | red << 16 | green << 8 | blue;
     }
 
     public static int getBackgroundGradiantRotation() {
