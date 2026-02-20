@@ -1,3 +1,17 @@
+# Blur+ v6.2.0
+- REI and JEI recipe screens will now be blurred by default
+- Fix gradient colors being decoded incorrectly
+
+Huge thanks to [@amiralimollaei](https://github.com/amiralimollaei) for submitting the following changes as a [pull request](https://github.com/Motschen/Blur/pull/157):
+- Fix background gradient fading out on some screens that shouldn't fade out (world creation screen, statistics screen, etc.)
+- refactor all animations with more abstractions that makes it possible to have more than 2 states in the animations in the future
+- Removed `AnimationHandler.java` and `RainbowColor.java` as we now implement all animations in the `animations.impl` package
+- Removed `TimingHandler.java` as we now use Minecraft's built-in timer for all animations
+- Added `AbstractAnimationHandler.java`, `AnimationState.java`, and `IAnimationHandler.java`, and their implementations `FadeAnimationState.java`, `GradientAnimationState.java`, `FadeAnimationHandler.java` and `GradientAnimationHandler.java`
+- Added `DebugHudRenderer.java` for rendering debug lines
+- Added a new animation for enabling or disabling rainbow mode in the config
+- Added a debug HUD (option in the configuration screen) that shows the ID of the current screen in the top left corner of the game window
+
 # Blur+ v6.1.0
 Huge thanks to [@amiralimollaei](https://github.com/amiralimollaei) for submitting these changes as a [pull request](https://github.com/Motschen/Blur/pull/156), once again!
 
