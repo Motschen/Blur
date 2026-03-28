@@ -2,7 +2,7 @@ package eu.midnightdust.blur.mixin;
 //? if > 1.21.5 {
 import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.config.BlurConfig;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookSignScreen;
 import net.minecraft.network.chat.Component;
@@ -18,16 +18,20 @@ public class MixinBookSignScreen extends Screen {
     }
 
     // forces book sign screen (1.21.5+) to also render a blurred background
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor' {
+    //~ if >= 26.1 'render' -> 'extract' {
     @Inject(
-            method = "renderBackground",
+            method = "extractBackground",
             at = @At(
                     value = "INVOKE",
-                    target = /*? if > 1.21.8 {*/ "Lnet/minecraft/client/gui/screens/Screen;renderBackground(Lnet/minecraft/client/gui/GuiGraphics;IIF)V" /*?} else {*/ /*"Lnet/minecraft/client/gui/screens/inventory/BookSignScreen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V" *//*?}*/
+                    target = /*? if > 1.21.8 {*/ "Lnet/minecraft/client/gui/screens/Screen;extractBackground(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V" /*?} else {*/ /*"Lnet/minecraft/client/gui/screens/inventory/BookSignScreen;extractTransparentBackground(Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V" *//*?}*/
             )
     )
-    private void blur$renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (BlurConfig.blurBooks && Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
+    private void blur$extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (BlurConfig.blurBooks && Blur.canBlur(context)) this.extractBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
+    //~}
+    //~}
 }
 //?} else {
 /*import eu.midnightdust.core.MidnightLib;

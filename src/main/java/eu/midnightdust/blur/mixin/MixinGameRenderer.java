@@ -3,7 +3,7 @@ package eu.midnightdust.blur.mixin;
 import eu.midnightdust.blur.Blur;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.GameRenderer;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -22,20 +22,23 @@ public class MixinGameRenderer {
     private Minecraft minecraft;
 
     // calls `onRender` at the start of a render pass
-    @Inject(at = @At("HEAD"), method = "render")
+    //~ if >= 26.1 'render' -> 'extract'
+    @Inject(at = @At("HEAD"), method = "extract")
     public void blur$onRender(DeltaTracker deltaTracker, boolean bl, CallbackInfo ci) {
         Blur.onRender();
     }
 
     // calls `onRenderEnd` at the end of a render pass
-    @Inject(at = @At("TAIL"), method = "render")
+    //~ if >= 26.1 'render' -> 'extract'
+    @Inject(at = @At("TAIL"), method = "extract")
     public void blur$onRenderEnd(DeltaTracker deltaTracker, boolean bl, CallbackInfo ci) {
         Blur.onRenderEnd();
     }
 
     // before beginning to render a screen, if we're in a level and there's no screens, we draw our own background
     @ModifyVariable(
-            method = "render",
+            //~ if >= 26.1 'render' -> 'extractGui'
+            method = "extractGui",
             at = @At(
                     value = "FIELD",
                     target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;",
@@ -44,7 +47,8 @@ public class MixinGameRenderer {
             ),
             ordinal = 0
     )
-    public GuiGraphics blur$beforeRenderScreen1(GuiGraphics context) {
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
+    public GuiGraphicsExtractor blur$beforeRenderScreen1(GuiGraphicsExtractor context) {
         if (minecraft.screen == null && minecraft.level != null) {
             //? if > 1.21.5 {
             context.nextStratum();  // actually draw the background on EVERYTHING behind it

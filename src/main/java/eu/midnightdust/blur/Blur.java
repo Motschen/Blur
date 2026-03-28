@@ -6,7 +6,7 @@ import eu.midnightdust.blur.animations.impl.GradientAnimationHandler;
 import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.blur.animations.impl.FadeAnimationHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.awt.*;
 
@@ -70,7 +70,8 @@ public class Blur {
          *///?}
     }
 
-    public static boolean canBlur(GuiGraphics graphics) {
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
+    public static boolean canBlur(GuiGraphicsExtractor graphics) {
         //? if > 1.21.5 {
         return ((GuiRenderStateAccessor) ((GuiGraphicsAccessor) graphics).getGuiRenderState()).getFirstStratumAfterBlur() == Integer.MAX_VALUE;
         //?} else {
@@ -103,7 +104,8 @@ public class Blur {
         }
     }
 
-    public static void renderBlurredBackground(GuiGraphics context) {
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
+    public static void renderBlurredBackground(GuiGraphicsExtractor context) {
         if (blurRadiusAnimation.getProgress() < 0.001F) return; // there's no blur to apply
 
         //? if > 1.21.5 {
@@ -115,7 +117,8 @@ public class Blur {
         *///?}
     }
 
-    public static void renderBackground(GuiGraphics context) {
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
+    public static void renderBackground(GuiGraphicsExtractor context) {
         if (!forceRenderedBackground) {
             Blur.renderBlurredBackground(context);
             Blur.renderRotatedGradient(context);
@@ -141,7 +144,8 @@ public class Blur {
         return (int) gradientAnimation.getRotation();
     }
 
-    public static void renderRotatedGradient(GuiGraphics context) {
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
+    public static void renderRotatedGradient(GuiGraphicsExtractor context) {
         if (!BlurConfig.useGradient || backgroundAlphaAnimation.getProgress() < 0.001F) return;  // there's no gradient to draw
 
         int width = context.guiWidth();

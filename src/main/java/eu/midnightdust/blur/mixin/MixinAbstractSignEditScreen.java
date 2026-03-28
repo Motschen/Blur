@@ -2,7 +2,7 @@ package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.config.BlurConfig;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
 import net.minecraft.network.chat.Component;
@@ -18,8 +18,12 @@ public class MixinAbstractSignEditScreen extends Screen {
     }
 
     // forces sign edit screen to also render a blurred background
-    @Inject(method = /*? if > 1.21.5 {*/ "render" /*?} else {*/ /*"renderBackground" *//*?}*/, at = @At(value = "TAIL"))
-    private void blur$renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (BlurConfig.blurSigns && Blur.canBlur(context)) this.renderBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor' {
+    @Inject(method = /*? if >= 26.1 {*/"extractRenderState"/*?} else if > 1.21.5 {*//*"render"*//*?} else {*/ /*"renderBackground" *//*?}*/, at = @At(value = "TAIL"))
+    //~ if >= 26.1 'render' -> 'extract' {
+    private void blur$extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (BlurConfig.blurSigns && Blur.canBlur(context)) this.extractBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
+    //~}
+    //~}
 }

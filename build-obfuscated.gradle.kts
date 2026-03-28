@@ -1,8 +1,6 @@
 plugins {
-    id("dev.architectury.loom")
-    id("architectury-plugin")
+    id("dev.architectury.loom") version "1.13-SNAPSHOT"
     id("me.modmuss50.mod-publish-plugin")
-    id("com.github.johnrengelman.shadow")
     `maven-publish`
 }
 
@@ -42,19 +40,6 @@ dependencies {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader")}")
     }
     mappings (loom.officialMojangMappings())
-}
-
-loom {
-    //accessWidenerPath = rootProject.file("src/main/resources/template.accesswidener")
-
-    decompilers {
-        get("vineflower").apply { // Adds names to lambdas - useful for mixins
-            options.put("mark-corresponding-synthetics", "1")
-        }
-    }
-    if (loader == "forge") {
-        forge.mixinConfigs("cullleaves.mixins.json", "cullleaves-neoforge.mixins.json")
-    }
 }
 
 publishMods {
@@ -137,21 +122,11 @@ java {
     sourceCompatibility = java
 }
 
-val shadowBundle: Configuration by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-
-tasks.shadowJar {
-    configurations = listOf(shadowBundle)
-    archiveClassifier = "dev-shadow"
-}
-
 tasks.remapJar {
     injectAccessWidener = true
-    input = tasks.shadowJar.get().archiveFile
+    input = tasks.jar.get().archiveFile
     archiveClassifier = null
-    dependsOn(tasks.shadowJar)
+    dependsOn(tasks.jar)
 }
 
 tasks.jar {
@@ -210,17 +185,5 @@ tasks.build {
 stonecutter {
     constants {
         arrayOf("fabric", "neoforge").forEach { it -> put(it, loader == it) }
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21.11")
-        replace("ResourceLocation", "Identifier")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21")
-        replace("new ResourceLocation", "ResourceLocation.fromNamespaceAndPath")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21")
-        replace("me.jellysquid.mods.sodium", "net.caffeinemc.mods.sodium")
     }
 }

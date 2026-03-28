@@ -2,7 +2,7 @@ package eu.midnightdust.blur.util;
 
 import com.google.common.base.Strings;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.awt.*;
 import java.util.Objects;
@@ -13,7 +13,8 @@ public class DebugHudRenderer {
     public static final int BACKGROUND_ALPHA = 0x90;
     public static final int LINE_HEIGHT = 9;
 
-    public static void renderLine(GuiGraphics graphics, Font font, String text, int lineY, Color color, boolean left) {
+    //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
+    public static void renderLine(GuiGraphicsExtractor graphics, Font font, String text, int lineY, Color color, boolean left) {
         if (Strings.isNullOrEmpty(text)) return;
         Objects.requireNonNull(font);
 
@@ -27,6 +28,7 @@ public class DebugHudRenderer {
                 BACKGROUND_ALPHA
         );
         graphics.fill(lineX - 1, lineY - 1, lineX + lineWidth + 1, lineY + LINE_HEIGHT - 1, backgroundColor.getRGB());
-        graphics.drawString(font, text, lineX, lineY, lineColor.getRGB(), false);
+        //~ if >= 26.1 '.drawString' -> '.text'
+        graphics.text(font, text, lineX, lineY, lineColor.getRGB(), false);
     }
 }
