@@ -12,6 +12,8 @@
     "MixinBookEditScreen",
     "MixinBookSignScreen",
     "MixinBookViewScreen",
+    "MixinDeathScreen",
+    "MixinDeathScreen$MixinTitleConfirmScreen",
     "MixinGameRenderer",
     "MixinOptions",
     "MixinScreen",

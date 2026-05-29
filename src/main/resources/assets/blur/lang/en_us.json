@@ -6,6 +6,7 @@
   "blur.midnightconfig.blurContainers": "Apply Blur to Containers",
   "blur.midnightconfig.blurBooks": "Apply Blur to Books",
   "blur.midnightconfig.blurCommandBlocks": "Apply Blur to Command Blocks",
+  "blur.midnightconfig.blurDeathScreen": "Apply Blur to Death Screen",
   "blur.midnightconfig.blurSigns": "Apply Blur to Signs",
   "blur.midnightconfig.blurTitleScreen": "Apply Blur to Title Screen",
   "blur.midnightconfig.darkenTitleScreen": "Darken Title Screen Background",
