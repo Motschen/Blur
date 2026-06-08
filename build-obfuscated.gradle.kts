@@ -35,6 +35,9 @@ dependencies {
     if (loader == "fabric") {
         modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
         modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_version")}")
+
+        // ModMenu
+        modImplementation("com.terraformersmc:modmenu:${mod.dep("modmenu_version")}")
     }
     if (loader == "neoforge") {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader")}")

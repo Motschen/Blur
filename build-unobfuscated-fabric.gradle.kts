@@ -38,6 +38,9 @@ dependencies {
     }
     include(midnightlib)
 
+    // ModMenu
+    implementation("com.terraformersmc:modmenu:${mod.dep("modmenu_version")}")
+
     if (loader == "fabric") {
         implementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
         implementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_version")}")
@@ -74,7 +77,7 @@ publishMods {
 
     curseforge {
         projectId = property("publish.curseforge").toString()
-        accessToken = curseforgeToken.toString()
+        accessToken = curseforgeToken
         targets.forEach(minecraftVersions::add)
         if (loader == "fabric") {
             requires("fabric-api")

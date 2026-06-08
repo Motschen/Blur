@@ -50,9 +50,6 @@ public class MixinGameRenderer {
     //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
     public GuiGraphicsExtractor blur$beforeRenderScreen1(GuiGraphicsExtractor context) {
         if (minecraft.screen == null && minecraft.level != null) {
-            //? if > 1.21.5 {
-            context.nextStratum();  // actually draw the background on EVERYTHING behind it
-            //?}
             Blur.renderBackground(context);
         }
         return context;

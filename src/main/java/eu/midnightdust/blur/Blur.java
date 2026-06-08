@@ -119,6 +119,9 @@ public class Blur {
 
     //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
     public static void renderBackground(GuiGraphicsExtractor context) {
+        //? if > 1.21.5 {
+        context.nextStratum();  // actually draw the background on EVERYTHING behind it
+        //?}
         if (!forceRenderedBackground) {
             Blur.renderBlurredBackground(context);
             Blur.renderRotatedGradient(context);
