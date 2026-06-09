@@ -9,6 +9,7 @@
   "blur.midnightconfig.blurDeathScreen": "Apply Blur to Death Screen",
   "blur.midnightconfig.blurSigns": "Apply Blur to Signs",
   "blur.midnightconfig.blurTitleScreen": "Apply Blur to Title Screen",
+  "blur.midnightconfig.reduceInGameBlur": "Reduce Blur on In-Game Screens",
   "blur.midnightconfig.darkenTitleScreen": "Darken Title Screen Background",
   "blur.midnightconfig.fadeTimeMillis": "Fade Time (in milliseconds)",
   "blur.midnightconfig.fadeOutTimeMillis": "Fade Out Time (in milliseconds)",

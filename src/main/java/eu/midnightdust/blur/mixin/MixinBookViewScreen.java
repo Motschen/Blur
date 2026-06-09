@@ -28,6 +28,7 @@ public class MixinBookViewScreen extends Screen {
             )
     )
     private void blur$extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (BlurConfig.reduceInGameBlur) Blur.reducedBlur = true;
         if (BlurConfig.blurBooks && Blur.canBlur(context)) this.extractBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
     //~}

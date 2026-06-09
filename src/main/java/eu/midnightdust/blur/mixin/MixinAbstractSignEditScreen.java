@@ -22,6 +22,7 @@ public class MixinAbstractSignEditScreen extends Screen {
     @Inject(method = /*? if >= 26.1 {*/"extractRenderState"/*?} else if > 1.21.5 {*//*"render"*//*?} else {*/ /*"renderBackground" *//*?}*/, at = @At(value = "TAIL"))
     //~ if >= 26.1 'render' -> 'extract' {
     private void blur$extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (BlurConfig.reduceInGameBlur) Blur.reducedBlur = true;
         if (BlurConfig.blurSigns && Blur.canBlur(context)) this.extractBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
     //~}

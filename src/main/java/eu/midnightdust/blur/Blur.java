@@ -1,10 +1,7 @@
 package eu.midnightdust.blur;
 
-import eu.midnightdust.blur.animations.impl.FadeAnimationTarget;
-import eu.midnightdust.blur.animations.impl.GradientAnimationTarget;
-import eu.midnightdust.blur.animations.impl.GradientAnimationHandler;
+import eu.midnightdust.blur.animations.impl.*;
 import eu.midnightdust.blur.config.BlurConfig;
-import eu.midnightdust.blur.animations.impl.FadeAnimationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
@@ -46,12 +43,13 @@ public class Blur {
 
     public static Minecraft minecraft = Minecraft.getInstance();
 
-    public static final FadeAnimationHandler blurRadiusAnimation = new FadeAnimationHandler();
-    public static final FadeAnimationHandler backgroundAlphaAnimation = new FadeAnimationHandler();
+    public static final BlurRadiusAnimationHandler blurRadiusAnimation = new BlurRadiusAnimationHandler();
+    public static final BackgroundAlphaAnimationHandler backgroundAlphaAnimation = new BackgroundAlphaAnimationHandler();
     public static final GradientAnimationHandler gradientAnimation = new GradientAnimationHandler();
 
     public static boolean isProcessingRenderPass = false;
     public static boolean forceRenderedBackground = false;
+    public static boolean reducedBlur = false;
 
     public static float getGameTimeDeltaTicks() {
         //? if >= 1.21.5 {
@@ -92,9 +90,10 @@ public class Blur {
         }
         if (!isProcessingRenderPass) {
             isProcessingRenderPass = true;
-            blurRadiusAnimation.setTarget(FadeAnimationTarget.FadeOut);
-            backgroundAlphaAnimation.setTarget(FadeAnimationTarget.FadeOut);
+            blurRadiusAnimation.setTarget(BlurRadiusAnimationTarget.FadeOut);
+            backgroundAlphaAnimation.setTarget(BackgroundAlphaAnimationTarget.FadeOut);
             forceRenderedBackground = false;
+            reducedBlur = false;
         } else {
             Blur.LOGGER.debug("onRender has been called multiple times in one render pass: {}, " +
                             "blur radius animation target: {}, background alpha animation target: {}",
@@ -209,14 +208,14 @@ public class Blur {
 
             // force a background fade-in animation for forceEnabledScreens
             if (screenName != null &&BlurConfig.forceEnabledScreens.contains(screenName)) {
-                blurRadiusAnimation.setTarget(FadeAnimationTarget.FadeIn);
-                backgroundAlphaAnimation.setTarget(FadeAnimationTarget.FadeIn);
+                blurRadiusAnimation.setTarget(BlurRadiusAnimationTarget.FadeIn);
+                backgroundAlphaAnimation.setTarget(BackgroundAlphaAnimationTarget.FadeIn);
             }
 
             // force a background fade-out animation for forceDisabledScreens
             if (screenName != null && BlurConfig.forceDisabledScreens.contains(screenName)) {
-                blurRadiusAnimation.setTarget(FadeAnimationTarget.FadeOut);
-                backgroundAlphaAnimation.setTarget(FadeAnimationTarget.FadeOut);
+                blurRadiusAnimation.setTarget(BlurRadiusAnimationTarget.FadeOut);
+                backgroundAlphaAnimation.setTarget(BackgroundAlphaAnimationTarget.FadeOut);
             }
 
             // update gradientAnimation target from config

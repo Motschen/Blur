@@ -1,6 +1,5 @@
 package eu.midnightdust.blur.animations.impl;
 
-import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.animations.AbstractAnimationHandler;
 import eu.midnightdust.blur.animations.AnimationState;
 import eu.midnightdust.blur.animations.IAnimationHandler;
@@ -8,12 +7,26 @@ import eu.midnightdust.blur.config.BlurConfig;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class GradientAnimationHandler extends AbstractAnimationHandler<GradientAnimationTarget> implements IAnimationHandler<GradientAnimationTarget> {
     private static float rotation = (float) BlurConfig.gradientRotation;
     private static float hue1 = 0.0F;
     private static float hue2 = 0.35F;
+
+    @Override
+    public int getFadeTimeMillis() {
+        switch (getTarget()) {
+            case Rainbow -> {
+                return BlurConfig.fadeTimeMillis;
+            }
+            case Fixed -> {
+                return BlurConfig.fadeOutTimeMillis;
+            }
+            case null -> {
+                return BlurConfig.fadeTimeMillis;
+            }
+        }
+    }
 
     @Override
     public AnimationState<GradientAnimationTarget> stepAnimation(float deltaSeconds, BlurConfig.Easing easing) {
