@@ -2,13 +2,10 @@ package eu.midnightdust.blur.animations;
 
 import eu.midnightdust.blur.config.BlurConfig;
 
-public interface IAnimationHandler<E extends Enum<E>> {
+public interface IAnimationHandler<E extends Enum<E> & IEnumAnimationTarget> {
     void updateAnimation(float deltaSeconds, BlurConfig.Easing easing);
-    default void updateAnimation(float deltaSeconds) {
-        updateAnimation(deltaSeconds, BlurConfig.Easing.FLAT);
-    }
-    void setState(E state);
+    void setTarget(E target);
     float getTimeState();
-    float getProgress();
-    E getState();
+    float getCurrentValue();
+    E getTarget();
 }

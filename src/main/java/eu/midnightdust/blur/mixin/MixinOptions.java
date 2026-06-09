@@ -27,6 +27,6 @@ public abstract class MixinOptions {
     // applies our blur radius coefficient to getMenuBackgroundBlurriness method
     @ModifyReturnValue(method = "getMenuBackgroundBlurriness", at = @At(value = "RETURN"))
     private int blur$applyMenuBackgroundBlurCoefficient(int original) {
-        return (int) (original * Blur.blurRadiusAnimation.getProgress());
+        return (int) (original * Blur.blurRadiusAnimation.getCurrentValue());
     }
 }

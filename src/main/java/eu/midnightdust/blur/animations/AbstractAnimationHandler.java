@@ -1,73 +1,71 @@
 package eu.midnightdust.blur.animations;
 
+import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.config.BlurConfig;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 
-public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAnimationHandler<E> {
-    private float timeState = 0.0F;
-    private float progress = 0.0F;
-    private E state = null;
 
-    public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
-        return oldAnimationState;
-    }
+public abstract class AbstractAnimationHandler<E extends Enum<E> & IEnumAnimationTarget> implements IAnimationHandler<E> {
+    private AnimationState<E> state = new AnimationState<E>(
+            0.0F,
+            0.0F,
+            0.0F,
+            null
+    );
+    private E newTarget = null;
 
-    public AnimationState stepForward(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
-        float newTimeState;
-        float newProgress;
+    public AnimationState<E> stepAnimation(float deltaSeconds, BlurConfig.Easing easing) {
+        float newTimeState = Math.clamp(0, 1, getTimeState() + (1000 * deltaSeconds / BlurConfig.fadeTimeMillis));
 
-        if (BlurConfig.fadeTimeMillis > 0) {
-            newTimeState = Math.clamp(0, 1, oldAnimationState.timeState() + (1000 * deltaSeconds / BlurConfig.fadeTimeMillis));
-            newProgress = Math.clamp(0, 1, easing.apply((double) newTimeState).floatValue());
-        } else {
-            newTimeState = 1.0F;
-            newProgress = 1.0F;
-        }
+        var newValue = Math.lerp(state.startValue(), state.target().getAnimationTarget(), easing.apply((double) newTimeState).floatValue());
 
-        return new AnimationState(newTimeState, newProgress);
-    }
-
-    public AnimationState stepBackward(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
-        float newTimeState;
-        float newProgress;
-
-        if (BlurConfig.fadeOutTimeMillis > 0) {
-            newTimeState = Math.clamp(0, 1, oldAnimationState.timeState() - (1000 * deltaSeconds / BlurConfig.fadeOutTimeMillis));
-            newProgress = Math.clamp(0, 1, 1 - easing.apply((double) 1 - newTimeState).floatValue());
-        } else {
-            newTimeState = 0.0F;
-            newProgress = 0.0F;
-        }
-
-        return new AnimationState(newTimeState, newProgress);
+        return new AnimationState<E>(newTimeState, state.startValue(), newValue, state.target());
     }
 
     @Override
     public void updateAnimation(float deltaSeconds, BlurConfig.Easing easing) {
-        if (state == null || deltaSeconds <= 0) return;
+        if (BlurConfig.fadeTimeMillis == 0 || deltaSeconds <= 0) return;
+        if (newTarget != null) resetTimeState();
+        if (getTarget() == null) return;
         // actually update the animation
-        AnimationState newAnimationState = stepAnimation(deltaSeconds, easing, new AnimationState(getTimeState(), getProgress()));
-        timeState = newAnimationState.timeState();
-        progress = newAnimationState.progress();
+        state = stepAnimation(deltaSeconds, easing);
     }
 
     @Override
-    public float getProgress() {
-        return progress;
+    public float getCurrentValue() {
+        return state.currentValue();
     }
 
     @Override
     public float getTimeState() {
-        return timeState;
+        return state.timeState();
     }
 
     @Override
-    public E getState() {
-        return state;
+    public @Nullable E getTarget() {
+        return state.target();
     }
 
     @Override
-    public void setState(E state) {
-        this.state = state;
+    public void setTarget(E target) {
+        if (target == newTarget) return;
+        if (target == getTarget()) {
+            newTarget = null;
+        } else {
+            newTarget = target;
+        }
+    }
+
+    private void resetTimeState() {
+        Blur.LOGGER.debug("New Animation Target: {}", newTarget);
+
+        state = new AnimationState<E>(
+                0.0F,
+                getCurrentValue(),
+                getCurrentValue(),
+                newTarget
+        );
+        newTarget = null;
     }
 }
