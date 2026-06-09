@@ -16,7 +16,7 @@ public abstract class AbstractAnimationHandler<E extends Enum<E> & IEnumAnimatio
     private E newTarget = null;
 
     public AnimationState<E> stepAnimation(float deltaSeconds, BlurConfig.Easing easing) {
-        float newTimeState = Math.clamp(0, 1, getTimeState() + (1000 * deltaSeconds / getFadeTimeMillis()));
+        float newTimeState = Math.clamp(0, 1, getTimeState() + (1000 * deltaSeconds / getAnimationTimeMillis()));
 
         var newValue = Math.lerp(state.startValue(), state.target().getAnimationTarget(), easing.apply((double) newTimeState).floatValue());
 
@@ -24,13 +24,16 @@ public abstract class AbstractAnimationHandler<E extends Enum<E> & IEnumAnimatio
     }
 
     @Override
-    public int getFadeTimeMillis() {
-        return BlurConfig.fadeTimeMillis;
+    public int getAnimationTimeMillis() {
+        if (getTarget() == null) {
+            return BlurConfig.fadeTimeMillis;
+        }
+        return getTarget().getAnimationTimeMillis();
     }
 
     @Override
     public void updateAnimation(float deltaSeconds, BlurConfig.Easing easing) {
-        if (getFadeTimeMillis() == 0 || deltaSeconds <= 0) return;
+        if (getAnimationTimeMillis() == 0 || deltaSeconds <= 0) return;
         if (newTarget != null){
             resetTarget(newTarget);
             newTarget = null;

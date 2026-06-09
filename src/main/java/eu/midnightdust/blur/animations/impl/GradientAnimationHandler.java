@@ -14,21 +14,6 @@ public class GradientAnimationHandler extends AbstractAnimationHandler<GradientA
     private static float hue2 = 0.35F;
 
     @Override
-    public int getFadeTimeMillis() {
-        switch (getTarget()) {
-            case Rainbow -> {
-                return BlurConfig.fadeTimeMillis;
-            }
-            case Fixed -> {
-                return BlurConfig.fadeOutTimeMillis;
-            }
-            case null -> {
-                return BlurConfig.fadeTimeMillis;
-            }
-        }
-    }
-
-    @Override
     public AnimationState<GradientAnimationTarget> stepAnimation(float deltaSeconds, BlurConfig.Easing easing) {
         GradientAnimationTarget target = getTarget();
         if (target == GradientAnimationTarget.Rainbow) {

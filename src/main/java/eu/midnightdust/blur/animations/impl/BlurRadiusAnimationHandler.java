@@ -9,21 +9,6 @@ public class BlurRadiusAnimationHandler extends AbstractAnimationHandler<BlurRad
     boolean prevReducedBlur = Blur.reducedBlur;
 
     @Override
-    public int getFadeTimeMillis() {
-        switch (getTarget()) {
-            case FadeIn -> {
-                return BlurConfig.fadeTimeMillis;
-            }
-            case FadeOut -> {
-                return BlurConfig.fadeOutTimeMillis;
-            }
-            case null -> {
-                return BlurConfig.fadeTimeMillis;
-            }
-        }
-    }
-
-    @Override
     public void updateAnimation(float deltaSeconds, BlurConfig.Easing easing) {
         if (Blur.reducedBlur != prevReducedBlur) {
             resetTarget(getTarget());

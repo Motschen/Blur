@@ -3,7 +3,6 @@ package eu.midnightdust.blur.animations.impl;
 import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.animations.IEnumAnimationTarget;
 import eu.midnightdust.blur.config.BlurConfig;
-import net.minecraft.client.Minecraft;
 
 public enum BlurRadiusAnimationTarget implements IEnumAnimationTarget {
     FadeIn(1.0F),
@@ -20,5 +19,13 @@ public enum BlurRadiusAnimationTarget implements IEnumAnimationTarget {
             return target * 0.5F;
         }
         return target;
+    }
+
+    @Override
+    public int getAnimationTimeMillis() {
+        if (this == BlurRadiusAnimationTarget.FadeIn)
+            return BlurConfig.fadeTimeMillis;
+        else
+            return BlurConfig.fadeOutTimeMillis;
     }
 }

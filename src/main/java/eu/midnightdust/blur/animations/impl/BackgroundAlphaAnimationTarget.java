@@ -2,7 +2,6 @@ package eu.midnightdust.blur.animations.impl;
 
 import eu.midnightdust.blur.animations.IEnumAnimationTarget;
 import eu.midnightdust.blur.config.BlurConfig;
-import net.minecraft.client.Minecraft;
 
 public enum BackgroundAlphaAnimationTarget implements IEnumAnimationTarget {
     FadeIn(1.0F),
@@ -16,5 +15,13 @@ public enum BackgroundAlphaAnimationTarget implements IEnumAnimationTarget {
 
     public float getAnimationTarget() {
         return target;
+    }
+
+    @Override
+    public int getAnimationTimeMillis() {
+        if (this == BackgroundAlphaAnimationTarget.FadeIn)
+            return BlurConfig.fadeTimeMillis;
+        else
+            return BlurConfig.fadeOutTimeMillis;
     }
 }

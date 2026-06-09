@@ -5,7 +5,7 @@ import eu.midnightdust.blur.config.BlurConfig;
 public interface IAnimationHandler<E extends Enum<E> & IEnumAnimationTarget> {
     void updateAnimation(float deltaSeconds, BlurConfig.Easing easing);
     void setTarget(E target);
-    int getFadeTimeMillis();
+    int getAnimationTimeMillis();
     float getTimeState();
     float getCurrentValue();
     E getTarget();
