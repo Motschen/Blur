@@ -21,6 +21,7 @@ public class MixinAbstractCommandBlockEditScreen extends Screen {
     //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor' {
     //~ if >= 26.1 'render' -> 'extract' {
     private void blur$extractContainerBlur(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Applies the blur effect in containers (Inventory, Chest, etc.)
+        if (BlurConfig.reduceInGameBlur) Blur.reducedBlur = true;
         if (BlurConfig.blurCommandBlocks && Blur.canBlur(context)) this.extractBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
     }
     //~}

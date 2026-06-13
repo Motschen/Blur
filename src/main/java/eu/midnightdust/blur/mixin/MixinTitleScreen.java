@@ -1,7 +1,8 @@
 package eu.midnightdust.blur.mixin;
 
 import eu.midnightdust.blur.Blur;
-import eu.midnightdust.blur.animations.impl.FadeAnimationState;
+import eu.midnightdust.blur.animations.impl.BackgroundAlphaAnimationTarget;
+import eu.midnightdust.blur.animations.impl.BlurRadiusAnimationTarget;
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,9 +26,9 @@ public abstract class MixinTitleScreen extends Screen {
     //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
     private void blur$extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (Blur.canBlur(context)) super.extractBlurredBackground(/*? if > 1.21.5 {*/ context /*?} else if <= 1.21.1 {*/ /*delta *//*?}*/);
-        Blur.blurRadiusAnimation.setState(BlurConfig.blurTitleScreen ? FadeAnimationState.FadeIn : FadeAnimationState.FadeOut);
+        Blur.blurRadiusAnimation.setTarget(BlurConfig.blurTitleScreen ? BlurRadiusAnimationTarget.FadeIn : BlurRadiusAnimationTarget.FadeOut);
         if (BlurConfig.useGradient) super.extractMenuBackground(context);
-        Blur.backgroundAlphaAnimation.setState(BlurConfig.darkenTitleScreen ? FadeAnimationState.FadeIn : FadeAnimationState.FadeOut);
+        Blur.backgroundAlphaAnimation.setTarget(BlurConfig.darkenTitleScreen ? BackgroundAlphaAnimationTarget.FadeIn : BackgroundAlphaAnimationTarget.FadeOut);
     }
     //~}
 }

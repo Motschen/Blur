@@ -1,5 +1,6 @@
 package eu.midnightdust.blur.mixin;
 
+import eu.midnightdust.blur.Blur;
 import eu.midnightdust.blur.config.BlurConfig;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -30,6 +31,7 @@ public class MixinAbstractContainerScreen extends Screen {
     *///?} else {
     @ModifyReturnValue(method = "isInGameUi", at = @At("RETURN"))
     public boolean blur$isInGameUi(boolean original) {
+        if (BlurConfig.reduceInGameBlur) Blur.reducedBlur = true;
         if (BlurConfig.blurContainers) return false;
         else return original;
     }

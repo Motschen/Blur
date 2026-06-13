@@ -37,6 +37,8 @@ public class BlurConfig extends MidnightConfig {
     public static boolean blurTitleScreen = false;
     @Entry(category = SCREENS)
     public static boolean darkenTitleScreen = false;
+    @Entry(category = SCREENS)
+    public static boolean reduceInGameBlur = false;
     @Comment(category = SCREENS, centered = true)
     public static Comment _advanced;
     @Entry(category = SCREENS)
@@ -70,9 +72,9 @@ public class BlurConfig extends MidnightConfig {
 
     @Comment(category = ANIMATIONS, centered = true)
     public static Comment _animations;
-    @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
+    @Entry(category = ANIMATIONS, min = 1, max = 2000, isSlider = true)
     public static int fadeTimeMillis = 300;
-    @Entry(category = ANIMATIONS, min = 0, max = 2000, isSlider = true)
+    @Entry(category = ANIMATIONS, min = 1, max = 2000, isSlider = true)
     public static int fadeOutTimeMillis = 300;
     @Entry(category = ANIMATIONS)
     public static BlurConfig.Easing blurAnimationCurve = Easing.FLAT;

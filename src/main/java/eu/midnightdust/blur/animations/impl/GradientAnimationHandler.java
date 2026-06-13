@@ -8,31 +8,23 @@ import eu.midnightdust.lib.util.MidnightColorUtil;
 
 import java.awt.*;
 
-public class GradientAnimationHandler extends AbstractAnimationHandler<GradientAnimationState> implements IAnimationHandler<GradientAnimationState> {
+public class GradientAnimationHandler extends AbstractAnimationHandler<GradientAnimationTarget> implements IAnimationHandler<GradientAnimationTarget> {
     private static float rotation = (float) BlurConfig.gradientRotation;
     private static float hue1 = 0.0F;
     private static float hue2 = 0.35F;
 
     @Override
-    public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
-        AnimationState newAnimationState = oldAnimationState;
-        switch (getState()) {
-            case Rainbow -> {
-                newAnimationState = this.stepForward(deltaSeconds, easing, oldAnimationState);
+    public AnimationState<GradientAnimationTarget> stepAnimation(float deltaSeconds, BlurConfig.Easing easing) {
+        GradientAnimationTarget target = getTarget();
+        if (target == GradientAnimationTarget.Rainbow) {
+            // 20 degrees of rotation per second (or 1 degree per tick, same as before)
+            rotation = (rotation + deltaSeconds * 20F) % 360F;
 
-                // 20 degrees of rotation per second (or 1 degree per tick, same as before)
-                rotation = (rotation + deltaSeconds * 20F) % 360F;
-
-                // 72 degrees of rotation per second (or 3.6 degree per tick, same as before)
-                hue1 = (hue1 + deltaSeconds * 0.2F) % 1.0F;
-                hue2 = (hue2 + deltaSeconds * 0.2F) % 1.0F;
-            }
-            case Fixed -> {
-                newAnimationState = this.stepBackward(deltaSeconds, easing, oldAnimationState);
-            }
+            // 72 degrees of rotation per second (or 3.6 degree per tick, same as before)
+            hue1 = (hue1 + deltaSeconds * 0.2F) % 1.0F;
+            hue2 = (hue2 + deltaSeconds * 0.2F) % 1.0F;
         }
-
-        return newAnimationState;
+        return super.stepAnimation(deltaSeconds, easing);
     }
 
     public Color getFirstColor() {
@@ -40,9 +32,9 @@ public class GradientAnimationHandler extends AbstractAnimationHandler<GradientA
         Color fixedColor = MidnightColorUtil.hex2Rgb(BlurConfig.gradientStart);
 
         return new Color(
-                (rainbowColor.getRed() / 255F) * getProgress() + (fixedColor.getRed() / 255F) * (1 - getProgress()),
-                (rainbowColor.getGreen() / 255F) * getProgress() + (fixedColor.getGreen() / 255F) * (1 - getProgress()),
-                (rainbowColor.getBlue() / 255F) * getProgress() + (fixedColor.getBlue() / 255F) * (1 - getProgress()),
+                (rainbowColor.getRed() / 255F) * getCurrentValue() + (fixedColor.getRed() / 255F) * (1 - getCurrentValue()),
+                (rainbowColor.getGreen() / 255F) * getCurrentValue() + (fixedColor.getGreen() / 255F) * (1 - getCurrentValue()),
+                (rainbowColor.getBlue() / 255F) * getCurrentValue() + (fixedColor.getBlue() / 255F) * (1 - getCurrentValue()),
                 BlurConfig.gradientStartAlpha / 255F
         );
     }
@@ -52,9 +44,9 @@ public class GradientAnimationHandler extends AbstractAnimationHandler<GradientA
         Color fixedColor = MidnightColorUtil.hex2Rgb(BlurConfig.gradientEnd);
 
         return new Color(
-                (rainbowColor.getRed() / 255F) * getProgress() + (fixedColor.getRed() / 255F) * (1 - getProgress()),
-                (rainbowColor.getGreen() / 255F) * getProgress() + (fixedColor.getGreen() / 255F) * (1 - getProgress()),
-                (rainbowColor.getBlue() / 255F) * getProgress() + (fixedColor.getBlue() / 255F) * (1 - getProgress()),
+                (rainbowColor.getRed() / 255F) * getCurrentValue() + (fixedColor.getRed() / 255F) * (1 - getCurrentValue()),
+                (rainbowColor.getGreen() / 255F) * getCurrentValue() + (fixedColor.getGreen() / 255F) * (1 - getCurrentValue()),
+                (rainbowColor.getBlue() / 255F) * getCurrentValue() + (fixedColor.getBlue() / 255F) * (1 - getCurrentValue()),
                 BlurConfig.gradientEndAlpha / 255F
         );
     }
@@ -63,6 +55,6 @@ public class GradientAnimationHandler extends AbstractAnimationHandler<GradientA
         float rainbowRotation = rotation;
         float fixedRotation = BlurConfig.gradientRotation;
 
-        return rainbowRotation * getProgress() + fixedRotation * (1 - getProgress());
+        return rainbowRotation * getCurrentValue() + fixedRotation * (1 - getCurrentValue());
     }
 }

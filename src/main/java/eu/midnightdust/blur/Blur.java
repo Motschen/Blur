@@ -1,10 +1,7 @@
 package eu.midnightdust.blur;
 
-import eu.midnightdust.blur.animations.impl.FadeAnimationState;
-import eu.midnightdust.blur.animations.impl.GradientAnimationState;
-import eu.midnightdust.blur.animations.impl.GradientAnimationHandler;
+import eu.midnightdust.blur.animations.impl.*;
 import eu.midnightdust.blur.config.BlurConfig;
-import eu.midnightdust.blur.animations.impl.FadeAnimationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
@@ -25,7 +22,6 @@ import org.joml.Matrix3x2f;
 //? fabric {
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //?} else if neoforge {
 /*import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
@@ -47,12 +43,13 @@ public class Blur {
 
     public static Minecraft minecraft = Minecraft.getInstance();
 
-    public static final FadeAnimationHandler blurRadiusAnimation = new FadeAnimationHandler();
-    public static final FadeAnimationHandler backgroundAlphaAnimation = new FadeAnimationHandler();
+    public static final BlurRadiusAnimationHandler blurRadiusAnimation = new BlurRadiusAnimationHandler();
+    public static final BackgroundAlphaAnimationHandler backgroundAlphaAnimation = new BackgroundAlphaAnimationHandler();
     public static final GradientAnimationHandler gradientAnimation = new GradientAnimationHandler();
 
     public static boolean isProcessingRenderPass = false;
     public static boolean forceRenderedBackground = false;
+    public static boolean reducedBlur = false;
 
     public static float getGameTimeDeltaTicks() {
         //? if >= 1.21.5 {
@@ -93,20 +90,21 @@ public class Blur {
         }
         if (!isProcessingRenderPass) {
             isProcessingRenderPass = true;
-            blurRadiusAnimation.setState(FadeAnimationState.FadeOut);
-            backgroundAlphaAnimation.setState(FadeAnimationState.FadeOut);
+            blurRadiusAnimation.setTarget(BlurRadiusAnimationTarget.FadeOut);
+            backgroundAlphaAnimation.setTarget(BackgroundAlphaAnimationTarget.FadeOut);
             forceRenderedBackground = false;
+            reducedBlur = false;
         } else {
             Blur.LOGGER.debug("onRender has been called multiple times in one render pass: {}, " +
-                            "blur radius animation state: {}, background alpha animation state: {}",
-                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+                            "blur radius animation target: {}, background alpha animation target: {}",
+                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
         }
     }
 
     //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
     public static void renderBlurredBackground(GuiGraphicsExtractor context) {
-        if (blurRadiusAnimation.getProgress() < 0.001F) return; // there's no blur to apply
+        if (blurRadiusAnimation.getCurrentValue() < 0.001F) return; // there's no blur to apply
 
         //? if > 1.21.5 {
         if (Blur.canBlur(context))
@@ -128,8 +126,8 @@ public class Blur {
             forceRenderedBackground = true;
         } else {
             Blur.LOGGER.debug("renderBackground has been called multiple times in one render pass: {}, " +
-                            "blur radius animation state: {}, background alpha animation state: {}",
-                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+                            "blur radius animation target: {}, background alpha animation target: {}",
+                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
         }
     }
@@ -139,7 +137,7 @@ public class Blur {
         int red = color.getRed();
         int green = color.getGreen();
         int blue = color.getBlue();
-        int alpha = (int) (backgroundAlphaAnimation.getProgress() * color.getAlpha());
+        int alpha = (int) (backgroundAlphaAnimation.getCurrentValue() * color.getAlpha());
         return alpha << 24 | red << 16 | green << 8 | blue;
     }
 
@@ -149,7 +147,7 @@ public class Blur {
 
     //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
     public static void renderRotatedGradient(GuiGraphicsExtractor context) {
-        if (!BlurConfig.useGradient || backgroundAlphaAnimation.getProgress() < 0.001F) return;  // there's no gradient to draw
+        if (!BlurConfig.useGradient || backgroundAlphaAnimation.getCurrentValue() < 0.001F) return;  // there's no gradient to draw
 
         int width = context.guiWidth();
         int height = context.guiHeight();
@@ -200,8 +198,8 @@ public class Blur {
         // animation calculations for this screen
         if (isProcessingRenderPass) {
             Blur.LOGGER.debug("processed render pass: {}," +
-                            "blur radius animation state: {}, background alpha animation state: {}",
-                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+                            "blur radius animation target: {}, background alpha animation target: {}",
+                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
             String screenName = null;
             if (minecraft.screen != null) {
@@ -210,26 +208,26 @@ public class Blur {
 
             // force a background fade-in animation for forceEnabledScreens
             if (screenName != null &&BlurConfig.forceEnabledScreens.contains(screenName)) {
-                blurRadiusAnimation.setState(FadeAnimationState.FadeIn);
-                backgroundAlphaAnimation.setState(FadeAnimationState.FadeIn);
+                blurRadiusAnimation.setTarget(BlurRadiusAnimationTarget.FadeIn);
+                backgroundAlphaAnimation.setTarget(BackgroundAlphaAnimationTarget.FadeIn);
             }
 
             // force a background fade-out animation for forceDisabledScreens
             if (screenName != null && BlurConfig.forceDisabledScreens.contains(screenName)) {
-                blurRadiusAnimation.setState(FadeAnimationState.FadeOut);
-                backgroundAlphaAnimation.setState(FadeAnimationState.FadeOut);
+                blurRadiusAnimation.setTarget(BlurRadiusAnimationTarget.FadeOut);
+                backgroundAlphaAnimation.setTarget(BackgroundAlphaAnimationTarget.FadeOut);
             }
 
-            // update gradientAnimation state from config
-            gradientAnimation.setState(BlurConfig.rainbowMode ? GradientAnimationState.Rainbow : GradientAnimationState.Fixed);
+            // update gradientAnimation target from config
+            gradientAnimation.setTarget(BlurConfig.rainbowMode ? GradientAnimationTarget.Rainbow : GradientAnimationTarget.Fixed);
 
             updateAnimations();
 
             isProcessingRenderPass = false;
         }  else {
             Blur.LOGGER.debug("onRenderEnd has been called multiple times in one render pass: {}," +
-                            "blur radius animation state: {}, background alpha animation state: {}",
-                    minecraft.screen, blurRadiusAnimation.getState(), backgroundAlphaAnimation.getState()
+                            "blur radius animation target: {}, background alpha animation target: {}",
+                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
         }
     }
