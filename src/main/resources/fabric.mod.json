@@ -35,6 +35,6 @@
   ],
   "depends": {
     "minecraft": "${minecraft}",
-    "midnightlib": ">=1.9.2"
+    "midnightlib": ">=1.9.3"
   }
 }
