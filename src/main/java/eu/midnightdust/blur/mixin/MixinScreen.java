@@ -42,8 +42,8 @@ public abstract class MixinScreen {
             *///?}
     )
     public void blur$renderDebugHud(GuiGraphicsExtractor context, int i, int j, float f, CallbackInfo ci) {
-        if (BlurConfig.showScreenID && minecraft.screen != null) {
-            DebugHudRenderer.renderLine(context, minecraft.font, minecraft.screen.getClass().getCanonicalName(), 2, new Color(0xff80dfff), true);
+        if (BlurConfig.showScreenID && Blur.getCurrentScreen() != null) {
+            DebugHudRenderer.renderLine(context, minecraft.font, Blur.getCurrentScreen().getClass().getCanonicalName(), 2, new Color(0xff80dfff), true);
         }
     }
 

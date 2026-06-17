@@ -7,6 +7,8 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.awt.*;
 
+import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +22,12 @@ import org.joml.Matrix3x2f;
 *///?}
 
 //? fabric {
-import net.fabricmc.api.ClientModInitializer;
+/*import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-//?} else if neoforge {
-/*import net.neoforged.api.distmarker.Dist;
+*///?} else if neoforge {
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
-*///?}
+//?}
 
 
 public class Blur {
@@ -67,6 +69,14 @@ public class Blur {
          *///?}
     }
 
+    public static @Nullable Screen getCurrentScreen() {
+        //? if >= 26.2 {
+        return minecraft.gui.screen();
+        //?} else {
+        /*return minecraft.screen;
+         *///?}
+    }
+
     //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
     public static boolean canBlur(GuiGraphicsExtractor graphics) {
         //? if > 1.21.5 {
@@ -83,8 +93,8 @@ public class Blur {
             minecraft = Minecraft.getInstance();
         };
 
-        if (minecraft.screen != null) {
-            Blur.LOGGER.debug("onRender: {}", minecraft.screen.getClass().getCanonicalName());
+        if (getCurrentScreen() != null) {
+            Blur.LOGGER.debug("onRender: {}", getCurrentScreen().getClass().getCanonicalName());
         } else {
             Blur.LOGGER.debug("onRender: null");
         }
@@ -97,7 +107,7 @@ public class Blur {
         } else {
             Blur.LOGGER.debug("onRender has been called multiple times in one render pass: {}, " +
                             "blur radius animation target: {}, background alpha animation target: {}",
-                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
+                    getCurrentScreen(), blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
         }
     }
@@ -127,7 +137,7 @@ public class Blur {
         } else {
             Blur.LOGGER.debug("renderBackground has been called multiple times in one render pass: {}, " +
                             "blur radius animation target: {}, background alpha animation target: {}",
-                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
+                    getCurrentScreen(), blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
         }
     }
@@ -189,8 +199,8 @@ public class Blur {
             minecraft = Minecraft.getInstance();
         };
 
-        if (minecraft.screen != null) {
-            Blur.LOGGER.debug("onRenderEnd: {}", minecraft.screen.getClass().getCanonicalName());
+        if (getCurrentScreen() != null) {
+            Blur.LOGGER.debug("onRenderEnd: {}", getCurrentScreen().getClass().getCanonicalName());
         } else {
             Blur.LOGGER.debug("onRenderEnd: null");
         }
@@ -199,11 +209,11 @@ public class Blur {
         if (isProcessingRenderPass) {
             Blur.LOGGER.debug("processed render pass: {}," +
                             "blur radius animation target: {}, background alpha animation target: {}",
-                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
+                    getCurrentScreen(), blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
             String screenName = null;
-            if (minecraft.screen != null) {
-                screenName = minecraft.screen.getClass().getCanonicalName();
+            if (getCurrentScreen() != null) {
+                screenName = getCurrentScreen().getClass().getCanonicalName();
             }
 
             // force a background fade-in animation for forceEnabledScreens
@@ -227,13 +237,13 @@ public class Blur {
         }  else {
             Blur.LOGGER.debug("onRenderEnd has been called multiple times in one render pass: {}," +
                             "blur radius animation target: {}, background alpha animation target: {}",
-                    minecraft.screen, blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
+                    getCurrentScreen(), blurRadiusAnimation.getTarget(), backgroundAlphaAnimation.getTarget()
             );
         }
     }
 
     //? fabric {
-    public static class BlurFabric implements ModInitializer, ClientModInitializer {
+    /*public static class BlurFabric implements ModInitializer, ClientModInitializer {
         @Override
         public void onInitialize() {
             Blur.init();
@@ -244,12 +254,12 @@ public class Blur {
             Blur.init();
         }
     }
-    //?} else if neoforge {
-    /*@Mod(value = Blur.MOD_ID, dist = Dist.CLIENT)
+    *///?} else if neoforge {
+    @Mod(value = Blur.MOD_ID, dist = Dist.CLIENT)
     public static class BlurNeoForge {
         public BlurNeoForge() {
             Blur.init();
         }
     }
-    *///?}
+    //?}
 }

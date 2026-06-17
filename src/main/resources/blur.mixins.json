@@ -14,7 +14,7 @@
     "MixinBookViewScreen",
     "MixinDeathScreen",
     "MixinDeathScreen$MixinTitleConfirmScreen",
-    "MixinGameRenderer",
+    "MixinGui",
     "MixinOptions",
     "MixinScreen",
     "MixinTitleScreen"

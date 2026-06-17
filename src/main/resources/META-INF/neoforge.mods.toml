@@ -33,6 +33,6 @@ side = "CLIENT"
 [[dependencies.blur]]
 modId = "midnightlib"
 mandatory = true
-versionRange = "[1.9.2,)"
+versionRange = "[1.9.3,)"
 ordering = "NONE"
 side = "CLIENT"
