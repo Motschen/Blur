@@ -1,3 +1,13 @@
+# Blur+ v6.3.0
+- Updated Simplified Chinese translations by [@WForst-Breeze](https://github.com/Motschen/Blur/pull/159) in [#159](https://github.com/Motschen/Blur/pull/159)
+
+Thanks a bunch to [@amiralimollaei](https://github.com/amiralimollaei) for submitting the following changes via pull requests.  
+Your continued support really means a lot!
+- Fully Continuous Animations
+- Option to reduce Blur behind In-Game Screens *(off by default)*
+- Added Option To Blur The Death Screen
+- Fix Gradle Issues
+
 # Blur+ v6.2.0
 - REI and JEI recipe screens will now be blurred by default
 - Fix gradient colors being decoded incorrectly
