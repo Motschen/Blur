@@ -6,6 +6,7 @@
   "client": [
     "GuiGraphicsAccessor",
     "GuiRenderStateAccessor",
+    "GuiRenderStateMixin",
     "MixinAbstractCommandBlockEditScreen",
     "MixinAbstractContainerScreen",
     "MixinAbstractSignEditScreen",
