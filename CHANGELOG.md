@@ -1,3 +1,7 @@
+## Blur+ v6.3.1
+Thanks a bunch to [@amiralimollaei](https://github.com/amiralimollaei) for submitting the following change in [#164](https://github.com/Motschen/Blur/pull/164):
+- Fix crash in nested screens (such as the new friends menu) 
+
 # Blur+ v6.3.0
 - Updated Simplified Chinese translations by [@WForst-Breeze](https://github.com/Motschen/Blur/pull/159) in [#159](https://github.com/Motschen/Blur/pull/159)
 
