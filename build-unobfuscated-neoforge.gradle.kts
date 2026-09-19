@@ -2,7 +2,7 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 plugins {
-    id("net.neoforged.moddev") version "2.0.141" // For unobfuscated releases (>= 26.1)
+    id("net.neoforged.moddev") version "2.0.147" // For unobfuscated releases (>= 26.1)
     id("me.modmuss50.mod-publish-plugin")
     `maven-publish`
 }
@@ -47,6 +47,13 @@ neoForge {
         register("server") {
             gameDirectory = file("../../run/")
             server()
+        }
+    }
+
+    // apparently ModDevGradle now requires this
+    mods {
+        create(mod.id) {
+            sourceSet(sourceSets.main.get())
         }
     }
 }

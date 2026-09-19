@@ -7,7 +7,9 @@ license = "MIT License"
 modId = "blur"
 version = "${version}"
 displayName = "Blur+"
-logoFile = "blur.png"
+logoFile = "blur.png" # legacy for older versions, use bannerFile for 26.3
+iconFile = "assets/blur/icon.png"
+bannerFile = "blur.png"
 authors = "Motschen, amiralimollaei, tterrag1098, Pyrofab, backryun, byquanton"
 description = '''
 Various enhancements for the blur effect behind Minecraft GUIs

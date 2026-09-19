@@ -4,7 +4,7 @@ plugins {
     id("dev.kikugie.stonecutter")
     id("me.modmuss50.mod-publish-plugin") version "0.8.4" apply false
 }
-stonecutter active "26.2-neoforge" /* [SC] DO NOT EDIT */
+stonecutter active "26.3-neoforge" /* [SC] DO NOT EDIT */
 
 // See https://stonecutter.kikugie.dev/wiki/config/params
 stonecutter parameters {
